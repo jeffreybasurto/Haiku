@@ -6,6 +6,7 @@ GEM
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
     eventmachine (0.12.10)
+    json (1.5.1)
     rack (1.2.2)
     sinatra (1.2.3)
       rack (~> 1.1)
@@ -18,4 +19,5 @@ PLATFORMS
 DEPENDENCIES
   em-websocket
   eventmachine
+  json
   sinatra

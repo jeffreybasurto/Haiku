@@ -1,6 +1,5 @@
 require 'bundler/setup'
 Bundler.require
-require 'pp'
 set :port, 3000
 
 $welcome = <<-HERE
@@ -10,7 +9,7 @@ HERE
 Thread.new do
   puts "Starting websocket server."
   EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080) do |ws|
-    ws.onopen { ws.send $welcome }
+    ws.onopen { ws.send JSON.generate({"chat"=>$welcome})}
     # When we receive a message just echo it back for now.
     ws.onmessage { |msg| ws.send msg }
     ws.onclose { puts "Connection closed." }
