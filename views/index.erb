@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+    <script>
+      $(document).ready(function(){
+        function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
+        function scroll(str) { $("#scrolling_region").append("<p>"+str+"</p>"); };
+
+        ws = new WebSocket("ws://localhost:8080");
+
+
+        ws.onmessage = function(e) { scroll(e.data); };
+        ws.onclose = function() { debug("socket closed"); };
+        ws.onopen = function() { debug("connected..."); };
+      });
+	    function CommandSubmit() {
+		  alert(document.forms["input"]["user_input"].value);
+          ws.send(document.forms["input"]["user_input"].value);
+		  return false;
+	    }
+    </script>
+  </head>
+  <body>
+	<center>
+      <div id="debug" style="width:100%; background-color: silver;"></div>
+      <div id="scrolling_region"></div>
+      <form name="input" onSubmit="return CommandSubmit();">
+	    <input type="text" name="user_input">
+	  </form>
+    </center>
+  </body>
+</html>
