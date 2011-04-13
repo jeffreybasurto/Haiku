@@ -3,18 +3,17 @@
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
     <script>
       $(document).ready(function(){
-        function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
+        function debug(str){ $("#debug").append(str+"<br"); };
         function scroll(str) { 
-	      var sr = $("#scrolling_region")
-	      sr.append("<p>"+str+"</p>"); 
-	      sr.animate({ scrollTop: sr.attr("scrollHeight") }, 3000);
+	      $("#scrolling_region").append(str+"<br>"); 
+	      $(document.body).animate({ scrollTop: document.body.clientHeight }, 1);
 	    };
 
         ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
 
         ws.onmessage = function(e) { scroll(e.data); };
         ws.onclose = function() { debug("socket closed"); };
-        ws.onopen = function() { debug("connected..."); };
+        ws.onopen = function() { debug("Connected."); };
       });
 
 	  function CommandSubmit() {
@@ -26,12 +25,12 @@
     </script>
   </head>
   <body>
-	<center>
-      <div id="debug" style="width:100%; background-color: silver;"></div>
-      <div id="scrolling_region" style="overflow:auto;height:90%"></div>
+    <div id="debug" style="text-align: center ;width:100%; background-color: silver;"></div>
+    <div id="scrolling_region" style="margin:20px"></div>
+    <div style="position: fixed;bottom: 0px;height:21px;">
       <form name="input" onSubmit="return CommandSubmit();">
-	    <input type="text" name="user_input" style="position: fixed;bottom: 0px;">
+        <input type="text" name="user_input">
 	  </form>
-    </center>
+	</div>
   </body>
 </html>
