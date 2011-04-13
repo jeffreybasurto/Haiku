@@ -4,28 +4,33 @@
     <script>
       $(document).ready(function(){
         function debug(str){ $("#debug").append("<p>"+str+"</p>"); };
-        function scroll(str) { $("#scrolling_region").append("<p>"+str+"</p>"); };
+        function scroll(str) { 
+	      var sr = $("#scrolling_region")
+	      sr.append("<p>"+str+"</p>"); 
+	      sr.animate({ scrollTop: sr.attr("scrollHeight") }, 3000);
+	    };
 
-        ws = new WebSocket("ws://localhost:8080");
-
+        ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
 
         ws.onmessage = function(e) { scroll(e.data); };
         ws.onclose = function() { debug("socket closed"); };
         ws.onopen = function() { debug("connected..."); };
       });
-	    function CommandSubmit() {
-		  alert(document.forms["input"]["user_input"].value);
-          ws.send(document.forms["input"]["user_input"].value);
-		  return false;
-	    }
+
+	  function CommandSubmit() {
+	    // Send what's in our input buffer to the mud. 
+        ws.send(document.forms["input"]["user_input"].value);
+        document.forms["input"]["user_input"].value='';
+		return false;
+	  }
     </script>
   </head>
   <body>
 	<center>
       <div id="debug" style="width:100%; background-color: silver;"></div>
-      <div id="scrolling_region"></div>
+      <div id="scrolling_region" style="overflow:auto;height:90%"></div>
       <form name="input" onSubmit="return CommandSubmit();">
-	    <input type="text" name="user_input">
+	    <input type="text" name="user_input" style="position: fixed;bottom: 0px;">
 	  </form>
     </center>
   </body>

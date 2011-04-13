@@ -7,11 +7,12 @@ Thread.new do
   puts "Starting websocket server."
   EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080) do |ws|
     ws.onopen { ws.send "Welcome to <b>HaikuMud</b>." }
-    ws.onmessage { |msg| puts "Received: #{msg}" }
+    # When we receive a message just echo it back for now.
+    ws.onmessage { |msg| ws.send msg }
     ws.onclose { puts "Connection closed." }
   end
 end
 
 get '/' do 
-  erb :index
+  erb :index, :locals=>{:host=>request.env["SERVER_NAME"]}
 end
