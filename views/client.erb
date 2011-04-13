@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+    <script>
+      function emptyDiv (divToClear){
+        var i;
+        while (i=divToClear.childNodes[0]){
+          if (i.nodeType == 1 || i.nodeType == 3){
+            divToClear.removeChild(i);
+          }
+        }
+      }
+      $(document).ready(function(){
+        function debug(str){ 
+	      $("#debug").empty();
+	      $("#debug").append(str+"<br"); 
+	    };
+        function scroll(str) { 
+	      $("#scrolling_region").append(str+"<br>"); 
+	      $(document.body).animate({ scrollTop: document.body.scrollHeight }, 1);
+	    };
+
+        ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
+
+        ws.onmessage = function(e) { scroll(JSON.parse(e.data)["scrollback"]); };
+        ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };
+        ws.onopen = function() { debug("Connected."); };
+      });
+
+	  function CommandSubmit() {
+	    // Send what's in our input buffer to the mud. 
+        ws.send(JSON.stringify({"chat":document.forms["input"]["user_input"].value}));
+        document.forms["input"]["user_input"].value='';
+		return false;
+	  }
+    </script>
+  </head>
+  <body>
+	<div style="border:2px; border-style:solid;height:100%;width:100%;">
+      <div id="debug" style="text-align: center ;width:100%; background-color: silver;"></div>
+      <div id="scrolling_region" style="margin:20px; margin-bottom:40px;"></div>
+      <div style="position: fixed;bottom: 0px;padding-bottom:20px;height:24px; width:96%; margin-left:12px">
+	    <hr style="margin:0.25em auto;">
+        <form name="input" onSubmit="return CommandSubmit();">
+          <input type="text" name="user_input">
+	    </form>
+	  </div>
+	</div>
+  </body>
+</html>
