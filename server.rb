@@ -2,7 +2,7 @@ require 'bundler/setup'
 Bundler.require
 set :port, 3000
 
-require ''
+load 'utilities.rb'
 
 $welcome = <<-HERE
 <span style="font-size:20px;">Welcome to <img src="haikulogo.png" alt="haikumud">. <span>
@@ -15,7 +15,7 @@ Thread.new do
     # When we receive a message just echo it back for now.
     ws.onmessage { |msg| 
       msg = JSON.parse(msg)
-      ws.send JSON.generate({"scrollback"=>msg}) 
+      ws.send JSON.generate({"scrollback"=>msg.make_safe_for_web_client()}) 
     }
     ws.onclose { puts "Connection closed." }
   end
