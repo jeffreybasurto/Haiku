@@ -1,6 +1,9 @@
 require 'bundler/setup'
+require 'pp'
 Bundler.require
+
 set :port, 3000
+Thread.abort_on_exception = true
 
 load 'utilities.rb'
 
@@ -15,7 +18,7 @@ Thread.new do
     # When we receive a message just echo it back for now.
     ws.onmessage { |msg| 
       msg = JSON.parse(msg)
-      ws.send JSON.generate({"scrollback"=>msg["chat"].make_safe_for_web_client}) 
+      ws.send JSON.generate({"scrollback"=>msg["chat"].make_safe_for_web_client})
     }
     ws.onclose { puts "Connection closed." }
   end
