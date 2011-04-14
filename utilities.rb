@@ -1,7 +1,7 @@
 class String
   def make_safe_for_web_client
-    self.replace('<', '&lt;')
-    self.replace('>', '&gt;')
-    self.replace('&', '&amp;')
+    self.gsub('<', '&lt;')
+    self.gsub('>', '&gt;')
+    self.gsub('&', '&amp;')
   end
 end
