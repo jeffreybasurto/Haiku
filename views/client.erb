@@ -1,16 +1,15 @@
 <html>
   <head>
-    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+	<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.11.custom.css" rel="Stylesheet">	
+	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.8.11.custom.min.js"></script>
     <script>
-      function emptyDiv (divToClear){
-        var i;
-        while (i=divToClear.childNodes[0]){
-          if (i.nodeType == 1 || i.nodeType == 3){
-            divToClear.removeChild(i);
-          }
-        }
-      }
+      $(function() {
+		$( "button, input:submit, a" ).button();
+		$( "a").click(function() { return false; });
+	  });
       $(document).ready(function(){
+
         function debug(str){ 
 	      $("#debug").empty();
 	      $("#debug").append(str+"<br"); 
@@ -35,16 +34,16 @@
 	  }
     </script>
   </head>
-  <body style="overflow:hidden;">
+  <body style="overflow:hidden; font-family: 'times new roman';">
 	<div style="border:2px; border-style:solid;height:100%;width:100%;overflow:auto;">
       <div id="debug" style="text-align: center ;width:100%; background-color: silver;"></div>
       <div id="scrolling_region" style="margin:20px; margin-bottom:40px;overflow:auto;"></div>
-      <div style="position: fixed;bottom: 0px;padding-bottom:20px;height:24px; width:96%; margin-left:12px">
-	    <hr style="margin:0.25em auto;">
+      <div style="position: fixed;bottom: 0px;padding-bottom:20px;height:24px; width:96%; margin-left:12px; visibility:hidden;">
         <form name="input" onSubmit="return CommandSubmit();">
           <input type="text" name="user_input">
 	    </form>
 	  </div>
 	</div>
+    <button>test</button>
   </body>
 </html>

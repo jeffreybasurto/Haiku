@@ -8,7 +8,19 @@ Thread.abort_on_exception = true
 load 'utilities.rb'
 
 $welcome = <<-HERE
-<span style="font-size:20px;">Welcome to <img src="haikulogo.png" alt="haikumud">. <span>
+<div style="font-size:20px;">Welcome to <img src="haikulogo.png" alt="haikumud">. </div>
+<div style="font-size:16px;color:grey;">HaikuMud (C) 2011 Jeffrey "Retnur/Runter" Basurto.</div>
+<br>
+<div style="font-size:18; font-family: courier new;">
+  <form name="login" onSubmit="return false;">
+    <input type="text" name="user_name">  User Name <br>
+    <input type="password" name="user_pass">  Password <br>
+    <input type="submit" name="login_submit" value="Log In">
+  </form>
+</div>
+<div>
+  <a href>Forgot Your Password?</a> or <a href>Create a New Account</a>
+</div>
 HERE
 
 Thread.new do
