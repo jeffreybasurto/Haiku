@@ -35,10 +35,10 @@
 	  }
     </script>
   </head>
-  <body>
-	<div style="border:2px; border-style:solid;height:100%;width:100%;">
+  <body style="overflow:hidden;">
+	<div style="border:2px; border-style:solid;height:100%;width:100%;overflow:auto;">
       <div id="debug" style="text-align: center ;width:100%; background-color: silver;"></div>
-      <div id="scrolling_region" style="margin:20px; margin-bottom:40px;"></div>
+      <div id="scrolling_region" style="margin:20px; margin-bottom:40px;overflow:auto;"></div>
       <div style="position: fixed;bottom: 0px;padding-bottom:20px;height:24px; width:96%; margin-left:12px">
 	    <hr style="margin:0.25em auto;">
         <form name="input" onSubmit="return CommandSubmit();">
