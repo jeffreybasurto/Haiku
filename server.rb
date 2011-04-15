@@ -23,12 +23,20 @@ $welcome = <<-HERE
 HERE
 
 Thread.new do
+  class EventMachine::WebSocket::Connection
+    attr_accessor :player
+  end
+  
   puts "Starting websocket server."
   EM::run do
     EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080) do |ws|
-      ws.onopen {  ws.send JSON.generate({"scrollback"=>$welcome}) }
+      ws.onopen do  
+        ws.player = Player.new
+        ws.player.socket = ws
+        ws.send JSON.generate({"scrollback"=>$welcome})    
+      end
       # When we receive a message just echo it back for now.
-      ws.onmessage { |msg| 
+      ws.onmessage do |msg| 
         JSON.parse(msg).each do |key, value|
           case key
           when "chat"
@@ -37,7 +45,7 @@ Thread.new do
             puts "Unrecognized packet received."
           end  
         end
-      }
+      end
       ws.onclose { puts "Connection closed." }
 
     end
