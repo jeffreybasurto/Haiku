@@ -11,15 +11,12 @@ $welcome = <<-HERE
 <div style="font-size:20px;">Welcome to <img src="haikulogo.png" alt="haikumud">. </div>
 <div style="font-size:16px;color:grey;">HaikuMud (C) 2011 Jeffrey "Retnur/Runter" Basurto.</div>
 <br>
-<div style="font-size:18; font-family: courier new;">
-  <form name="login" onSubmit="return false;">
-    <input type="text" name="user_name">  User Name <br>
-    <input type="password" name="user_pass">  Password <br>
-    
-    <input type="submit" name="login_submit" value="Log In" style="font-size:15;">
-  </form>
+<div style="font-size:18px; font-family: courier new;">
+  <input id="user_name" type="text">  User Name <br>
+  <input id="user_pass" type="password">  Password <br>  
+  <button style="font-size:15px;">Log In</button>
 </div>
-<div style="font-size:12;">
+<div style="font-size:12px;">
   <a href>Forgot Your Password?</a> or <a href>Create a New Account</a>
 </div>
 HERE
@@ -30,12 +27,6 @@ Thread.new do
     EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080) do |ws|
       ws.onopen { 
         ws.send JSON.generate({"scrollback"=>$welcome})
-        EM.add_periodic_timer(1) { ws.send JSON.generate({"scrollback"=><<-HERE
-          <div style="font-size:12;">
-            <a href>Forgot Your Password?</a> or <a href>Create a New Account</a>
-          </div>
-          HERE
-          })}
       }
       # When we receive a message just echo it back for now.
       ws.onmessage { |msg| 

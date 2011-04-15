@@ -6,16 +6,26 @@
 	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.11.custom.min.js"></script>
 	<script type="text/javascript" src="js/client.js"></script>
+	<script>
+	  $(function(){
+	    var ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
+	    ws.onmessage = function(e) { 
+		  scroll(JSON.parse(e.data)["scrollback"]); 
+		  $("button, input:submit, a" ).button();
+	    };
+	    ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };
+	    ws.onopen = function() { debug("Connected."); };
+	    // called by buttons.
+		function ButtonCallBack() {
+       
+		}
+  	  });
+	</script>
   </head>
   <body style="overflow:hidden; font-family: 'times new roman';">
 	<div style="border:2px; border-style:solid;height:100%;width:100%;overflow:auto;">
       <div id="debug" style="text-align: center ;width:100%; background-color: silver;"></div>
       <div id="scrolling_region" style="margin:20px; margin-bottom:40px;overflow:auto;"></div>
-      <div style="position: fixed;bottom: 0px;padding-bottom:20px;height:24px; width:96%; margin-left:12px; visibility:hidden;">
-        <form name="input" onSubmit="return CommandSubmit();">
-          <input type="text" name="user_input">
-	    </form>
-	  </div>
 	</div>
   </body>
 </html>
