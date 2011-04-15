@@ -1,11 +1,14 @@
+var div_count = 0;
 
 function debug(str){ 
   $("#debug").empty();
   $("#debug").append(str+"<br"); 
 };
-function scroll(str) { 
-  $("#scrolling_region").append(str+"<br>"); 
+function scroll(str) {
+  div_count = div_count + 1; 
+  $("#scrolling_region").append("<div id=\""+div_count+"\">"+str); 
   $(document.body).animate({ scrollTop: document.body.scrollHeight }, 1);
+  return div_count;
 };
 
 
