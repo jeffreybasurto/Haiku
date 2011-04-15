@@ -1,38 +1,11 @@
 <html>
   <head>
 	<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.11.custom.css" rel="Stylesheet">	
+	<link type="text/css" href="css/client.css" rel="Stylesheet">	
+	
 	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.11.custom.min.js"></script>
-    <script>
-      $(function() {
-		$( "button, input:submit, a" ).button();
-		$( "a").click(function() { return false; });
-	  });
-      $(document).ready(function(){
-
-        function debug(str){ 
-	      $("#debug").empty();
-	      $("#debug").append(str+"<br"); 
-	    };
-        function scroll(str) { 
-	      $("#scrolling_region").append(str+"<br>"); 
-	      $(document.body).animate({ scrollTop: document.body.scrollHeight }, 1);
-	    };
-
-        ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
-
-        ws.onmessage = function(e) { scroll(JSON.parse(e.data)["scrollback"]); };
-        ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };
-        ws.onopen = function() { debug("Connected."); };
-      });
-
-	  function CommandSubmit() {
-	    // Send what's in our input buffer to the mud. 
-        ws.send(JSON.stringify({"chat":document.forms["input"]["user_input"].value}));
-        document.forms["input"]["user_input"].value='';
-		return false;
-	  }
-    </script>
+	<script type="text/javascript" src="js/client.js"></script>
   </head>
   <body style="overflow:hidden; font-family: 'times new roman';">
 	<div style="border:2px; border-style:solid;height:100%;width:100%;overflow:auto;">
