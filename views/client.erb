@@ -1,5 +1,6 @@
 <html>
   <head>
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
 	<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.11.custom.css" rel="Stylesheet">	
 	<link type="text/css" href="css/client.css" rel="Stylesheet">	
 	
@@ -9,13 +10,10 @@
 	<script>
 	  $(function(){
 	    ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
-	    ws.onmessage = function(e) { 
-		  $("button, input:submit, a", "#"+scroll(JSON.parse(e.data)["scrollback"]) ).button();
-	    };
+	    ws.onmessage = function(e) { $("button, input:submit, a", "#"+scroll(JSON.parse(e.data)["scrollback"]) ).button(); };
 	    ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };
 	    ws.onopen = function() { debug("Connected."); };
 	    function CommandSubmit() {
-	      // Send what's in our input buffer to the mud. 
 	      ws.send(JSON.stringify({"chat":document.forms["input"]["user_input"].value}));
 	      document.forms["input"]["user_input"].value='';
 		  return false;

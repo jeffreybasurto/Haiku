@@ -12,7 +12,7 @@ $welcome = <<-HERE
 <div style="font-size:20px;">Welcome to <img src="haikulogo.png" alt="haikumud">. </div>
 <div style="font-size:16px;color:grey;">HaikuMud (C) 2011 Jeffrey "Retnur/Runter" Basurto.</div>
 <br>
-<div style="font-size:18px; font-family: courier new;">
+<div style="font-size:18px; font-family: Tangerine;">
   <input id="user_name" type="text">  User Name <br>
   <input id="user_pass" type="password">  Password <br>  
   <button style="font-size:15px;">Log In</button>
