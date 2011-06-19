@@ -8,19 +8,9 @@ Thread.abort_on_exception = true
 load 'utilities.rb'
 load 'player.rb'
 
-$welcome = <<-HERE
-<div style="font-size:20px;">Welcome to <img src="haikulogo.png" alt="haikumud">. </div>
-<div style="font-size:16px;color:grey;">HaikuMud (C) 2011 Jeffrey "Retnur/Runter" Basurto.</div>
-<br>
-<div style="font-size:18px; font-family: Tangerine;">
-  <input id="user_name" type="text">  User Name <br>
-  <input id="user_pass" type="password">  Password <br>  
-  <button style="font-size:15px;">Log In</button>
-</div>
-<div style="font-size:12px;">
-  <a href>Forgot Your Password?</a> or <a href>Create a New Account</a>
-</div>
-HERE
+
+
+$welcome = File.open("data/welcome.htm", 'rb') { |f| f.read }
 
 Thread.new do
   class EventMachine::WebSocket::Connection
@@ -51,6 +41,8 @@ Thread.new do
     end
   end
 end
+
+set :server, %w[thin mongrel webrick]
 
 # web server routes defined below.   
 get '/' do 
