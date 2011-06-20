@@ -11,14 +11,21 @@
 	<script>
 	  $(function(){
 	    ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
-	    ws.onmessage = function(e) { $("button, input:submit, a", "#"+scroll(JSON.parse(e.data)["scrollback"]) ).button(); };
+	    ws.onmessage = function(e) { 
+	        var received = JSON.parse(e.data);
+	        if(received["scrollback"]) {
+  	          $("button, input:submit, a", "#"+scroll(received["scrollback"])).button();
+  	        } 
+  	        if(received["dialog"]) {
+  	        
+  	          $(".dialog", "#"+scroll(received["dialog"])).dialog({
+      			height: 140,
+      			modal: true
+      		});
+  	        }
+	    };
 	    ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };
 	    ws.onopen = function() { debug("Connected."); };
-	    function CommandSubmit() {
-	      ws.send(JSON.stringify({"chat":document.forms["input"]["user_input"].value}));
-	      document.forms["input"]["user_input"].value='';
-		  return false;
-	    };
   	  });
 	</script>
   </head>

@@ -12,7 +12,7 @@ function scroll(str) {
 };
 
 $("form").live("submit", function() {
-	ws.send(JSON.stringify({"form":$(this).serialize()}));
+	ws.send(JSON.stringify({"post":$(this).serialize()}));
     return false;
 });
 

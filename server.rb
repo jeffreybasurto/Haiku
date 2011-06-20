@@ -27,10 +27,13 @@ Thread.new do
       ws.onmessage do |msg| 
         JSON.parse(msg).each do |key, value|
           case key
+          when "post"
+            # the user is posting data
+            ws.send JSON.generate({"dialog"=>"<div class=\"dialog\">" + value.make_safe_for_web_client + "</div>"})
           when "chat"
             ws.send JSON.generate({"scrollback"=>value.make_safe_for_web_client})
           else
-            puts "Unrecognized packet received."
+            puts "Unrecognized packet (#{key}) received."
           end  
         end
       end
