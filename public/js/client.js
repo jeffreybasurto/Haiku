@@ -11,4 +11,9 @@ function scroll(str) {
   return div_count;
 };
 
+$("form").live("submit", function() {
+	ws.send(JSON.stringify({"form":$(this).serialize()}));
+    return false;
+});
+
 
