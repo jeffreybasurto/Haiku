@@ -13,6 +13,12 @@
 	    ws = new WebSocket("<%= 'ws://'+host+':8080' %>");
 	    ws.onmessage = function(e) { 
 	        var received = JSON.parse(e.data);
+	        if(received["cmd"]) {
+	          if(received["cmd"] == "clear_screen") {
+	              $("#scrolling-region").empty();
+	              console.log("Screen cleared.");
+	          }
+	        }
 	        if(received["scrollback"]) {
   	          $("button, input:submit, a", "#"+scroll(received["scrollback"])).button();
   	        } 
@@ -29,7 +35,7 @@
   	  });
 	</script>
   </head>
-  <body style="overflow:hidden;">
+  <body>
 	<div id="client-region">
       <div id="debug"></div>
       <div id="scrolling-region"></div>
