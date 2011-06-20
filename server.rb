@@ -6,9 +6,7 @@ set :port, 3000
 Thread.abort_on_exception = true
 
 load 'utilities.rb'
-load 'player.rb'
-
-
+load 'models/player.rb'
 
 $welcome = File.open("data/welcome.htm", 'rb') { |f| f.read }
 
@@ -42,7 +40,7 @@ Thread.new do
   end
 end
 
-set :server, %w[thin mongrel webrick]
+set :server, %w[thin webrick]
 
 # web server routes defined below.   
 get '/' do 
