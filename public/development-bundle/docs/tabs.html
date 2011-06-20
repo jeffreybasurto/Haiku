@@ -175,7 +175,7 @@ resizeMap() will call Google Maps' checkResize() on the particular map.
         <ul>
 <li>UI Core</li>
 <li>UI Widget</li>
-<li>To use the cookie option: <a href="http://plugins.jquery.com/project/cookie" class="external text" title="http://plugins.jquery.com/project/cookie">jquery.cookie.js</a></li>
+<li><strong>Optional:</strong> <a href="http://plugins.jquery.com/project/cookie" class="external text" title="http://plugins.jquery.com/project/cookie">jquery.cookie.js</a> for use with <a href="http://jqueryui.com/demos/tabs/#option-cookie" class="external text" title="http://jqueryui.com/demos/tabs/#option-cookie">cookie option</a> (also included in development-bundle&gt;external folder.)</li>
 </ul>
     </div>
     <div id="overview-example">
@@ -193,7 +193,7 @@ A simple jQuery UI Tabs.<br />
 &lt;html&gt;
 &lt;head&gt;
   &lt;link href=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
-  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js&quot;&gt;&lt;/script&gt;
   &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js&quot;&gt;&lt;/script&gt;
   
   &lt;script&gt;
@@ -416,7 +416,7 @@ $( ".selector" ).tabs( "option", "collapsible", true );</code></pre>
     </dl>
   </div>
   <div class="option-description">
-    <p>Store the latest selected tab in a cookie. The cookie is then used to determine the initially selected tab if the <i>selected</i> option is not defined. Requires cookie plugin. The object needs to have key/value pairs of the form the cookie plugin expects as options. Available options (example): &#123; expires: 7, path: '/', domain: 'jquery.com', secure: true &#125;. Since jQuery UI 1.7 it is also possible to define the cookie name being used via <i>name</i> property.</p>
+    <p>Store the latest selected tab in a cookie. The cookie is then used to determine the initially selected tab if the <i>selected</i> option is not defined. Requires <a href="http://plugins.jquery.com/project/cookie" class="external text" title="http://plugins.jquery.com/project/cookie">cookie plugin</a>, which can also be found in the development-bundle&gt;external folder from the download builder. The object needs to have key/value pairs of the form the cookie plugin expects as options. Available options (example): &#123; expires: 7, path: '/', domain: 'jquery.com', secure: true &#125;. Since jQuery UI 1.7 it is also possible to define the cookie name being used via <i>name</i> property.</p>
   </div>
   <div class="option-examples">
     <h4>Code examples</h4>
@@ -1541,9 +1541,9 @@ $( ".selector" ).tabs( "option", "tabTemplate", '&lt;div&gt;&lt;a href&#61;"#&#1
 
 </p><!-- 
 Pre-expand include size: 57707 bytes
-Post-expand include size: 98476 bytes
-Template argument size: 57716 bytes
+Post-expand include size: 98888 bytes
+Template argument size: 58128 bytes
 Maximum: 2097152 bytes
 -->
 
-<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3777-1!1!0!!en!2 and timestamp 20110315194556 -->
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3777-1!1!0!!en!2 and timestamp 20110512144755 -->

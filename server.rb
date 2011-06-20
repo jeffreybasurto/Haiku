@@ -29,7 +29,7 @@ Thread.new do
           case key
           when "post"
             # the user is posting data
-            ws.send JSON.generate({"dialog"=>"<div class=\"dialog\">" + value.make_safe_for_web_client + "</div>"})
+            ws.send JSON.generate({"dialog"=>"<div class=\"dialog\" title=\"test\"><p>" + value.make_safe_for_web_client + "</p></div>"})
           when "chat"
             ws.send JSON.generate({"scrollback"=>value.make_safe_for_web_client})
           else
