@@ -7,7 +7,7 @@ Thread.abort_on_exception = true
 
 DataMapper::Logger.new($stdout, :debug)
 # A Sqlite3 connection to a persistent database
-DataMapper.setup(:default, "sqlite://#{File.expand_path(File.dirname(File.expand_path(__FILE__)) + '/server/data.db')}")
+DataMapper.setup(:default,ENV['DATABASE_URL'] || "sqlite://#{File.expand_path(File.dirname(File.expand_path(__FILE__)) + '/server/data.db')}")
 
 
 load 'server/utilities.rb'
