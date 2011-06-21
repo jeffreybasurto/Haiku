@@ -5,8 +5,16 @@ Bundler.require
 set :port, 3000
 Thread.abort_on_exception = true
 
+DataMapper::Logger.new($stdout, :debug)
+# A Sqlite3 connection to a persistent database
+DataMapper.setup(:default, "sqlite://#{File.expand_path(File.dirname(File.expand_path(__FILE__)) + '/data.db')}")
+
+
 load 'utilities.rb'
 load 'models/player.rb'
+
+DataMapper.finalize # all models are defined in the files loaded above.
+DataMapper.auto_upgrade!
 
 $welcome = File.open("data/welcome.htm", 'rb') { |f| f.read }
 
@@ -28,6 +36,19 @@ Thread.new do
       ws.onmessage do |msg| 
         JSON.parse(msg).each do |key, value|
           case key
+          when "click" # one of our registered buttons was clicked.
+            # value is the registration of the button.
+            case ws.state
+            when :login # when we're in login state we should determine if they want to create a new character or need help.
+              case value
+              when "create_account"
+                ws.send JSON.generate({"dialog"=>"That's not yet implemented."})
+              when "reset_password"
+                ws.send JSON.generate({"dialog"=>"That's not yet implemented."})
+              else
+                puts "Unrecognized click for #{value}"
+              end
+            end
           when "post"
             # the user is posting data
             found = parse_query(value)
@@ -37,9 +58,9 @@ Thread.new do
                  !found["user_password"] || found["user_password"].empty?
                  ws.send JSON.generate({"cmd"=>"clear_screen"})
                  ws.send JSON.generate({"scrollback"=>$welcome})
+              else
+                 
               end
-              # else it's valid
-              # check their login from the database.
             end
            
             #ws.send JSON.generate({"dialog"=>"<div class=\"dialog\" title=\"test\"><p>" + value.make_safe_for_web_client + "</p></div>"})

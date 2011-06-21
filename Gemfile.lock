@@ -2,6 +2,20 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.2.5)
+    data_objects (0.10.6)
+      addressable (~> 2.1)
+    dm-core (1.1.0)
+      addressable (~> 2.2.4)
+    dm-do-adapter (1.1.0)
+      data_objects (~> 0.10.2)
+      dm-core (~> 1.1.0)
+    dm-migrations (1.1.0)
+      dm-core (~> 1.1.0)
+    dm-sqlite-adapter (1.1.0)
+      dm-do-adapter (~> 1.1.0)
+      do_sqlite3 (~> 0.10.2)
+    do_sqlite3 (0.10.6)
+      data_objects (= 0.10.6)
     em-websocket (0.2.1)
       addressable (>= 2.1.1)
       eventmachine (>= 0.12.9)
@@ -17,6 +31,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dm-core
+  dm-migrations
+  dm-sqlite-adapter
   em-websocket
   eventmachine
   json

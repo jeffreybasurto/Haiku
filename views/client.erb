@@ -1,12 +1,15 @@
 <html>
   <head>
-	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
 	<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:bold&v1' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Play&v1' rel='stylesheet' type='text/css'>
+    
 	<link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
 	<link type="text/css" href="css/client.css" rel="Stylesheet">	
 	<script> var ws = null; </script>
+
 	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
+	<script type="text/javascript" src="js/liscroll.1.0.js"></script>
 	<script type="text/javascript" src="js/client.js"></script>
 	<script>
 	  $(function(){
@@ -23,11 +26,10 @@
   	          $("button, input:submit, a", "#"+scroll(received["scrollback"])).button();
   	        } 
   	        if(received["dialog"]) {
-  	        
-  	          $(".dialog", "#"+scroll(received["dialog"])).dialog({
+  	          $("#"+scroll(received["dialog"])).dialog({
       			height: 140,
       			modal: true
-      		});
+      		  });
   	        }
 	    };
 	    ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };

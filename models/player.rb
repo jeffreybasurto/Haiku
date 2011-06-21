@@ -1,5 +1,10 @@
 # Player builds the interface between the world and the socket.
 class Player
+  include DataMapper::Resource
+  
+  property :id,         Serial
+  property :created_at, DateTime
+  
   attr_accessor :socket
 
   def Player.list
