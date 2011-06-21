@@ -13,11 +13,6 @@ function scroll(str) {
 };
 
 $("form").live("submit", function() {
-	$(':input', this).each(function() {
-		console.log(this)
-        alert(this.name + ': ' + this.value);
-    });
-
 	ws.send(JSON.stringify({"post":$(this).serialize()}));
     return false;
 });
@@ -29,6 +24,25 @@ $("button").live("click", function() {
     }
 })
 
+function updateTips( t ) {
+	tips
+		.text( t )
+		.addClass( "ui-state-highlight" );
+	setTimeout(function() {
+		tips.removeClass( "ui-state-highlight", 1500 );
+	}, 500 );
+}
+
+function checkLength( o, n, min, max ) {
+	if ( o.val().length > max || o.val().length < min ) {
+		o.addClass( "ui-state-error" );
+		updateTips( "Length of " + n + " must be between " +
+			min + " and " + max + "." );
+		return false;
+	} else {
+		return true;
+	}
+}
 //$(function(){
 //    $("ul#ticker01").liScroll();
 //});

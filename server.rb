@@ -17,10 +17,14 @@ DataMapper.finalize # all models are defined in the files loaded above.
 DataMapper.auto_upgrade!
 
 $welcome = File.open("server/data/welcome.htm", 'rb') { |f| f.read }
+$creation = File.open("server/data/creation.htm", 'rb') {|f| f.read }
 
 Thread.new do
   class EventMachine::WebSocket::Connection
     attr_accessor :player, :state
+    def packet type, data
+      send JSON.generate({type=>data})
+    end
   end
   
   puts "Starting websocket server."
@@ -30,7 +34,7 @@ Thread.new do
         ws.state = :login
         ws.player = Player.new
         ws.player.socket = ws
-        ws.send JSON.generate({"scrollback"=>$welcome})    
+        ws.packet "scrollback", $welcome
       end
       # When we receive a message just echo it back for now.
       ws.onmessage do |msg| 
@@ -42,9 +46,34 @@ Thread.new do
             when :login # when we're in login state we should determine if they want to create a new character or need help.
               case value
               when "create_account"
-                ws.send JSON.generate({"dialog"=>"That's not yet implemented."})
+                ws.packet("form", [$creation, {:show=>"highlight", :hide=>"explode", :title=>"creation", :buttons=><<-eos
+                  	{
+                        'Create an account': function() {
+                          var user_name = $( '#user_name' ),
+                    			user_password = $( '#user_password' ),
+                    			allFields = $( [] ).add( user_name ).add( user_password ),
+                    			tips = $( '.validateTips');
+                    	    var bValid = true;
+                    		  allFields.removeClass( 'ui-state-error' );
+                      	  bValid = bValid && checkLength( user_name, 'user_name', 3, 16 );
+                          bValid = bValid && checkLength( user_password, 'user_password', 5, 16 );
+                          bValid = bValid && checkRegexp( user_name, /^[a-z]([0-9a-z_])+$/i, 'Username may consist of a-z, 0-9, underscores, begin with a letter.' );
+                          // From jquery.validate.js (by joern), contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
+                          bValid = bValid && checkRegexp( user_password, /^([0-9a-zA-Z])+$/, 'Password field only allow : a-z 0-9' );
+
+                          if ( bValid ) {
+                            alert('All valid.');
+                            $( this ).dialog( 'close' );
+                          }
+                        },	
+                        Cancel: function() {
+              			      $( this ).dialog( 'close' );
+              	        }
+              		}
+                eos
+                }])
               when "reset_password"
-                ws.send JSON.generate({"dialog"=>"That's not yet implemented."})
+                ws.packet "dialog" , "That's not yet implemented."
               else
                 puts "Unrecognized click for #{value}"
               end
@@ -56,8 +85,8 @@ Thread.new do
             when :login
               if !found["user_name"] || found["user_name"].empty? ||
                  !found["user_password"] || found["user_password"].empty?
-                 ws.send JSON.generate({"cmd"=>"clear_screen"})
-                 ws.send JSON.generate({"scrollback"=>$welcome})
+                 ws.packet "cmd",  "clear_screen"
+                 ws.packet "scrollback", $welcome
               else
                  
               end
