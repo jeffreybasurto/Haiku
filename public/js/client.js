@@ -13,6 +13,11 @@ function scroll(str) {
 };
 
 $("form").live("submit", function() {
+	$(':input', this).each(function() {
+		console.log(this)
+        alert(this.name + ': ' + this.value);
+    });
+
 	ws.send(JSON.stringify({"post":$(this).serialize()}));
     return false;
 });

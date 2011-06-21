@@ -7,16 +7,16 @@ Thread.abort_on_exception = true
 
 DataMapper::Logger.new($stdout, :debug)
 # A Sqlite3 connection to a persistent database
-DataMapper.setup(:default, "sqlite://#{File.expand_path(File.dirname(File.expand_path(__FILE__)) + '/data.db')}")
+DataMapper.setup(:default, "sqlite://#{File.expand_path(File.dirname(File.expand_path(__FILE__)) + '/server/data.db')}")
 
 
-load 'utilities.rb'
-load 'models/player.rb'
+load 'server/utilities.rb'
+load 'server/models/player.rb'
 
 DataMapper.finalize # all models are defined in the files loaded above.
 DataMapper.auto_upgrade!
 
-$welcome = File.open("data/welcome.htm", 'rb') { |f| f.read }
+$welcome = File.open("server/data/welcome.htm", 'rb') { |f| f.read }
 
 Thread.new do
   class EventMachine::WebSocket::Connection
