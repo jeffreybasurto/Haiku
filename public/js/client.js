@@ -1,3 +1,18 @@
+var state = "login";
+var game_focus = true;
+
+$.fn.equals = function(compareTo) { 
+  if (!compareTo || !compareTo.length || this.length!=compareTo.length) { 
+    return false; 
+  } 
+  for (var i=0; i<this.length; i++) { 
+    if (this[i]!==compareTo[i]) { 
+      return false; 
+    } 
+  } 
+  return true; 
+}
+
 $(function(){
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
@@ -26,9 +41,17 @@ $(function(){
       if(received["scrollback"]) {
         $("button", scroll(received["scrollback"])).button();
       } 
+      if(received["state"]) {
+	    state = received["state"];
+      }
+      if (received["miniwindow"]) {
+	
+	
+      }
       if(received["dialog"]) {
         scroll(received["dialog"]).dialog({
           resizable: false,
+            width: "auto",
 			modal: true,
 			buttons: {
 				Ok: function() {
@@ -36,7 +59,10 @@ $(function(){
 				}
 			},
 			show: "highlight",
-			hide: "explode"
+			hide: "explode",
+			open: function(event, ui) { game_focus = false;},
+			beforeClose: function(event, ui) { game_focus = true;}
+			
 		  });
       }
   };
@@ -55,7 +81,7 @@ $(function(){
 
 function debug(str){ 
   $("#debug").empty();
-  $("#debug").append(str+"<br"); 
+  $("#debug").append(str); 
 };
 
 function scroll(str) {
@@ -65,8 +91,33 @@ function scroll(str) {
   return div;
 };
 
+var bar_hidden = true;
+$(document).keypress(function(e) {
+  
+  if (state == "playing" && game_focus && e.which == 13) {
+	var cl = $("#command-line");
+	if (!cl.val() || bar_hidden) {
+		bar_hidden = !bar_hidden;
+		cl.toggle();
+	}    
+    if (!bar_hidden) {
+	  if (cl.val()) {
+	    ws.send(JSON.stringify({"post":"command_line="+cl.val()}));
+	    cl.val('');
+	  }
+	  cl.focus();
+    }
+    else {
+	  cl.blur();
+    }
+  }
+});
+
+
 $("form").live("submit", function() {
-	ws.send(JSON.stringify({"post":$(this).serialize()}));
+	if (!$("#command-line-form").equals($(this))) {
+  	  ws.send(JSON.stringify({"post":$(this).serialize()}));
+    }
     return false;
 });
 
@@ -91,6 +142,16 @@ function checkLength( o, n, min, max ) {
 		o.addClass( "ui-state-error" );
 		updateTips( "Length of " + n + " must be between " +
 			min + " and " + max + "." );
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function checkRegexp( o, regexp, n ) {
+	if ( !( regexp.test( o.val() ) ) ) {
+		o.addClass( "ui-state-error" );
+		updateTips( n );
 		return false;
 	} else {
 		return true;

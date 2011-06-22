@@ -25,6 +25,26 @@ Thread.new do
     def packet type, data
       send JSON.generate({type=>data})
     end
+    def clear_screen
+      packet "cmd", "clear_screen"
+    end
+    def login
+      self.state = :playing
+      packet "state", "playing"
+      clear_screen
+      packet "scrollback", "You are now logged in."
+      packet "miniwindow", ["Rawr, stuff", {:title=>"Chat Messages"}]
+      self.player.socket = self
+      Player.connected << self.player 
+    end
+    def logout
+      Player.connected.delete(self.player)
+      self.state = :login
+      self.player = Player.new
+      self.player.socket = self
+      self.packet "cmd", "clear_screen"
+      self.packet "scrollback", $welcome
+    end
   end
   
   puts "Starting websocket server."
@@ -34,7 +54,9 @@ Thread.new do
         ws.state = :login
         ws.player = Player.new
         ws.player.socket = ws
+        ws.packet "cmd", "clear_screen"
         ws.packet "scrollback", $welcome
+        ws.packet "state", "login"
       end
       # When we receive a message just echo it back for now.
       ws.onmessage do |msg| 
@@ -62,7 +84,7 @@ Thread.new do
                           bValid = bValid && checkRegexp( user_password, /^([0-9a-zA-Z])+$/, 'Password field only allow : a-z 0-9' );
 
                           if ( bValid ) {
-                            alert('All valid.');
+                            ws.send(JSON.stringify({"create_account":$("#creation_form").serialize()}));
                             $( this ).dialog( 'close' );
                           }
                         },	
@@ -78,17 +100,43 @@ Thread.new do
                 puts "Unrecognized click for #{value}"
               end
             end
+          when "create_account"
+            args = parse_query(value)
+            if (ws.state == :login)
+              if Player.first({:name=>args["user_name"]})
+                ws.packet "dialog", "That user name is already in use."
+              else
+                ws.packet "dialog", "Account successfully created."
+                p = Player.new
+                p.name = args["user_name"]
+                p.password = args["user_password"]
+                p.save
+              end
+            else
+              ws.packet "dialog", "You cannot make a new account now."
+            end
+            
           when "post"
             # the user is posting data
             found = parse_query(value)
             case ws.state
+            when :playing
+              if found["command_line"]
+                # command was entered.  What will we do with it.
+                ws.player.interpret(found["command_line"])
+              end
             when :login
               if !found["user_name"] || found["user_name"].empty? ||
                  !found["user_password"] || found["user_password"].empty?
-                 ws.packet "cmd",  "clear_screen"
-                 ws.packet "scrollback", $welcome
+                 ws.packet "dialog", "You must enter a valid user name and password. <br>Try again."
               else
-                 
+                 user = Player.first({:name=>found["user_name"]})
+                 if !user  || user.password != found["user_password"]
+                   ws.packet "dialog", "Incorrect user name or password. <br><center>Try again.</center>"
+                 else
+                   ws.player = user
+                   ws.login();
+                 end
               end
             end
            
