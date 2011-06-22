@@ -40,8 +40,17 @@ $(function(){
 		  });
       }
   };
-  ws.onclose = function() { debug("<span style=\"color:red;\">Socket closed.</span>"); };
-  ws.onopen = function() { debug("Connected."); };
+  ws.onclose = function() { 
+	$("#debug").removeClass( 'ui-state-highlight' );
+	debug("Socket closed.");
+	$("#debug").addClass('ui-state-error'); 
+	
+  };
+  ws.onopen = function() {
+	$("#debug").removeClass( 'ui-state-error' );
+	debug("Connected."); 
+	$("#debug").addClass( "ui-state-highlight" );
+  };
 });
 
 function debug(str){ 
