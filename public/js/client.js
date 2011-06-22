@@ -72,7 +72,6 @@ $("form").live("submit", function() {
 
 $("button").live("click", function() {
 	if ($(this).val()) {
-      console.log($(this).val());	
 	  ws.send(JSON.stringify({"click":$(this).val()}))
     }
 })

@@ -46,7 +46,7 @@ Thread.new do
             when :login # when we're in login state we should determine if they want to create a new character or need help.
               case value
               when "create_account"
-                ws.packet("form", [$creation, {:show=>"highlight", :hide=>"explode", :title=>"creation", :buttons=><<-eos
+                ws.packet("form", [$creation, {:show=>"highlight", :hide=>"explode", :title=>"Create a New Account", :buttons=><<-eos
                   	{
                         'Create an account': function() {
                           var user_name = $( '#user_name' ),

@@ -36,7 +36,7 @@ input.text { margin-bottom:12px; width:95%; padding: .4em; }
 
 #scrolling-region {
 	font-family: Cabin Sketch, Arial;
-	margin:20px; 
+	margin:10px; 
 	margin-bottom:40px;
 	overflow:auto;
 }
