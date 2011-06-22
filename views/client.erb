@@ -5,17 +5,25 @@
     
 	<link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
 	<link type="text/css" href="css/client.css" rel="Stylesheet">	
-	<script> var ws = null; </script>
-
+	<script>
+	WEB_SOCKET_DEBUG = true; 
+	</script>
+    <script type="text/javascript" src="js/swfobject.js"></script>
+    <script type="text/javascript" src="js/web_socket.js"></script>    
+    
 	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
 	<script type="text/javascript" src="js/liscroll.1.0.js"></script>
 	<script type="text/javascript" src="js/client.js"></script>
   </head>
   <body>
-	<div id="client-region">
-      <div id="debug"></div>
-      <div id="scrolling-region"></div>
+    <div id="wrapper">
+      <div id="cell">
+  	    <div id="client-region">
+          <div id="debug"></div>
+          <div id="scrolling-region"></div>
+	    </div>
+	  </div>
 	</div>
   </body>
 </html>
