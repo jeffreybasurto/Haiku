@@ -45,7 +45,6 @@ $(function(){
 		$(".who_element").contextMenu('myMenu1', {
 	      bindings: {
 		      menuStyle: {
-			                "z-index": 9000
 		      },
 	        'open': function(t) {
 	          alert('Trigger was '+t.id+'\nAction was Open');

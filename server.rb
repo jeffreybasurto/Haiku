@@ -9,9 +9,9 @@ DataMapper::Logger.new($stdout, :debug)
 # A Sqlite3 connection to a persistent database
 DataMapper.setup(:default,ENV['DATABASE_URL'] || "sqlite://#{File.expand_path(File.dirname(File.expand_path(__FILE__)) + '/server/data.db')}")
 
-
 load 'server/utilities.rb'
-load 'server/models/player.rb'
+Dir[File.dirname(__FILE__) + '/server/models/*.rb'].each {|file| load file }
+
 
 DataMapper.finalize # all models are defined in the files loaded above.
 DataMapper.auto_upgrade!
