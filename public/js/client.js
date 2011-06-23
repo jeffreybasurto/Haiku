@@ -32,23 +32,37 @@ $(function(){
     		buttons: passed_buttons
     	  });
       }
-      if(received["cmd"]) {
+      else if(received["who"]) {
+	    $("#who").empty();
+	    $("#who").append(received["who"]);
+      }
+      else if(received["chat"]) {
+	    $("#chat").append(received["chat"] + "<br>");
+      }
+      else if(received["cmd"]) {
         if(received["cmd"] == "clear_screen") {
             $("#scrolling-region").empty();
             console.log("Screen cleared.");
         }
-      }
-      if(received["scrollback"]) {
+      } 
+      else if(received["scrollback"]) {
         $("button", scroll(received["scrollback"])).button();
       } 
-      if(received["state"]) {
+      else if(received["state"]) {
 	    state = received["state"];
       }
-      if (received["miniwindow"]) {
-	
-	
+      else if (received["miniwindow"]) {
+	    var data = received["miniwindow"];
+	    scroll(data[0]).dialog({
+		  position: data[1]["position"],
+          title: data[1]["title"],
+          width: data[1]["width"],
+	      resizable: data[1]["resizable"],
+	      closeOnEscape: false,
+	      open: function(event, ui) { $(".ui-dialog-titlebar-close", ui.dialog).hide(); }
+    	});
       }
-      if(received["dialog"]) {
+      else if(received["dialog"]) {
         scroll(received["dialog"]).dialog({
           resizable: false,
             width: "auto",

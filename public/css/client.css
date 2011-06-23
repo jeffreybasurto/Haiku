@@ -4,6 +4,28 @@ body {
 /*    text-shadow: 2px 2px 2px #aaa; */
 }
 
+.ui-dialog-title { 
+  float:none !important; 
+  display: block; 
+  text-align: center; 
+} 
+
+/* chat styles */
+.say {
+	text-shadow: 2px 2px 2px #aaa;
+	color: cyan;
+}
+
+#who {
+	text-align: center;
+	text-shadow: 2px 2px 2px #aaa;
+	font-family: 'Cabin', arial, serif;
+}
+
+.coming_soon {
+	font-family: 'Coming Soon', arial, serif;
+}
+
 #wrapper {display:table; width:100%; height:100%;}
 #cell {height:100%;display:table-cell; vertical-align:middle;}
 

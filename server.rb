@@ -33,17 +33,18 @@ Thread.new do
       packet "state", "playing"
       clear_screen
       packet "scrollback", "You are now logged in."
-      packet "miniwindow", ["Rawr, stuff", {:title=>"Chat Messages"}]
+      packet "miniwindow", ["<div id=\"chat\"></div>", {:position=>["right", "top"], :width=>"49%", :resizable=>true, :title=>"Chat Messages"}]
+      packet "miniwindow", ["<div id=\"who\"></div>",  {:position=>["left", "top"],  :width=>"49%", :resizable=>true, :title=>"Players Online"}]
+      
       self.player.socket = self
       Player.connected << self.player 
+      # send a message to each connected player
+      Player.connected.each &:do_who
     end
     def logout
       Player.connected.delete(self.player)
       self.state = :login
-      self.player = Player.new
-      self.player.socket = self
-      self.packet "cmd", "clear_screen"
-      self.packet "scrollback", $welcome
+      Player.connected.each &:do_who
     end
   end
   
@@ -95,7 +96,7 @@ Thread.new do
                 eos
                 }])
               when "reset_password"
-                ws.packet "dialog" , "That's not yet implemented."
+                ws.packet "dialog" , "<span class=\"coming_soon\">That's not yet implemented.</span>"
               else
                 puts "Unrecognized click for #{value}"
               end
@@ -146,7 +147,9 @@ Thread.new do
           end  
         end
       end
-      ws.onclose { puts "Connection closed." }
+      ws.onclose { 
+        ws.logout() if ws.player
+      }
 
     end
   end
