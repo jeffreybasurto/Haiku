@@ -36,33 +36,26 @@ $(function(){
 	    $("#who").empty();
 	    $("#who").append(received["who"]);
 	    $("#who").append('<div class="contextMenu" id="myMenu1" style="display:none;"><ul>'+
-	        '<li id="open"> Open</li>' +
-	        '<li id="email"> Email</li>' +
-	        '<li id="save"> Save</li>' +
-	        '<li id="close"> Close</li>' +
+	        '<li id="pm"> Private Message</li>' +
+	        '<li id="info"> Info </li>' +
 	      '</ul>' +
-	    '</div>')
+	    '</div>');
+	
 		$(".who_element").contextMenu('myMenu1', {
 	      bindings: {
-		      menuStyle: {
-		      },
-	        'open': function(t) {
-	          alert('Trigger was '+t.id+'\nAction was Open');
+	        'pm': function(t) {
+	          alert('Trigger was '+t.id+'\nAction was private message.');
 	        },
-	        'email': function(t) {
-	          alert('Trigger was '+t.id+'\nAction was Email');
-	        },
-	        'save': function(t) {
-	          alert('Trigger was '+t.id+'\nAction was Save');
-	        },
-	        'delete': function(t) {
-	          alert('Trigger was '+t.id+'\nAction was Delete');
-	        },
+	        'info': function(t) {
+	          alert('Trigger was '+t.id+'\nAction was info');
+	        }
 	      }
 	    });
       }
       else if(received["chat"]) {
-	    $("#chat").append(received["chat"] + "<br>");
+	    var chat_box = $("#chat");
+	    chat_box.append(received["chat"] + "<br>");
+	    chat_box.parent().scrollTop(chat_box.attr('scrollHeight'));
       }
       else if(received["cmd"]) {
         if(received["cmd"] == "clear_screen") {
@@ -75,6 +68,12 @@ $(function(){
       } 
       else if(received["state"]) {
 	    state = received["state"];
+	    if(state == "playing") {
+		  $("#command-line-form img").css("display", "inline");
+  	    }
+        else if (state == "login") {
+	      $("#command-line-form img").css("display", "none");
+        }
       }
       else if (received["miniwindow"]) {
 	    var data = received["miniwindow"];
@@ -131,7 +130,6 @@ function debug(str){
 function scroll(str) {
   var div = $('<div>'+str+'</div>');
   $("#scrolling-region").append(div); 
- // $(document.body).animate({ scrollTop: document.body.scrollHeight }, 100);
   return div;
 };
 
@@ -149,12 +147,21 @@ $(document).keypress(function(e) {
 	    ws.send(JSON.stringify({"post":"command_line="+cl.val()}));
 	    cl.val('');
 	  }
-	  cl.focus();
+      cl.focus();
 	  e.preventDefault();
     }
     else {
 	  cl.blur();
     }
+  }
+});
+
+$(".who_element").live({
+  mouseenter: function() { 
+	$(this).toggleClass( "selection", 400 );
+  },
+  mouseleave: function () {
+	$(this).toggleClass( "selection", 200 );
   }
 });
 
