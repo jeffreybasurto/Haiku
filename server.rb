@@ -104,12 +104,13 @@ Thread.new do
           when "create_account"
             args = parse_query(value)
             if (ws.state == :login)
-              if Player.first({:name=>args["user_name"]})
+              input_name = args["user_name"].downcase.capitalize
+              if Player.first({:name=>input_name})
                 ws.packet "dialog", "That user name is already in use."
               else
                 ws.packet "dialog", "Account successfully created."
                 p = Player.new
-                p.name = args["user_name"]
+                p.name = input_name
                 p.password = args["user_password"]
                 p.save
               end
@@ -129,11 +130,11 @@ Thread.new do
             when :login
               if !found["user_name"] || found["user_name"].empty? ||
                  !found["user_password"] || found["user_password"].empty?
-                 ws.packet "dialog", "You must enter a valid user name and password. <br>Try again."
+                 ws.packet "dialog", "You must enter a valid user name and password. Try again."
               else
-                 user = Player.first({:name=>found["user_name"]})
+                 user = Player.first({:name=>found["user_name"].downcase.capitalize})
                  if !user  || user.password != found["user_password"]
-                   ws.packet "dialog", "Incorrect user name or password. <br><center>Try again.</center>"
+                   ws.packet "dialog", "Incorrect user name or password. Try again."
                  else
                    ws.player = user
                    ws.login();

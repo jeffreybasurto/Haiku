@@ -35,6 +35,32 @@ $(function(){
       else if(received["who"]) {
 	    $("#who").empty();
 	    $("#who").append(received["who"]);
+	    $("#who").append('<div class="contextMenu" id="myMenu1" style="display:none;"><ul>'+
+	        '<li id="open"> Open</li>' +
+	        '<li id="email"> Email</li>' +
+	        '<li id="save"> Save</li>' +
+	        '<li id="close"> Close</li>' +
+	      '</ul>' +
+	    '</div>')
+		$(".who_element").contextMenu('myMenu1', {
+	      bindings: {
+		      menuStyle: {
+			                "z-index": 9000
+		      },
+	        'open': function(t) {
+	          alert('Trigger was '+t.id+'\nAction was Open');
+	        },
+	        'email': function(t) {
+	          alert('Trigger was '+t.id+'\nAction was Email');
+	        },
+	        'save': function(t) {
+	          alert('Trigger was '+t.id+'\nAction was Save');
+	        },
+	        'delete': function(t) {
+	          alert('Trigger was '+t.id+'\nAction was Delete');
+	        },
+	      }
+	    });
       }
       else if(received["chat"]) {
 	    $("#chat").append(received["chat"] + "<br>");
@@ -53,14 +79,19 @@ $(function(){
       }
       else if (received["miniwindow"]) {
 	    var data = received["miniwindow"];
-	    scroll(data[0]).dialog({
+	    var found = scroll(data[0]);
+	    found.dialog({
 		  position: data[1]["position"],
           title: data[1]["title"],
           width: data[1]["width"],
+          height: 140,
 	      resizable: data[1]["resizable"],
 	      closeOnEscape: false,
-	      open: function(event, ui) { $(".ui-dialog-titlebar-close", ui.dialog).hide(); }
+	      open: function(event, ui) {
+		    $(".ui-dialog-titlebar-close", ui.dialog).hide(); 
+		  }
     	});
+     
       }
       else if(received["dialog"]) {
         scroll(received["dialog"]).dialog({
@@ -99,9 +130,9 @@ function debug(str){
 };
 
 function scroll(str) {
-  var div = $("<div>" + str + "</div>");
+  var div = $('<div>'+str+'</div>');
   $("#scrolling-region").append(div); 
-  $(document.body).animate({ scrollTop: document.body.scrollHeight }, 100);
+ // $(document.body).animate({ scrollTop: document.body.scrollHeight }, 100);
   return div;
 };
 
@@ -120,6 +151,7 @@ $(document).keypress(function(e) {
 	    cl.val('');
 	  }
 	  cl.focus();
+	  e.preventDefault();
     }
     else {
 	  cl.blur();

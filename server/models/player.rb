@@ -21,7 +21,7 @@ class Player
   # in game communication of some kind.
   def communicate value
     Player.connected.each { |p| 
-      p.packet("chat", "<span class=\"say\">#{name}: #{value}</span>") 
+      p.packet("chat", "<span class=\"say\">#{name}: #{value.make_safe_for_web_client()}</span>") 
     }  
   end
   
@@ -36,7 +36,7 @@ class Player
   end
   
   def info_span
-    "<span id=\"#{self.id}\">#{self.name}</span>"
+    "<span class=\"who_element\" id=\"player#{self.id}\">#{self.name}</span>"
   end
 
   def do_who
