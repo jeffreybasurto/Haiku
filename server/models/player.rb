@@ -6,6 +6,7 @@ class Player
   property :created_at, DateTime
   property :name,       String
   property :password,   String
+  property :first_login, Boolean, :default  => true
   
   attr_accessor :socket, :prefix
   def prefix
@@ -26,7 +27,9 @@ class Player
       p.packet("chat", "<span class=\"say\">#{name}: #{value.make_safe_for_web_client()}</span>") 
     }  
   end
-  
+  def guider str
+    packet "guider", str
+  end
   # in the future you might have some sort of command table here to check against.
   def interpret str
     str.lstrip!

@@ -32,8 +32,6 @@ Thread.new do
       self.state = :playing
       clear_screen
       packet "state", "playing"
-      
-      packet "dialog", "You are now logged in. <br><center>Press enter to access command-line.</center>"
       packet "miniwindow", ["<div id=\"chat\"></div>", {:position=>["right", "top"], :width=>"49%", :resizable=>true, :title=>"Chat Messages"}]
       packet "miniwindow", ["<div id=\"who\"></div>",  {:position=>["left", "top"],  :width=>"49%", :resizable=>true, :title=>"Players Online"}]
       
@@ -139,6 +137,11 @@ Thread.new do
                  else
                    ws.player = user
                    ws.login();
+                   #if (user.first_login) 
+                     user.first_login = false
+                     user.guider("new_player")
+                     user.save
+                   #end
                  end
               end
             end

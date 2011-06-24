@@ -52,6 +52,39 @@ $(function(){
 	      }
 	    });
       }
+      else if(received["guider"]) {
+	    var found = received["guider"];
+        if(found == "new_player") {
+	      guider.createGuider({
+		    buttons: [{name: "Next"	}],
+		    description: "We're still very alpha.  You're seeing this guider because this is the first time you've logged into the game.  This guide will walk you through some of the basics of playing the game.",
+		    id: "first",
+		    next: "second",
+		    overlay: true,
+		    title: "Welcome to HaikuMud alpha!"
+		  }).show();
+		  /* .show() means that this guider will get shown immediately after creation. */
+          guider.createGuider({
+		    attachTo: "#command-line-form",
+		    buttons: [{name: "Next"}],
+		    description: "Press enter to bring up your command line!  This is where you can communicate and input some useful commands.  <b>Try typing 'say hello world'.</b>",
+		    id: "second",
+		    next: "third",
+		    position: 11,
+		    title: "Return key for Command Line!",
+		    width: 450
+		  });		
+		  guider.createGuider({
+		    buttons: [{name: "Next", onclick: guider.hideAll	}],
+		    description: "That's all for now!  Questions or comments to jeffreybasurto@gmail.com.",
+		    id: "third",
+		    next: "fourth",
+		    overlay: true,
+		    title: "Enjoy yourself!"
+		  })
+        }
+
+      }
       else if(received["chat"]) {
 	    var chat_box = $("#chat");
 	    chat_box.append(received["chat"] + "<br>");
