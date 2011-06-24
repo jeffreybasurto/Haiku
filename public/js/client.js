@@ -70,8 +70,13 @@ $(function(){
 	    state = received["state"];
 	    if(state == "playing") {
 		  $("#command-line-form img").css("display", "inline");
+		  //$("#cell").css("vertical-align", "bottom");
+          $("#test_container").append($("#client-region"));
+          $("#client-region").animate({bottom: -$(document).height() + $("#client-region").height() * 2}, "slow");
+
   	    }
         else if (state == "login") {
+	      $("#wrapper").css("vertical-align", "middle");
 	      $("#command-line-form img").css("display", "none");
         }
       }
@@ -165,6 +170,11 @@ $(".who_element").live({
   }
 });
 
+$(window).resize(function() {
+  $("#client-region").stop(true, true);
+  $("#client-region").animate({bottom: -$(document).height() + $("#client-region").height() * 2}, "slow");
+  console.log("resize");
+});
 
 $("form").live("submit", function() {
 	if (!$("#command-line-form").equals($(this))) {

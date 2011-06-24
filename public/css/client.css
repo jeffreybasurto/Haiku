@@ -1,12 +1,14 @@
 body {
-	background-size: 100%;
-	background-image: url('/fantasy.jpg');
+  background-size: 100%;
+  background-image: url('/fantasy.jpg');
 /*    text-shadow: 2px 2px 2px #aaa; */
 }
 
+.client_mode {
+  vertical-align: bottom;    
+}
+
 .selection {
-	border: 1px dashed grey;
-	font-family: 'Play';
 	font-size: 24px;
 }
 

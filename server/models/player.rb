@@ -7,8 +7,10 @@ class Player
   property :name,       String
   property :password,   String
   
-  attr_accessor :socket
-    
+  attr_accessor :socket, :prefix
+  def prefix
+    @prefix || "say"
+  end
   def packet type, data
     @socket.packet(type, data) if @socket
   end
@@ -32,6 +34,14 @@ class Player
     case args[0]
     when "say"
       communicate args[1..-1].join(" ")
+      self.prefix = "say"
+      return;
+    else
+      if self.prefix 
+        interpret(self.prefix + " "+ args.join(" "))
+      else
+        packet "dialog", "command not found: #{args[0]}"
+      end
     end
   end
   
