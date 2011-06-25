@@ -9,6 +9,7 @@
     
 	<link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
     <link rel="stylesheet" href="css/guider.css" type="text/css">
+    <link rel="stylesheet" href="css/feedbackBadge.css" type="text/css">
 	<link type="text/css" href="css/client.css" rel="Stylesheet">
 		
 	<script>
@@ -19,9 +20,8 @@
     
 	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
-	<script type="text/javascript" src="js/liscroll.1.0.js"></script>
-	<script tpye="text/javascript" src="js/menu.js"></script>
 	<script type="text/javascript" src="js/guider.js"></script>
+	<script type="text/javascript" src="js/feedback.js"></script>
 	<script type="text/javascript" src="js/client.js"></script>
   </head>
   <body>
@@ -33,6 +33,8 @@
           <div id="debug"></div>
           <div id="scrolling-region">
             Actors are taking the stage. <img src="connecting.png" alt="connecting"></img>
+            <br>
+            <img src="spinner_loading.gif" alt="loading"></img>
           </div>
           <form id="command-line-form">
       	    <input type="text" name="command_line" id="command-line" class="text"> 
@@ -40,6 +42,7 @@
           </form>
 	    </div>
 	  </div>
-	</div>
+	</div>	
+  	<a href="feedback_form.html" title="Give us feedback" id="feedback-badge"><span>Feedback</span></a>
   </body>
 </html>

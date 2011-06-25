@@ -16,8 +16,14 @@ Dir[File.dirname(__FILE__) + '/server/models/*.rb'].each {|file| load file }
 DataMapper.finalize # all models are defined in the files loaded above.
 DataMapper.auto_upgrade!
 
+Room.startup 
+
 $welcome = File.open("server/data/welcome.htm", 'rb') { |f| f.read }
 $creation = File.open("server/data/creation.htm", 'rb') {|f| f.read }
+
+def load_data (str)
+  File.open("server/data/#{str}", 'rb') {|f| f.read}
+end
 
 Thread.new do
   class EventMachine::WebSocket::Connection
@@ -32,13 +38,12 @@ Thread.new do
       self.state = :playing
       clear_screen
       packet "state", "playing"
-      packet "miniwindow", ["<div id=\"chat\"></div>", {:position=>["right", "top"], :width=>"49%", :resizable=>true, :title=>"Chat Messages"}]
-      packet "miniwindow", ["<div id=\"who\"></div>",  {:position=>["left", "top"],  :width=>"49%", :resizable=>true, :title=>"Players Online"}]
+      packet "miniwindow", [load_data("chat_window.htm"), {:width=>"50%", :resizable=>true}]
+            
+      Room.first({:vtag=>"first.room"}).people << self      
       
       self.player.socket = self
       Player.connected << self.player 
-      # send a message to each connected player
-      Player.connected.each &:do_who
     end
     def logout
       Player.connected.delete(self.player)

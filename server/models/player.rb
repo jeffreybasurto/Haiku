@@ -35,10 +35,13 @@ class Player
     str.lstrip!
     args = str.split(" ")
     case args[0]
+    when "who"
+      self.prefix = ""
+      packet "dialog", "<div id=\"who\"></div>"
+      self.do_who
     when "say"
       communicate args[1..-1].join(" ")
       self.prefix = "say"
-      return;
     else
       if self.prefix 
         interpret(self.prefix + " "+ args.join(" "))

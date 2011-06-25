@@ -1,6 +1,11 @@
 var state = "login";
 var game_focus = true;
 
+function number_range(minVal,maxVal,floatVal) {
+  var randVal = minVal+(Math.random()*(maxVal-minVal));
+  return typeof floatVal=='undefined'?Math.round(randVal):randVal.toFixed(floatVal);
+}
+
 $.fn.equals = function(compareTo) { 
   if (!compareTo || !compareTo.length || this.length!=compareTo.length) { 
     return false; 
@@ -14,6 +19,43 @@ $.fn.equals = function(compareTo) {
 }
 
 $(function(){
+//  var c = Raphael($("#client-region")[0], 320, 200);
+//  var circ = c.circle(100, 100, 40);  
+//  circ.attr({fill: '#000', stroke: 'none'});
+//  console.log(circ.node);
+//  circ.node.onclick = function () {
+//    circ.attr("fill", "red");
+//  };
+
+
+       /**
+		* Set up feedback box on left side
+		*/
+		$('#feedback-badge').feedbackBadge({
+			css3Safe: $.browser.safari ? true : false, //this trick prevents old safari browser versions to scroll properly
+			onClick: function () {
+				// Do your magic in here when you click the badge
+				// Now I just show a simple popup, you could use the jQuery UI dialog
+				var div = $('<div></div>');
+				div.load('feedback_form.html');
+				$('body').prepend(div);
+				$("button", div).button();
+				
+                div.dialog({"modal":true});
+				//After ataching the popup to the dom - load the form by ajax
+				$('#feedback-form').live('submit', function () {
+					//Do your magic in here when the form submit button is clicked
+					alert('Magic!');
+					return false;
+				});
+				$('#close-bt').live('click', function () {
+					//Do your magic in here when the form cancel button is clicked
+					div.remove();
+				});
+				return false;
+			}
+		});
+
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
@@ -58,8 +100,8 @@ $(function(){
 	      guider.createGuider({
 		    buttons: [{name: "Next"	}],
 		    description: "We're still very alpha.  You're seeing this guider because this is the first time you've logged into the game.  This guide will walk you through some of the basics of playing the game.",
-		    id: "first",
-		    next: "second",
+		    id: "alpha",
+		    next: "command-line",
 		    overlay: true,
 		    title: "Welcome to HaikuMud alpha!"
 		  }).show();
@@ -68,27 +110,39 @@ $(function(){
 		    attachTo: "#command-line-form",
 		    buttons: [{name: "Next"}],
 		    description: "Press enter to bring up your command line!  This is where you can communicate and input some useful commands.  <b>Try typing 'say hello world'.</b>",
-		    id: "second",
-		    next: "third",
+		    id: "command-line",
+		    next: "feedback",
 		    position: 11,
 		    title: "Return key for Command Line!",
 		    width: 450
 		  });		
 		  guider.createGuider({
-		    buttons: [{name: "Next", onclick: guider.hideAll	}],
-		    description: "That's all for now!  Questions or comments to jeffreybasurto@gmail.com.",
-		    id: "third",
-		    next: "fourth",
+			attachTo: "#feedback-badge",
+			buttons:[{name: "Next"}],
+			description: "You can use this link if you'd like to leave feedback.  All ideas and suggestions are considered!",
+			id: "feedback",
+			next: "finish",
+			overlay: true,
+			title: "Feedback Welcome.",
+			position:3
+		})
+		  guider.createGuider({
+		    buttons: [{name: "Close", onclick: guider.hideAll }],
+		    description: "That's all for now!  You can get in touch with the author at jeffreybasurto@gmail.com.",
+		    id: "finish",
+		    next: "none",
 		    overlay: true,
-		    title: "Enjoy yourself!"
+		    title: "That's all."
 		  })
         }
 
       }
       else if(received["chat"]) {
 	    var chat_box = $("#chat");
-	    chat_box.append(received["chat"] + "<br>");
-	    chat_box.parent().scrollTop(chat_box.attr('scrollHeight'));
+	    var new_node = $(received["chat"] + "<br>")
+	    chat_box.append(new_node);
+	    new_node.effect("highlight", {}, 3000);
+	    chat_box.scrollTop(chat_box.attr('scrollHeight'));
       }
       else if(received["cmd"]) {
         if(received["cmd"] == "clear_screen") {
@@ -114,20 +168,17 @@ $(function(){
         }
       }
       else if (received["miniwindow"]) {
-	    var data = received["miniwindow"];
-	    var found = scroll(data[0]);
-	    found.dialog({
-		  position: data[1]["position"],
-          title: data[1]["title"],
-          width: data[1]["width"],
-          height: 140,
-	      resizable: data[1]["resizable"],
-	      closeOnEscape: false,
-	      open: function(event, ui) {
-		    $(".ui-dialog-titlebar-close", ui.dialog).hide(); 
-		  }
-    	});
-     
+	    var data = received["miniwindow"][0];
+	    var options = received["miniwindow"][1];
+	    var found = $(data);
+	    $("#test_container").append(found);
+	    $("#tabs", found).tabs();
+	    found.css("width", options["width"]);
+		$(".tag-for-resizable", found).resizable();
+		$("#tabs", found).resizable();
+	    found.draggable({snap: true});
+        found.css("position", "absolute");
+        found.animate({top:"0", left:"0"});
       }
       else if(received["dialog"]) {
         scroll(received["dialog"]).dialog({
@@ -168,6 +219,7 @@ function debug(str){
 function scroll(str) {
   var div = $('<div>'+str+'</div>');
   $("#scrolling-region").append(div); 
+  //$(window).trigger("resize");
   return div;
 };
 
@@ -204,15 +256,18 @@ $(".who_element").live({
 });
 
 $(window).resize(function() {
-  $("#client-region").stop(true, true);
-  $("#client-region").animate({bottom: -$(document).height() + $("#client-region").height() * 2}, "slow");
-  console.log("resize");
+  if (state == "playing") {
+    $("#client-region").stop(true, true);
+    $("#client-region").animate({bottom: -$(document).height() + $("#client-region").height() * 2}, "slow");
+  }
 });
 
-$("form").live("submit", function() {
-	if (!$("#command-line-form").equals($(this))) {
-  	  ws.send(JSON.stringify({"post":$(this).serialize()}));
-    }
+$("form", $("#wrapper")).live("submit", function() {
+	if ($("#command-line-form").equals($(this))) {
+	  return false;	
+	}
+  	ws.send(JSON.stringify({"post":$(this).serialize()}));
+   
     return false;
 });
 
@@ -252,6 +307,3 @@ function checkRegexp( o, regexp, n ) {
 		return true;
 	}
 }
-//$(function(){
-//    $("ul#ticker01").liScroll();
-//});
