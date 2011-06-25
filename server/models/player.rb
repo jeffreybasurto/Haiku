@@ -37,11 +37,14 @@ class Player
     case args[0]
     when "who"
       self.prefix = ""
-      packet "dialog", "<div id=\"who\"></div>"
+      #packet "dialog", "<div id=\"who\"></div>"
       self.do_who
     when "say"
       communicate args[1..-1].join(" ")
       self.prefix = "say"
+    when "quit"
+      self.prefix = ""
+      self.do_quit
     else
       if self.prefix 
         interpret(self.prefix + " "+ args.join(" "))
@@ -55,6 +58,10 @@ class Player
     "<span class=\"who_element\" id=\"player#{self.id}\">#{self.name}</span>"
   end
 
+  def do_quit
+    self.socket.logout();
+  end
+
   def do_who
     list = ""
     
@@ -64,4 +71,7 @@ class Player
     self.packet("who", list)
   end
   
+  def info str
+    packet("chat", "<span class=\"info\"><img src=\"horn-icon.png\" alt=\"announcement\"> #{str}</span>")
+  end
 end

@@ -38,17 +38,28 @@ Thread.new do
       self.state = :playing
       clear_screen
       packet "state", "playing"
-      packet "miniwindow", [load_data("chat_window.htm"), {:width=>"50%", :resizable=>true}]
-            
+      packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
+      packet "miniwindow", [load_data("menu.htm"), {:right=>"0", :top=>"0"}]
       Room.first({:vtag=>"first.room"}).people << self      
       
       self.player.socket = self
+      Player.connected.each { |p|
+        p.info("#{self.player.name} has entered the game.");
+        if (p.id == self.player.id) 
+          p.socket.logout();
+        end
+      }
       Player.connected << self.player 
+      self.player.info("Welcome to <span class=\"logo\">HaikuMud</span> Alpha 0.10.4. (fancy sketch)");
+      
     end
     def logout
       Player.connected.delete(self.player)
       self.state = :login
-      Player.connected.each &:do_who
+      Player.connected.each { |p|
+        p.info("#{self.player.name} has left the game.");
+      }
+      self.packet "reload", "now"
     end
   end
   
@@ -70,6 +81,15 @@ Thread.new do
           when "click" # one of our registered buttons was clicked.
             # value is the registration of the button.
             case ws.state
+            when :playing
+              case value
+              when "quit_button"
+                ws.logout();
+              when "help_button"
+                ws.packet("dialog", "<span class=\"coming_soon\">Help system not yet functional.<span>");
+              when "options_button"
+                ws.packet("dialog", "<span class=\"coming_soon\">Options system not yet functional.<span>");
+              end
             when :login # when we're in login state we should determine if they want to create a new character or need help.
               case value
               when "create_account"
@@ -142,11 +162,11 @@ Thread.new do
                  else
                    ws.player = user
                    ws.login();
-                   #if (user.first_login) 
+                   if (user.first_login || user.name == "Rtest") 
                      user.first_login = false
                      user.guider("new_player")
                      user.save
-                   #end
+                   end
                  end
               end
             end

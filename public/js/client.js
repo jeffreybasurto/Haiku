@@ -19,48 +19,45 @@ $.fn.equals = function(compareTo) {
 }
 
 $(function(){
-//  var c = Raphael($("#client-region")[0], 320, 200);
-//  var circ = c.circle(100, 100, 40);  
-//  circ.attr({fill: '#000', stroke: 'none'});
-//  console.log(circ.node);
-//  circ.node.onclick = function () {
-//    circ.attr("fill", "red");
-//  };
-
-
-       /**
-		* Set up feedback box on left side
-		*/
-		$('#feedback-badge').feedbackBadge({
-			css3Safe: $.browser.safari ? true : false, //this trick prevents old safari browser versions to scroll properly
-			onClick: function () {
-				// Do your magic in here when you click the badge
-				// Now I just show a simple popup, you could use the jQuery UI dialog
-				var div = $('<div></div>');
-				div.load('feedback_form.html');
-				$('body').prepend(div);
-				$("button", div).button();
+  var availableTags = [
+    "say",
+    "who",
+    "quit",
+  ];
+  $( "#command-line" ).autocomplete({
+	position: { my : "left bottom", at: "left top" },
+    source: availableTags
+  });
+  $('#feedback-badge').feedbackBadge({
+    css3Safe: $.browser.safari ? true : false, //this trick prevents old safari browser versions to scroll properly
+	onClick: function () {
+	  // Do your magic in here when you click the badge
+	  // Now I just show a simple popup, you could use the jQuery UI dialog
+	  var div = $('<div></div>');
+	  div.load('feedback_form.html');
+	  $('body').prepend(div);
+	  $("button", div).button();
 				
-                div.dialog({"modal":true});
-				//After ataching the popup to the dom - load the form by ajax
-				$('#feedback-form').live('submit', function () {
-					//Do your magic in here when the form submit button is clicked
-					alert('Magic!');
-					return false;
-				});
-				$('#close-bt').live('click', function () {
-					//Do your magic in here when the form cancel button is clicked
-					div.remove();
-				});
-				return false;
-			}
-		});
+      div.dialog({"modal":true});
+	  //After ataching the popup to the dom - load the form by ajax
+	  $('#feedback-form').live('submit', function () {
+        console.log("feedback submit");
+        return false;
+      });
+	  $('#close-bt').live('click', function () {
+	    //Do your magic in here when the form cancel button is clicked
+	    div.remove();
+	  });
+	  return false;
+    }
+  });
 
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
   ws.onmessage = function(e) { 
       var received = JSON.parse(e.data);
+      console.log(received);
       if(received["form"]) {
         var data = received["form"];
         eval("var passed_buttons =" + data[1]["buttons"]); 
@@ -75,14 +72,14 @@ $(function(){
     	  });
       }
       else if(received["who"]) {
-	    $("#who").empty();
-	    $("#who").append(received["who"]);
-	    $("#who").append('<div class="contextMenu" id="myMenu1" style="display:none;"><ul>'+
+	    var who = $("<div></div>");
+	    who.append(received["who"]);
+	    who.append('<div class="contextMenu" id="myMenu1" style="display:none;"><ul>'+
 	        '<li id="pm"> Private Message</li>' +
 	        '<li id="info"> Info </li>' +
 	      '</ul>' +
 	    '</div>');
-	
+	    $("#scrolling-region").append(who); 
 		$(".who_element").contextMenu('myMenu1', {
 	      bindings: {
 	        'pm': function(t) {
@@ -92,6 +89,11 @@ $(function(){
 	          alert('Trigger was '+t.id+'\nAction was info');
 	        }
 	      }
+	    });
+	
+        who.dialog({
+	            modal: true,
+	            buttons: { "Ok": function() { $(this).dialog("close"); }  }
 	    });
       }
       else if(received["guider"]) {
@@ -121,11 +123,21 @@ $(function(){
 			buttons:[{name: "Next"}],
 			description: "You can use this link if you'd like to leave feedback.  All ideas and suggestions are considered!",
 			id: "feedback",
-			next: "finish",
+			next: "menu",
 			overlay: true,
 			title: "Feedback Welcome.",
 			position:3
-		})
+		  })
+		  guider.createGuider({
+			attachTo: "#menu-buttons",
+		    buttons: [{name: "Next"}],
+		    description: "You can find help, options, and other useful functionality on this bar.",
+		    id: "menu",
+		    next: "finish",
+		    overlay: true,
+		    title: "Game Menu",
+		    position:10	
+		  })
 		  guider.createGuider({
 		    buttons: [{name: "Close", onclick: guider.hideAll }],
 		    description: "That's all for now!  You can get in touch with the author at jeffreybasurto@gmail.com.",
@@ -142,7 +154,10 @@ $(function(){
 	    var new_node = $(received["chat"] + "<br>")
 	    chat_box.append(new_node);
 	    new_node.effect("highlight", {}, 3000);
-	    chat_box.scrollTop(chat_box.attr('scrollHeight'));
+	
+	    $("#chat-tab").effect("highlight", {}, 3000);
+	
+	    $("#chat-resize").scrollTop(chat_box.attr('scrollHeight'));
       }
       else if(received["cmd"]) {
         if(received["cmd"] == "clear_screen") {
@@ -173,12 +188,22 @@ $(function(){
 	    var found = $(data);
 	    $("#test_container").append(found);
 	    $("#tabs", found).tabs();
-	    found.css("width", options["width"]);
 		$(".tag-for-resizable", found).resizable();
-		$("#tabs", found).resizable();
-	    found.draggable({snap: true});
+		$("#chat-resize", found).css("width", options["width"]);
+		$("#chat-resize", found).resizable();
+		$('#chat-resize').removeClass('ui-resizable');
+
+		
+		$(found).draggable({ handle: '.ui-tabs-nav', snap:true});
         found.css("position", "absolute");
-        found.animate({top:"0", left:"0"});
+		if (options["right"]) {
+		  found.animate({top:"0", right:"0"});
+		}
+		else
+		{
+          found.animate({top:"0", left:"0"});
+        }
+        $("button", found).button();
       }
       else if(received["dialog"]) {
         scroll(received["dialog"]).dialog({
@@ -196,6 +221,9 @@ $(function(){
 			beforeClose: function(event, ui) { game_focus = true;}
 			
 		  });
+      }
+      else if (received["reload"]) {
+        window.location.href=window.location.href;
       }
   };
   ws.onclose = function() { 

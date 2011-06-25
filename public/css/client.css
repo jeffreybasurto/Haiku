@@ -9,9 +9,15 @@ body {
 	height: 100%;
 }
 
-#chat {
+#chat-resize {
 	overflow-y: auto;
 	height: 100px;
+	word-wrap: break-word;
+}
+
+#chat {
+
+	word-wrap: break-word;
 }
 
 .client_mode {
@@ -36,11 +42,24 @@ body {
   text-align: center; 
 } 
 
+
+
 /* chat styles */
 .say {
 	text-shadow: 2px 2px 2px #aaa;
 	color: darkcyan;
 	font-family: 'Play';
+}
+
+.info {
+	text-shadow: 2px 2px 2px #aaa;
+	color: goldenrod;
+	font-family: 'Play';
+}
+
+.info img {
+	height: 20px;
+	vertical-align: middle;	
 }
 
 .who_element {
