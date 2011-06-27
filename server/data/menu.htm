@@ -1,3 +1,4 @@
 <div id="menu-buttons">
-    <button value="help_button">Help</button> <button value="options_button">Options</button><button value="quit_button">Quit</button> 
+  <button id="unmute_button" style="display:none;vertical-align:middle;" onClick="soundManager.unmute(); $(this).hide(); $('#mute_button').show();return false;"><span class="ui-icon ui-icon-volume-off"></span></button>
+  <button id="mute_button" style="vertical-align:middle;" onClick="soundManager.mute(); $(this).hide(); $('#unmute_button').show();return false;"><span class="ui-icon ui-icon-volume-on"></span></button><button value="help_button">Help</button> <button value="options_button">Options</button><button value="quit_button">Quit</button> 
 </div>

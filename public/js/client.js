@@ -1,6 +1,51 @@
 var state = "login";
 var game_focus = true;
 
+/*
+function ResourcesLoading() {
+  this.yet_to_load = [];
+
+  this.prototype.assign = function(id, file) {
+    this.yet_to_load.push(soundManager.createSound({
+	  id: id,
+	  url: file,
+	  autoLoad: true,
+	  autoPlay: false,
+	  onload: function() {
+	    alert('The sound '+this.sID+' loaded!');
+	  },
+	});
+  }
+}
+
+*/
+soundManager.debugMode = false;
+soundManager.url = '/swf/';
+soundManager.flashVersion = 9; // optional: shiny features (default = 8)
+soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+// enable HTML5 audio support, if you're feeling adventurous. iPad/iPhone will always get this.
+// soundManager.useHTML5Audio = true;
+soundManager.onready(function() {
+  // Ready to use; soundManager.createSound() etc. can now be called.
+  var s = soundManager.createSound({
+	  id: "splash",
+	  //url: '/imasuka.m4a',
+	  //url: '/fantasia.mp3',
+	  url: '/CloudTopLoops.mp3',
+	  //url: '/bass.mp3',
+	  autoLoad: true,
+	  autoPlay: false,
+	  onload: function() {
+	    //alert('The sound '+this.sID+' loaded!');
+    },
+    onfinish:function() {
+      this.play();
+     }
+  });
+  s.play();
+});
+
+
 function number_range(minVal,maxVal,floatVal) {
   var randVal = minVal+(Math.random()*(maxVal-minVal));
   return typeof floatVal=='undefined'?Math.round(randVal):randVal.toFixed(floatVal);
@@ -24,10 +69,13 @@ $(function(){
     "who",
     "quit",
   ];
+
   $( "#command-line" ).autocomplete({
 	position: { my : "left bottom", at: "left top" },
     source: availableTags
   });
+
+
   $('#feedback-badge').feedbackBadge({
     css3Safe: $.browser.safari ? true : false, //this trick prevents old safari browser versions to scroll properly
 	onClick: function () {
@@ -136,7 +184,9 @@ $(function(){
 		    next: "finish",
 		    overlay: true,
 		    title: "Game Menu",
-		    position:10	
+		    position:10
+		
+			
 		  })
 		  guider.createGuider({
 		    buttons: [{name: "Close", onclick: guider.hideAll }],
@@ -186,7 +236,7 @@ $(function(){
 	    var data = received["miniwindow"][0];
 	    var options = received["miniwindow"][1];
 	    var found = $(data);
-	    $("#test_container").append(found);
+	    $("body").append(found);
 	    $("#tabs", found).tabs();
 		$(".tag-for-resizable", found).resizable();
 		$("#chat-resize", found).css("width", options["width"]);
@@ -194,10 +244,14 @@ $(function(){
 		$('#chat-resize').removeClass('ui-resizable');
 
 		
+		
 		$(found).draggable({ handle: '.ui-tabs-nav', snap:true});
         found.css("position", "absolute");
 		if (options["right"]) {
 		  found.animate({top:"0", right:"0"});
+		}
+		else if (options["left"]) {
+		  found.animate({left:"0", bottom:"0"});
 		}
 		else
 		{

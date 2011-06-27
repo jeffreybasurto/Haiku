@@ -39,7 +39,6 @@ Thread.new do
       clear_screen
       packet "state", "playing"
       packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
-      packet "miniwindow", [load_data("menu.htm"), {:right=>"0", :top=>"0"}]
       Room.first({:vtag=>"first.room"}).people << self      
       
       self.player.socket = self
@@ -55,10 +54,10 @@ Thread.new do
     end
     def logout
       Player.connected.delete(self.player)
+      if self.state == :playing
+        Player.connected.each { |p| p.info("#{self.player.name} has left the game."); }
+      end
       self.state = :login
-      Player.connected.each { |p|
-        p.info("#{self.player.name} has left the game.");
-      }
       self.packet "reload", "now"
     end
   end
@@ -73,6 +72,9 @@ Thread.new do
         ws.packet "cmd", "clear_screen"
         ws.packet "scrollback", $welcome
         ws.packet "state", "login"
+        ws.packet "miniwindow", [load_data("menu.htm"), {:right=>"0", :top=>"0"}]
+        
+        #ws.packet "miniwindow", [load_data("soundbar.htm"), {:left=>"0", :bottom=>"0"}]
       end
       # When we receive a message just echo it back for now.
       ws.onmessage do |msg| 

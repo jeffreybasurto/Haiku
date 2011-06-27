@@ -1,46 +1,44 @@
 <html>
   <head>
-	<link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:bold&v1' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Play&v1' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light&v1' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:bold&v1' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Play&v1' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light&v1' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=PT+Serif&v1' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Coming+Soon&v1' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Cabin&v1' rel='stylesheet' type='text/css'>
     
-	<link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
+    <link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
     <link rel="stylesheet" href="css/guider.css" type="text/css">
     <link rel="stylesheet" href="css/feedbackBadge.css" type="text/css">
-	<link type="text/css" href="css/client.css" rel="Stylesheet">
+    <link type="text/css" href="css/client.css" rel="Stylesheet">
 		
-	<script>
-	WEB_SOCKET_DEBUG = true; 
-	</script>
+    <script>
+      WEB_SOCKET_DEBUG = true; 
+    </script>
     <script type="text/javascript" src="js/swfobject.js"></script>
     <script type="text/javascript" src="js/web_socket.js"></script>    
     
-	<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
-	<script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
-	<script type="text/javascript" src="js/guider.js"></script>
-	<script type="text/javascript" src="js/feedback.js"></script>
-	<script type="text/javascript" src="js/menu.js"></script>
-	<script type="text/javascript" src="js/soundmanager2-jsmin.js"></script>
-	<script type="text/javascript" src="js/client.js"></script>
-	
-	<script>
-      soundManager.url = '/swf/';
-      soundManager.flashVersion = 9; // optional: shiny features (default = 8)
-      soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
-      // enable HTML5 audio support, if you're feeling adventurous. iPad/iPhone will always get this.
-      // soundManager.useHTML5Audio = true;
-      soundManager.onready(function() {
-        // Ready to use; soundManager.createSound() etc. can now be called.
-        soundManager.createSound('helloWorld','/fantasia.mp3');
-        soundManager.play('helloWorld');
-      });
+    <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+    
+    <script type="text/javascript" src="js/guider.js"></script>
+    <script type="text/javascript" src="js/feedback.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/soundmanager2-jsmin.js"></script>
+    <script type="text/javascript" src="js/sprites_stuff.js"></script>
+    <script type="text/javascript" src="js/client.js"></script>
+    
+    <script>  
+      $(function() {
+          init_sprites();
+      })
     </script>
   </head>
   <body>
     <div id="wrapper">
+      <div id="sprite-area">
+      </div>
       <div id="test_container">
       </div>
       <div id="cell">
