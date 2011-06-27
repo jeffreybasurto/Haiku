@@ -32,13 +32,19 @@
     <script>  
       $(function() {
           init_sprites();
+          
+          <% if session[:muted] == "1" %>
+            mute_sounds();
+          <% end %>          
       })
     </script>
   </head>
   <body>
-    <div id="wrapper">
+    <div id="wrapper2">
       <div id="sprite-area">
       </div>
+    </div>
+    <div id="wrapper">
       <div id="test_container">
       </div>
       <div id="cell">

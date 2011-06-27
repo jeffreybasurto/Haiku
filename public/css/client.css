@@ -7,9 +7,11 @@ body {
 }
 
 #sprite-area {
-	width:100%;
-	height: 100%;
-	position:absolute;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .tile {
@@ -92,9 +94,13 @@ body {
 	font-family: 'Cabin', arial, serif;
 }
 
+#menu-buttons {
+}
+
 .coming_soon {
 	font-family: 'Coming Soon', arial, serif;
 }
+#wrapper2 {position: absolute; display:table; width:100%; height:100%;}
 
 #wrapper {display:table; width:100%; height:100%;}
 #cell {height:100%;display:table-cell; vertical-align:middle;}

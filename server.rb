@@ -2,8 +2,9 @@ require 'bundler/setup'
 require 'pp'
 Bundler.require
 
+enable :sessions
+
 set :port, 3000
-Thread.abort_on_exception = true
 
 DataMapper::Logger.new($stdout, :debug)
 # A Sqlite3 connection to a persistent database
@@ -25,7 +26,12 @@ def load_data (str)
   File.open("server/data/#{str}", 'rb') {|f| f.read}
 end
 
+Thread.abort_on_exception = true
+
+
 Thread.new do
+  Thread.abort_on_exception = true
+
   class EventMachine::WebSocket::Connection
     attr_accessor :player, :state
     def packet type, data
@@ -80,6 +86,8 @@ Thread.new do
       ws.onmessage do |msg| 
         JSON.parse(msg).each do |key, value|
           case key
+          when "set"
+            session[value[0].intern] = value[1];
           when "click" # one of our registered buttons was clicked.
             # value is the registration of the button.
             case ws.state
@@ -192,6 +200,11 @@ set :server, %w[thin webrick]
 # web server routes defined below.   
 get '/' do 
   erb :client, :locals=>{:host=>request.env["SERVER_NAME"]}
+end
+
+post '/option' do
+  pp params
+  session[:muted] = params["mute"]
 end
 
 

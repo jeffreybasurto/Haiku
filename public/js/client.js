@@ -389,3 +389,35 @@ function checkRegexp( o, regexp, n ) {
 		return true;
 	}
 }
+
+
+
+
+function unmute_sounds(send_msg) {
+  soundManager.unmute();
+  $('#unmute_button').hide();
+  $('#mute_button').show();
+  
+  if (send_msg) {
+    $.ajax({  
+      type: "POST",  
+      url: "/option",  
+      data: "mute="+0,  
+    });
+  }
+}
+
+
+function mute_sounds(send_msg) {
+  soundManager.mute();
+  $('#mute_button').hide();
+  $('#unmute_button').show();
+  
+  if (send_msg) {
+    $.ajax({  
+      type: "POST",  
+      url: "/option",  
+      data: "mute="+1,  
+    });
+  }
+}

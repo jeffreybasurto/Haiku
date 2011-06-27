@@ -17,21 +17,12 @@ function init_sprites() {
   }
   
   
-  sprites_area.css('margin-left', sprites_area.width() % 62 / 2);
-  sprites_area.css('margin-right', sprites_area.width() % 62 / 2);
-  sprites_area.css('margin-top', sprites_area.height() % 62 / 2);
-  sprites_area.css('margin-bottom', sprites_area.height() % 62 / 2);
-  
-  if(x_reduced == true) {
-    sprites_area.css('margin-left', sprites_area.css('margin-left') + 31+"px");
-    sprites_area.css('margin-right', sprites_area.css('margin-right') + 31 +"px");
-  }
-  
-  if (y_reduced == true) {
-    sprites_area.css('margin-bottom', sprites_area.css('margin-bottom') + 31+"px");
-    sprites_area.css('margin-top', sprites_area.css('margin-top') + 31 +"px");
-  }
-  
+  sprites_area.css('margin-left', (x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
+//  sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
+  sprites_area.css('margin-top', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
+//  sprites_area.css('margin-bottom', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
+  console.log(x_reduced);
+  console.log(y_reduced);
   
   console.log(sprites_area.height());
   console.log(sprites_area.width());
@@ -44,6 +35,7 @@ function init_sprites() {
       sprites_area.append("<div class='tile' id='tile" + x_total + "_" + y_total + "'> ["+ x_total + "," + y_total +  "]</div>");
       x_total = x_total + 1;
     }
+    sprites_area.append("<br>");
     y_total = y_total + 1;
     x_total = 0;
   }
