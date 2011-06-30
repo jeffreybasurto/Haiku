@@ -51,6 +51,9 @@ function number_range(minVal,maxVal,floatVal) {
   return typeof floatVal=='undefined'?Math.round(randVal):randVal.toFixed(floatVal);
 }
 
+jQuery.fn.reverse = [].reverse;
+
+
 $.fn.equals = function(compareTo) { 
   if (!compareTo || !compareTo.length || this.length!=compareTo.length) { 
     return false; 
@@ -219,17 +222,21 @@ $(function(){
         $("button", scroll(received["scrollback"])).button();
       } 
       else if(received["state"]) {
-	    state = received["state"];
-	    if(state == "playing") {
-		  $("#command-line-form img").css("display", "inline");
-		  //$("#cell").css("vertical-align", "bottom");
+	      state = received["state"];
+	      if(state == "playing") {
+		      $("#command-line-form img").css("display", "inline");
+		      //$("#cell").css("vertical-align", "bottom");
           $("#test_container").append($("#client-region"));
-          $("#client-region").animate({bottom: -$(document).height() + $("#client-region").height() * 2}, "slow");
-
+          $("#client-region").css("position", "fixed");
+          $("#client-region").css("left", $(window).width()/2 - $("#client-region").width()/2);
+          $("#client-region").css("bottom", $(window).height());
+          $("#client-region").animate({bottom: 15, left: $(window).width()/2 - $("#client-region").width()/2 }, "slow");
+          $("#test_container").append($("#client-region"));
+          
   	    }
         else if (state == "login") {
-	      $("#wrapper").css("vertical-align", "middle");
-	      $("#command-line-form img").css("display", "none");
+	        $("#wrapper").css("vertical-align", "middle");
+	        $("#command-line-form img").css("display", "none");
         }
       }
       else if (received["miniwindow"]) {
@@ -305,25 +312,42 @@ function scroll(str) {
   return div;
 };
 
+var accept_input = true;
 var bar_hidden = true;
 $(document).keypress(function(e) {
-  
-  if (state == "playing" && game_focus && e.which == 13) {
-	var cl = $("#command-line");
-	if (!cl.val() || bar_hidden) {
-		bar_hidden = !bar_hidden;
-		cl.toggle();
-	}    
-    if (!bar_hidden) {
-	  if (cl.val()) {
-	    ws.send(JSON.stringify({"post":"command_line="+cl.val()}));
-	    cl.val('');
-	  }
-      cl.focus();
-	  e.preventDefault();
+  if (state == "playing" && game_focus) {
+    if (accept_input) {
+      if (e.which == '100') {
+        shift_grid_east();
+      }
+      else if (e.which == '119') {
+        shift_grid_north();
+      } 
+      else if (e.which== '97') {
+        shift_grid_west();
+      }
+      else if (e.which == '115') {
+        shift_grid_south();
+      }
     }
-    else {
-	  cl.blur();
+    
+    if (e.which == 13) {
+      var cl = $("#command-line");
+	    if (!cl.val() || bar_hidden) {
+		    bar_hidden = !bar_hidden;
+		    cl.toggle();
+	    }    
+      if (!bar_hidden) {
+	      if (cl.val()) {
+	        ws.send(JSON.stringify({"post":"command_line="+cl.val()}));
+	        cl.val('');
+        }
+        cl.focus();
+	      e.preventDefault();
+      }
+      else {
+	      cl.blur();
+      }
     }
   }
 });
@@ -339,25 +363,33 @@ $(".who_element").live({
 
 $(window).resize(function() {
   if (state == "playing") {
-    $("#client-region").stop(true, true);
-    $("#client-region").animate({bottom: -$(document).height() + $("#client-region").height() * 2}, "slow");
+    $("#client-region").css("bottom", 15).css("left", $(window).width()/2 - $("#client-region").width()/2 );
   }
 });
 
 $("form", $("#wrapper")).live("submit", function() {
-	if ($("#command-line-form").equals($(this))) {
+  if ($("#command-line-form").equals($(this))) {
 	  return false;	
 	}
-  	ws.send(JSON.stringify({"post":$(this).serialize()}));
-   
-    return false;
+  ws.send(JSON.stringify({"post":$(this).serialize()}));
+  return false;
+});
+
+// when focused we need to disable input from the keyboard.
+$("input").live("focusin", function() {
+  accept_input = false;
+  console.log("focusin");
+});
+$("input").live("focusout", function() {
+  accept_input = true;
+  console.log("focusout");
 });
 
 $("button").live("click", function() {
 	if ($(this).val()) {
-	  ws.send(JSON.stringify({"click":$(this).val()}))
-    }
-})
+	  ws.send(JSON.stringify({"click":$(this).val()}));
+  }
+});
 
 function updateTips( t ) {
 	var tips = $( '.validateTips');

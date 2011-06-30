@@ -19,6 +19,13 @@ body {
   height:60px;
   display:inline-block;
   border:1px dotted grey;
+  position: relative;
+}
+
+.tile img {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 #mapper {

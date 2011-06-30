@@ -102,6 +102,12 @@ Thread.new do
               end
             when :login # when we're in login state we should determine if they want to create a new character or need help.
               case value
+              when "quit_button"
+                ws.packet("dialog", "<span class=\"coming_soon\">You're not logged in.<span>");
+              when "help_button"
+                ws.packet("dialog", "<span class=\"coming_soon\">Help system not yet functional.<span>");
+              when "options_button"
+                ws.packet("dialog", "<span class=\"coming_soon\">Options system not yet functional.<span>");
               when "create_account"
                 ws.packet("form", [$creation, {:show=>"highlight", :hide=>"explode", :title=>"Create a New Account", :buttons=><<-eos
                   	{
@@ -203,7 +209,6 @@ get '/' do
 end
 
 post '/option' do
-  pp params
   session[:muted] = params["mute"]
 end
 
