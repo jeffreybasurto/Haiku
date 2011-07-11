@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>public/js/client.js</string>
+	<string>README</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -18,64 +18,64 @@
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
-	<integer>200</integer>
+	<integer>198</integer>
 	<key>metaData</key>
 	<dict>
-		<key>public/css/client.css</key>
+		<key>Gemfile</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>9</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>27</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>public/feedback_form.html</key>
+		<key>Gemfile.lock</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
+				<integer>24</integer>
+				<key>line</key>
 				<integer>4</integer>
-				<key>line</key>
-				<integer>3</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>public/js/client.js</key>
+		<key>README</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>52</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>360</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>339</integer>
+			<integer>0</integer>
 		</dict>
-		<key>public/js/sprites_stuff.js</key>
+		<key>config.ru</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>107</integer>
+				<integer>0</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>72</integer>
+			<integer>0</integer>
 		</dict>
 		<key>server.rb</key>
 		<dict>
@@ -90,48 +90,6 @@
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>81</integer>
-		</dict>
-		<key>server/data/creation.htm</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>40</integer>
-				<key>line</key>
-				<integer>1</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>server/data/menu.htm</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>100</integer>
-				<key>line</key>
-				<integer>1</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>server/data/welcome.htm</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>54</integer>
-				<key>line</key>
-				<integer>2</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
 		</dict>
 		<key>server/models/player.rb</key>
 		<dict>
@@ -177,38 +135,17 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>views/client.erb</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>20</integer>
-				<key>line</key>
-				<integer>32</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>24</integer>
-		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>server/models/player.rb</string>
-		<string>server/models/room.rb</string>
-		<string>server.rb</string>
-		<string>server/data/menu.htm</string>
-		<string>public/js/client.js</string>
-		<string>public/js/sprites_stuff.js</string>
-		<string>views/client.erb</string>
-		<string>server/data/creation.htm</string>
-		<string>server/data/welcome.htm</string>
-		<string>public/feedback_form.html</string>
-		<string>public/css/client.css</string>
+		<string>config.ru</string>
+		<string>Gemfile</string>
+		<string>Gemfile.lock</string>
+		<string>README</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{203, 105}, {1230, 773}}</string>
+	<string>{{203, 120}, {1194, 758}}</string>
 </dict>
 </plist>

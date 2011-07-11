@@ -126,9 +126,10 @@ function grid_center() {
 $(window).resize(_.debounce(init_sprites, 300));
 
 (function($) {
+  var sprites_hash = new Object;
   
   function sprite_animate(node, speed) {
-    setTimeout(function() {
+    return setInterval(function() {
       var state = node.attr('data-animation-state');
       var found = $("img", node);
 
@@ -137,18 +138,25 @@ $(window).resize(_.debounce(init_sprites, 300));
         
       found.hide();
       $("img:eq(" + (state-1) + ")", node).show();
-
-      sprite_animate(node, speed);
     }, speed);
   }
   
   $.fn.sprite = function(state) {
     this.each(function() {
-      var $this = $(this);      
-      $("img", $this).hide();
-      var found = $('.frames[data-state="' + state + '"]',$this);
-      found.attr('data-animation-state', 0);
-      sprite_animate(found, 750);
+      var $this = $(this);
+      if(state == 'stop') {
+        clearInterval(sprites_hash[$this.attr("id")]);
+      }
+      else {
+        $("img", $this).hide();
+        var found = $('.frames[data-state="' + state + '"]',$this);
+
+        clearInterval(sprites_hash[$this.attr("id")]);
+        if (found.length != 0) {
+          found.attr('data-animation-state', 0);
+          sprites_hash[$this.attr("id")] = sprite_animate(found, 750);
+        }
+      }
     });
     return this;
   };
@@ -156,7 +164,7 @@ $(window).resize(_.debounce(init_sprites, 300));
 
 $(function() {
   init_sprites();
-  grid_center().append(
+  grid(0,0).append(
   "<div id='game_element_232'>" +
     "<div class='sprite'>" +
       "<div class='frames' data-state='walking'>" +
@@ -170,7 +178,9 @@ $(function() {
   
 
   $("#game_element_232 .sprite").sprite('walking');
-  
+  setTimeout(function() {
+    $("#game_element_232 .sprite").sprite('stop');
+  }, 5000);
 })
 
 

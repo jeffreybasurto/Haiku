@@ -27,7 +27,7 @@ soundManager.useFlashBlock = false; // optionally, enable when you're ready to d
 // soundManager.useHTML5Audio = true;
 soundManager.onready(function() {
   // Ready to use; soundManager.createSound() etc. can now be called.
-  var s = soundManager.createSound({
+  /*var s = soundManager.createSound({
 	  id: "splash",
 	  //url: '/imasuka.m4a',
 	  //url: '/fantasia.mp3',
@@ -42,7 +42,8 @@ soundManager.onready(function() {
       this.play();
      }
   });
-  s.play();
+  */
+  //s.play();
 });
 
 
