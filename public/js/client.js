@@ -1,24 +1,6 @@
 var state = "login";
 var game_focus = true;
 
-/*
-function ResourcesLoading() {
-  this.yet_to_load = [];
-
-  this.prototype.assign = function(id, file) {
-    this.yet_to_load.push(soundManager.createSound({
-	  id: id,
-	  url: file,
-	  autoLoad: true,
-	  autoPlay: false,
-	  onload: function() {
-	    alert('The sound '+this.sID+' loaded!');
-	  },
-	});
-  }
-}
-
-*/
 soundManager.debugMode = false;
 soundManager.url = '/swf/';
 soundManager.flashVersion = 9; // optional: shiny features (default = 8)

@@ -45,8 +45,8 @@ Thread.new do
       clear_screen
       packet "state", "playing"
       packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
-      Room.first({:vtag=>"first.room"}).people << self      
-      
+      Room.first({:vtag=>"first.room"}).players << self.player
+      #self.player.room.save
       self.player.socket = self
       Player.connected.each { |p|
         p.info("#{self.player.name} has entered the game.");
@@ -56,7 +56,7 @@ Thread.new do
       }
       Player.connected << self.player 
       self.player.info("Welcome to <span class=\"logo\">HaikuMud</span> Alpha 0.10.4. (fancy sketch)");
-      
+      self.player.do_look()
     end
     def logout
       Player.connected.delete(self.player)

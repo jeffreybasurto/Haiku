@@ -162,7 +162,7 @@ $(window).resize(_.debounce(init_sprites, 300));
   };
 })(jQuery);
 
-$(function() {
+/*$(function() {
   init_sprites();
   grid(0,0).append(
   "<div id='game_element_232'>" +
@@ -183,7 +183,6 @@ $(function() {
   }, 5000);
 })
 
-
-
+*/
 
 

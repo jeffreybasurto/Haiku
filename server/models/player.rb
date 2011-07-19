@@ -8,10 +8,14 @@ class Player
   property :password,   String
   property :first_login, Boolean, :default  => true
   
+  belongs_to :room, :required=>false
+  
   attr_accessor :socket, :prefix
+  
   def prefix
     @prefix || "say"
   end
+
   def packet type, data
     @socket.packet(type, data) if @socket
   end
@@ -56,6 +60,10 @@ class Player
   
   def info_span
     "<span class=\"who_element\" id=\"player#{self.id}\">#{self.name}</span>"
+  end
+
+  def do_look
+    self.packet("dialog",self.room.generate_map().join(" ") )    
   end
 
   def do_quit
