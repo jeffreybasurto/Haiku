@@ -86,13 +86,38 @@ $(function(){
     }
   });
 
+  function create_game_element(id, oftype, img_states) {
+    var rval = "<div id='game_element_" +id+ "'><div class='"+ oftype + "'>";           
+    img_states.forEach(function(each_state_arr) {
+      rval += "<div class='frames' data-state='" + each_state_arr[0] + "'>";
+      each_state_arr[1].forEach(function(item) {
+        rval += "<img src='" + item  +"'>";
+      });           
+      rval += "</div>";
+    });
+    rval +="</div></div>";
+    return rval;
+  }
+
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
   ws.onmessage = function(e) { 
       var received = JSON.parse(e.data);
       console.log(received);
-      if(received["form"]) {
+      if(received["map"]) {
+        var data = received["map"];
+        init_sprites();
+        // Now we should have an array of rooms.
+        data.forEach(function(item) {          
+          grid_center(item[2],item[3]).append(create_game_element(item[1], item[0], item[5]));
+          console.log(item);
+          if(item[6]) {
+            $("#game_element_"+ item[1] + " ." + item[0]).sprite(item[6]);
+          }
+        });
+      }
+      else if(received["form"]) {
         var data = received["form"];
         eval("var passed_buttons =" + data[1]["buttons"]); 
         scroll(data[0]).dialog({
@@ -186,14 +211,14 @@ $(function(){
 
       }
       else if(received["chat"]) {
-	    var chat_box = $("#chat");
-	    var new_node = $(received["chat"] + "<br>")
-	    chat_box.append(new_node);
-	    new_node.effect("highlight", {}, 3000);
+	      var chat_box = $("#chat");
+	      var new_node = $(received["chat"] + "<br>")
+	      chat_box.append(new_node);
+	      new_node.effect("highlight", {}, 3000);
 	
-	    $("#chat-tab").effect("highlight", {}, 3000);
+	      $("#chat-tab").effect("highlight", {}, 3000);
 	
-	    $("#chat-resize").scrollTop(chat_box.attr('scrollHeight'));
+	      $("#chat-resize").scrollTop(chat_box.attr('scrollHeight'));
       }
       else if(received["cmd"]) {
         if(received["cmd"] == "clear_screen") {

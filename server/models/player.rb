@@ -39,8 +39,15 @@ class Player
     str.lstrip!
     args = str.split(" ")
     case args[0]
+    when "east"
+      move(:east)
+    when "west"
+      move(:west)
+    when "south"
+      move(:south)
+    when "west"
+      move(:west)
     when "who"
-      self.prefix = ""
       #packet "dialog", "<div id=\"who\"></div>"
       self.do_who
     when "say"
@@ -62,8 +69,28 @@ class Player
     "<span class=\"who_element\" id=\"player#{self.id}\">#{self.name}</span>"
   end
 
+  def move dir
+    old_room = self.room
+    exit =  old_room.find_exit(dir)
+    if !exit
+      self.packet("dialog", "no exit found. Bump sound added later.")
+    else
+      self.room = exit.to
+      self.room.reload
+      old_room.reload
+    end
+    do_look()
+  end
+
   def do_look
-    self.packet("dialog",self.room.generate_map().join(" ") )    
+    graph = self.room.generate_map();
+    graph << ["pc", self.id, self.room.x, self.room.y, self.room.z, 
+      [["walking", ["/sprites/esper_s_w0.png",
+                    "/sprites/esper_s_w1.png",
+                    "/sprites/esper_s_w2.png",
+                    "/sprites/esper_s_w1.png"]]], "walking"]
+
+    self.packet("map",graph)
   end
 
   def do_quit

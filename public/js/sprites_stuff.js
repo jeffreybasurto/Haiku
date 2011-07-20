@@ -117,28 +117,30 @@ function grid(x, y) {
   return $($("#sprite-area .tile")[y * grid_width + x]);
 }
 
-function grid_center() {
+function grid_center(addx, addy) {
   var x = Math.floor(grid_width/2);
   var y = Math.floor(grid_height/2);
-  return grid(x, y);
+  return grid(x+addx, y+addy);
 }
 
 $(window).resize(_.debounce(init_sprites, 300));
 
 (function($) {
   var sprites_hash = new Object;
-  
+
   function sprite_animate(node, speed) {
-    return setInterval(function() {
+    function sprite_one_frame() {
       var state = node.attr('data-animation-state');
       var found = $("img", node);
 
       state = state % found.length + 1;
       node.attr('data-animation-state', state);
-        
+
       found.hide();
       $("img:eq(" + (state-1) + ")", node).show();
-    }, speed);
+    }
+    sprite_one_frame();
+    return setInterval(sprite_one_frame, speed);
   }
   
   $.fn.sprite = function(state) {
@@ -162,16 +164,15 @@ $(window).resize(_.debounce(init_sprites, 300));
   };
 })(jQuery);
 
-/*$(function() {
+$(function() {
   init_sprites();
+});
+/*
   grid(0,0).append(
   "<div id='game_element_232'>" +
     "<div class='sprite'>" +
       "<div class='frames' data-state='walking'>" +
-        "<img src='/sprites/esper_s_w0.png'> " +
-        "<img src='/sprites/esper_s_w1.png'> " +
-        "<img src='/sprites/esper_s_w2.png'> " +
-        "<img src='/sprites/esper_s_w1.png'> " +
+
       "</div> " +
     "</div>" +
   "</div> ");
