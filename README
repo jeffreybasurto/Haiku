@@ -1,3 +1,19 @@
 a small game server
 to make web dev easier
 and yet, i digress
+
+Supported Browsers: Chrome, Firefox 4+, Opera, Safari
+Unsupported Browsers: Internet Explorer 6-8
+Maybe Supported Browsers: Internet Explorer 9
+
+Internet Explorer will only be supported through Chrome Frame plugin.  IE splash should tell them they need the plugin to continue.
+
+Connection to the game server is made through html5 web sockets and falls back to flash sockets. 
+Sinatra is used for the web server.
+
+Game database is being designed to be fully persistent.  Using Datamapper for ORM.
+EventMachine is used for the web-socket server.
+
+On the client side jquery is heavily leveraged.
+
+Work in progress.  More info updated as it becomes available.
