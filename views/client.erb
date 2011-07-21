@@ -72,14 +72,19 @@
        }
       </style>
 
+      <div id="prompt">
+        You need to install a plugin to make this work in internet explorer.
+      </div>
+
       <script>
        // The conditional ensures that this code will only execute in IE,
        // Therefore we can use the IE-specific attachEvent without worry
        window.attachEvent("onload", function() {
          CFInstall.check({
-           mode: "inline", // the default
-           node: "client-region"
+           mode: "overlay", // the default
+           node: "prompt"
          });
+         $("#client-region").hide();
        });
       </script>
     <![endif]-->
