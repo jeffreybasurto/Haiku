@@ -334,22 +334,29 @@ function scroll(str) {
 
 var accept_input = true;
 var bar_hidden = true;
+
 $(document).keydown(function(e) {
   if (state == "playing" && game_focus) {
     if (accept_input) {
       if (e.which == '37') {
-        shift_grid_west();
-      }
-      else if (e.which == '38') {
-        shift_gird_north();
-      }
-      else if (e.which == '39') {
         shift_grid_east();
       }
-      else if (e.which == '40') {
+      else if (e.which == '38') {
         shift_grid_south();
       }
-      else if (e.which == '100') {
+      else if (e.which == '39') {
+        shift_grid_west();
+      }
+      else if (e.which == '40') {
+        shift_grid_north();
+      }
+    }
+  }
+});
+$(document).keypress(function(e) {
+  if (state == "playing" && game_focus) {
+    if (accept_input) {
+      if (e.which == '100') {
         ws.send(JSON.stringify({"post":"command_line="+"east"}));
       }
       else if (e.which == '119') {
@@ -357,11 +364,9 @@ $(document).keydown(function(e) {
       } 
       else if (e.which== '97') {
         ws.send(JSON.stringify({"post":"command_line="+"west"}));
-        
       }
       else if (e.which == '115') {
-        ws.send(JSON.stringify({"post":"command_line="+"south"}));
-        
+        ws.send(JSON.stringify({"post":"command_line="+"south"}));        
       }
     }
     
