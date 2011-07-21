@@ -39,10 +39,10 @@ class Player
     str.lstrip!
     args = str.split(" ")
     case args[0]
+    when "north"
+      move(:north)
     when "east"
       move(:east)
-    when "west"
-      move(:west)
     when "south"
       move(:south)
     when "west"

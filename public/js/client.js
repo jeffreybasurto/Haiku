@@ -326,16 +326,22 @@ $(document).keypress(function(e) {
   if (state == "playing" && game_focus) {
     if (accept_input) {
       if (e.which == '100') {
-        shift_grid_east();
+        //shift_grid_east();
+        ws.send(JSON.stringify({"post":"command_line="+"east"}));
       }
       else if (e.which == '119') {
-        shift_grid_north();
+        //shift_grid_north();
+        ws.send(JSON.stringify({"post":"command_line="+"north"}));
       } 
       else if (e.which== '97') {
-        shift_grid_west();
+        //shift_grid_west();
+        ws.send(JSON.stringify({"post":"command_line="+"west"}));
+        
       }
       else if (e.which == '115') {
-        shift_grid_south();
+        //shift_grid_south();
+        ws.send(JSON.stringify({"post":"command_line="+"south"}));
+        
       }
     }
     
