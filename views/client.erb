@@ -39,28 +39,6 @@
     </script>
   </head>
   <body>
-      <!--[if IE]>
-        <script type="text/javascript" 
-         src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-
-        <style>
-         .chromeFrameInstallDefaultStyle {
-           width: 100%; /* default is 800px */
-           border: 5px solid blue;
-         }
-        </style>
-
-        <script>
-         // The conditional ensures that this code will only execute in IE,
-         // Therefore we can use the IE-specific attachEvent without worry
-         window.attachEvent("onload", function() {
-           CFInstall.check({
-             mode: "overlay", // the default
-             node: "client-region"
-           });
-         });
-        </script>
-      <![endif]-->
     <div id="wrapper2">
       <div id="sprite-area">
       </div>
@@ -83,6 +61,28 @@
 	    </div>
 	  </div>
 	</div>	
+	<!--[if IE]>
+      <script type="text/javascript" 
+       src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+
+      <style>
+       .chromeFrameInstallDefaultStyle {
+         width: 100%; /* default is 800px */
+         border: 5px solid blue;
+       }
+      </style>
+
+      <script>
+       // The conditional ensures that this code will only execute in IE,
+       // Therefore we can use the IE-specific attachEvent without worry
+       window.attachEvent("onload", function() {
+         CFInstall.check({
+           mode: "inline", // the default
+           node: "client-region"
+         });
+       });
+      </script>
+    <![endif]-->
   	<a href="feedback_form.html" title="Give us feedback" id="feedback-badge"><span>Feedback</span></a>
   </body>
 </html>
