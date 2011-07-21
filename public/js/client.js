@@ -334,24 +334,32 @@ function scroll(str) {
 
 var accept_input = true;
 var bar_hidden = true;
-$(document).keypress(function(e) {
+$(document).keydown(function(e) {
   if (state == "playing" && game_focus) {
     if (accept_input) {
-      if (e.which == '100') {
-        //shift_grid_east();
+      if (e.which == '37') {
+        shift_grid_west();
+      }
+      else if (e.which == '38') {
+        shift_gird_north();
+      }
+      else if (e.which == '39') {
+        shift_grid_east();
+      }
+      else if (e.which == '40') {
+        shift_grid_south();
+      }
+      else if (e.which == '100') {
         ws.send(JSON.stringify({"post":"command_line="+"east"}));
       }
       else if (e.which == '119') {
-        //shift_grid_north();
         ws.send(JSON.stringify({"post":"command_line="+"north"}));
       } 
       else if (e.which== '97') {
-        //shift_grid_west();
         ws.send(JSON.stringify({"post":"command_line="+"west"}));
         
       }
       else if (e.which == '115') {
-        //shift_grid_south();
         ws.send(JSON.stringify({"post":"command_line="+"south"}));
         
       }
