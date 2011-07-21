@@ -146,6 +146,7 @@ $(window).resize(_.debounce(init_sprites, 300));
   $.fn.sprite = function(state) {
     this.each(function() {
       var $this = $(this);
+      console.log($this.attr("id"));
       if(state == 'stop') {
         clearInterval(sprites_hash[$this.attr("id")]);
       }

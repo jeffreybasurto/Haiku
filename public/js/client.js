@@ -113,7 +113,7 @@ $(function(){
           grid_center(item[2],item[3]).append(create_game_element(item[1], item[0], item[5]));
           console.log(item);
           if(item[6]) {
-            $("#game_element_"+ item[1] + " ." + item[0]).sprite(item[6]);
+            $("#game_element_"+ item[1]).sprite(item[6]);
           }
         });
       }
