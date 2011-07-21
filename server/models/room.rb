@@ -96,14 +96,18 @@ class Room
   end
 
   def generate_map 
-    map = []
+    map = [[],[]]
     self.bfs do |r| 
-      map << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false]
+      map[0] << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false]
+      if r.players.length > 1
+        map[1] << ["count", r.id, r.players.length]
+      end
       r.players.each do |ch|
-        map << ["pc", ch.id, ch.room.x, ch.room.y, ch.room.z, 
+        map[0] << ["pc", ch.id, ch.room.x, ch.room.y, ch.room.z, 
           [["walking", ["/sprites/moogle_s_w0.png",
                         "/sprites/moogle_s_w1.png"]]], "walking"]
       end
+      
     end
     return map
   end

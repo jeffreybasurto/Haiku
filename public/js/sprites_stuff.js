@@ -8,8 +8,8 @@ function init_sprites() {
       x_total = 0,
       y_reduced = false,
       x_reduced = false;
-  var y_to = Math.floor((sprites_area.height()) / 62);
-  var x_to = Math.floor((sprites_area.width()) / 62);
+  var y_to = Math.floor(($(document).height()) / 62);
+  var x_to = Math.floor(($(document).width()) / 62);
   if ((y_to) % 2 == 0) {
     y_to = y_to - 1;
     y_reduced = true;
@@ -22,9 +22,9 @@ function init_sprites() {
   grid_width = x_to;
   grid_height = y_to;
   
-  sprites_area.css('margin-left', (x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
+  sprites_area.css('padding-left', (x_reduced ? 31 : 0) + ($(document).width() % 62 / 2));
 //  sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
-  sprites_area.css('margin-top', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
+  sprites_area.css('padding-top', (y_reduced ? 31 : 0) +($(document).height() % 62 / 2));
 //  sprites_area.css('margin-bottom', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
 
   sprites_area.empty();

@@ -22,6 +22,11 @@ body {
   position: relative;
 }
 
+.counter {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 .tile img {
   position: absolute;
   top: 0;

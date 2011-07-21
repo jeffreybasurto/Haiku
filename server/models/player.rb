@@ -39,6 +39,8 @@ class Player
     str.lstrip!
     args = str.split(" ")
     case args[0]
+    when "look"
+      do_look();
     when "north"
       move(:north)
     when "east"
@@ -49,13 +51,13 @@ class Player
       move(:west)
     when "who"
       #packet "dialog", "<div id=\"who\"></div>"
-      self.do_who
+      do_who
     when "say"
       communicate args[1..-1].join(" ")
       self.prefix = "say"
     when "quit"
       self.prefix = ""
-      self.do_quit
+      do_quit
     else
       if self.prefix 
         interpret(self.prefix + " "+ args.join(" "))

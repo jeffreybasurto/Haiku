@@ -109,11 +109,15 @@ $(function(){
         var data = received["map"];
         init_sprites();
         // Now we should have an array of rooms.
-        data.forEach(function(item) {          
+        data[0].forEach(function(item) {          
           grid_center(item[2],item[3]).append(create_game_element(item[1], item[0], item[5]));
-          console.log(item);
           if(item[6]) {
             $("#game_element_"+ item[1]).sprite(item[6]);
+          }
+        });
+        data[1].forEach(function(item) {
+          if (item[0] == "count") {
+            $("#game_element_" + item[1]).append("<span class='counter'>" + item[2] + "</span>");
           }
         });
       }
