@@ -30,6 +30,7 @@ class Player
   # in game communication of some kind.
   def communicate value
     c = Chat.new
+    c.created_at = Time.now
     c.message = value
     self.chats << c
     Player.connected.each { |p| 
@@ -40,8 +41,10 @@ class Player
   end
   def do_test
     found = []
-    self.chats.each do |c|
-      found << c.player.name + " " + c.message
+    pp self
+    Chat.all.each do |c|
+      pp c
+      found << "[" + c.created_at.to_s + "] " + c.player.name + ": " + c.message
     end
     self.packet("dialog", found.join("<br>"))
   end

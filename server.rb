@@ -156,6 +156,7 @@ Thread.new do
                 p = Player.new
                 p.name = input_name
                 p.password = args["user_password"]
+                p.created_at = Time.now
                 p.save
               end
             else

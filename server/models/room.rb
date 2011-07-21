@@ -5,7 +5,6 @@ class Room
   property :id,         Serial
   property :vtag,       String
   property :created_at, DateTime
-  property :updated_at, DateTime
   property :name,       String
   property :x,          Integer
   property :y,          Integer
@@ -27,7 +26,7 @@ class Room
   end
   # create a room next to this one.
   def create_in_direction dir
-    new_room = Room.create({:x=>self.x, :y=>self.y, :z=>self.z})
+    new_room = Room.create({:created_at=>Time.now, :x=>self.x, :y=>self.y, :z=>self.z})
     
     case dir
     when "north",:north, 0
@@ -51,10 +50,11 @@ class Room
   
   def Room.startup
     Room.all.destroy!
+    Chat.all.destroy!
     r = Room.first_or_create({:vtag=>"first.room", :x=>0, :y=>0, :z=>0})
     r.create_in_direction(:east)
     r2 = r.create_in_direction(:south)
-    r2.create_in_direction(:west).create_in_direction(:south)
+    r2.create_in_direction(:west).create_in_direction(:south).create_in_direction(:west).create_in_direction(:west).create_in_direction(:north)
     r2.create_in_direction(:east)
     puts "Initialized rooms."
   end
