@@ -22,6 +22,39 @@ body {
   position: relative;
 }
 
+.wall {
+  position:absolute;
+  background-color: black;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.north-wall {
+  margin-top: -4px;
+  width: 60px;
+  height: 8px;
+}
+
+.east-wall {
+  margin-right: -4px;
+  right: 0;
+  width: 8px;
+  height: 60px;
+}
+
+.south-wall {
+  margin-bottom: -4px;
+  bottom: 0;
+  width: 60px;
+  height: 8px;
+}
+
+.west-wall {
+  margin-left: -4px;
+  height: 60px;
+  width: 8px;
+}
+
 .counter {
   position: absolute;
   top: 0;

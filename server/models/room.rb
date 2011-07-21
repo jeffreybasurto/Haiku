@@ -18,7 +18,7 @@ class Room
 
   def create_exit(dir, towards, two_way = false)  
     exit = Exit.new
-    exit.dir = dir
+    exit.dir = dir.to_s
     exit.to = towards
     exit.source = self
     self.exits << exit
@@ -45,6 +45,7 @@ class Room
     end
     
     create_exit(dir, new_room, true) # two way exit
+    return new_room
   end
   
   
@@ -52,7 +53,9 @@ class Room
     Room.all.destroy!
     r = Room.first_or_create({:vtag=>"first.room", :x=>0, :y=>0, :z=>0})
     r.create_in_direction(:east)
-    r.create_in_direction(:south)
+    r2 = r.create_in_direction(:south)
+    r2.create_in_direction(:west).create_in_direction(:south)
+    r2.create_in_direction(:east)
     puts "Initialized rooms."
   end
 
@@ -99,9 +102,14 @@ class Room
     map = [[],[]]
     self.bfs do |r| 
       map[0] << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false]
-      if r.players.length > 1
-        map[1] << ["count", r.id, r.players.length]
+      map[1] << ["count", r.id, r.players.length] if r.players.length > 1
+
+      walls = ["north", "east", "south", "west", "up", "down"]
+      r.exits.each do |ex|
+        walls.delete(ex.dir)
       end
+      map[1] << ["walls", r.id, walls] unless walls.empty?
+
       r.players.each do |ch|
         map[0] << ["pc", ch.id, ch.room.x, ch.room.y, ch.room.z, 
           [["walking", ["/sprites/moogle_s_w0.png",

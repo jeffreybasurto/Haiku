@@ -122,6 +122,11 @@ $(function(){
           if (item[0] == "count") {
             $("#game_element_" + item[1]).append("<span class='counter'>" + item[2] + "</span>");
           }
+          else if (item[0] == "walls") {
+            item[2].forEach(function(dir) {
+              $("#game_element_" + item[1]).append("<span class='" + dir + "-wall wall'></span>");
+            });
+          }
         });
       }
       else if(received["form"]) {

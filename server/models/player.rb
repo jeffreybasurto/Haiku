@@ -26,12 +26,26 @@ class Player
   def self.connected
     @connected ||= [] 
   end
+
   # in game communication of some kind.
   def communicate value
+    c = Chat.new
+    c.message = value
+    self.chats << c
     Player.connected.each { |p| 
       p.packet("chat", "<span class=\"say\">#{name}: #{value.make_safe_for_web_client()}</span>") 
-    }  
+    }
+    c.save
+    self.save
   end
+  def do_test
+    found = []
+    self.chats.each do |c|
+      found << c.player.name + " " + c.message
+    end
+    self.packet("dialog", found.join("<br>"))
+  end
+  
   def guider str
     packet "guider", str
   end
@@ -40,6 +54,8 @@ class Player
     str.lstrip!
     args = str.split(" ")
     case args[0]
+    when "test"
+      do_test();
     when "look"
       do_look();
     when "north"
