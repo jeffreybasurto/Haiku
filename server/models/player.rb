@@ -74,8 +74,7 @@ class Player
   def move dir
     exit =  self.room.find_exit(dir)
     if !exit
-      self.packet("dialog", "no exit found. Bump sound added later.")
-      self.packet("sound", "bump")
+      self.packet("sound", "bounce")
     else
       exit.to.players << self
       exit.to.save
