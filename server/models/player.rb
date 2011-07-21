@@ -70,25 +70,18 @@ class Player
   end
 
   def move dir
-    old_room = self.room
-    exit =  old_room.find_exit(dir)
+    exit =  self.room.find_exit(dir)
     if !exit
       self.packet("dialog", "no exit found. Bump sound added later.")
     else
-      self.room = exit.to
-      self.room.reload
-      old_room.reload
+      exit.to.players << self
+      exit.to.save
     end
     do_look()
   end
 
   def do_look
     graph = self.room.generate_map();
-    graph << ["pc", self.id, self.room.x, self.room.y, self.room.z, 
-      [["walking", ["/sprites/esper_s_w0.png",
-                    "/sprites/esper_s_w1.png",
-                    "/sprites/esper_s_w2.png",
-                    "/sprites/esper_s_w1.png"]]], "walking"]
 
     self.packet("map",graph)
   end

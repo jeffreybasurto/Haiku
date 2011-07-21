@@ -99,6 +99,13 @@ class Room
     map = []
     self.bfs do |r| 
       map << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false]
+      r.players.each do |ch|
+        map << ["pc", ch.id, ch.room.x, ch.room.y, ch.room.z, 
+          [["walking", ["/sprites/esper_s_w0.png",
+                        "/sprites/esper_s_w1.png",
+                        "/sprites/esper_s_w2.png",
+                        "/sprites/esper_s_w1.png"]]], "walking"]
+      end
     end
     return map
   end
