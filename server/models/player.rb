@@ -8,6 +8,7 @@ class Player
   property :password,   String
   property :first_login, Boolean, :default  => true
   
+  has n, :chats
   belongs_to :room, :required=>false
   
   attr_accessor :socket, :prefix
