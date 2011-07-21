@@ -109,6 +109,8 @@ $(function(){
       else if(received["map"]) {
         var data = received["map"];
         init_sprites();
+        
+        console.log(data);
         // Now we should have an array of rooms.
         data[0].forEach(function(item) {          
           grid_center(item[2],item[3]).append(create_game_element(item[1], item[0], item[5]));

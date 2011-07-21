@@ -51,9 +51,9 @@ class Room
   def Room.startup
     Room.all.destroy!
     r = Room.first_or_create({:vtag=>"first.room", :x=>0, :y=>0, :z=>0})
-    r2 = r.create_in_direction(:east)
+    r.create_in_direction(:east)
+    r.create_in_direction(:south)
     puts "Initialized rooms."
-    r.connections.each { |room| pp room }
   end
 
   def find_exit(dir)
@@ -87,7 +87,7 @@ class Room
       break if main_list.empty?
       room = main_list.pop
       yield room
-      self.connections.each do |r|
+      room.connections.each do |r|
         next if found[r.id]
         found[r.id] = true
         main_list << r

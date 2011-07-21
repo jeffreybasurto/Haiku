@@ -120,7 +120,7 @@ function grid(x, y) {
 function grid_center(addx, addy) {
   var x = Math.floor(grid_width/2);
   var y = Math.floor(grid_height/2);
-  return grid(x+addx, y+addy);
+  return grid(x+addx, y-addy);
 }
 
 $(window).resize(_.debounce(init_sprites, 300));
