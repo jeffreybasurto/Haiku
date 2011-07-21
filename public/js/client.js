@@ -9,11 +9,11 @@ soundManager.useFlashBlock = false; // optionally, enable when you're ready to d
 // soundManager.useHTML5Audio = true;
 soundManager.onready(function() {
   // Ready to use; soundManager.createSound() etc. can now be called.
-  /*var s = soundManager.createSound({
-	  id: "splash",
+  soundManager.createSound({
+	  id: "bounce",
 	  //url: '/imasuka.m4a',
 	  //url: '/fantasia.mp3',
-	  url: '/CloudTopLoops.mp3',
+	  url: '/bounce.mp3',
 	  //url: '/bass.mp3',
 	  autoLoad: true,
 	  autoPlay: false,
@@ -21,11 +21,9 @@ soundManager.onready(function() {
 	    //alert('The sound '+this.sID+' loaded!');
     },
     onfinish:function() {
-      this.play();
+      //this.play();
      }
   });
-  */
-  //s.play();
 });
 
 
@@ -105,7 +103,10 @@ $(function(){
   ws.onmessage = function(e) { 
       var received = JSON.parse(e.data);
       console.log(received);
-      if(received["map"]) {
+      if(received["sound"]) {
+        soundManager.play(received['sound']);
+      }
+      else if(received["map"]) {
         var data = received["map"];
         init_sprites();
         // Now we should have an array of rooms.
