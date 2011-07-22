@@ -123,7 +123,13 @@ function grid_center(addx, addy) {
   return grid(x+addx, y-addy);
 }
 
-$(window).resize(_.debounce(init_sprites, 300));
+$(window).resize(_.debounce(function() {
+  init_sprites(); 
+  if (state == "playing") {
+    ws.send(JSON.stringify({"post":"command_line="+"look"}));
+  }  
+}, 300));
+
 
 (function($) {
   var sprites_hash = new Object;
