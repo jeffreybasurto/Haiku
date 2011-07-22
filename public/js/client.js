@@ -96,7 +96,38 @@ $(function(){
     rval +="</div></div>";
     return rval;
   }
-
+  
+  function plant_element(item, into) {
+    if (!into) {
+      var new_div =  $(create_game_element(item[1], item[0], item[5]));
+      grid_center(item[2],item[3]).append(new_div);
+      if(item[6]) {
+        $("#game_element_"+ item[1]).sprite(item[6]);
+      }
+      if (item[7]) {
+        item[7].forEach(function(item) {
+          plant_element(item, new_div);
+        });
+      }
+    }
+    else {
+      var new_div = $(create_game_element(item[1], item[0], item[2]));
+      into.append(new_div);
+      if (item[3]) {
+        $("#game_element_"+item[1]).sprite(item[3]);
+      }
+      if (item[4]) {
+        item[4].forEach(function(item) {
+          plant_element(item, new_div);
+        });
+      }
+    }
+  }
+  
+  function lookup_element(idn) {
+    return $("#game_element_" + idn);
+  }
+  
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
@@ -108,41 +139,15 @@ $(function(){
       }
       else if(received["mv"]) {
         var item = received["mv"];
-        $("#game_element_" + item[0]).appendTo($("#game_element_" + item[1]));
+        lookup_element(item[0]).appendTo(lookup_element(item[1]));
+      }
+      else if(received["new"]) {
+        var item = received["new"];
+        plant_element(item[1], lookup_element(item[0]));
       }
       else if(received["map"]) {
         var data = received["map"];
-        init_sprites();
-        
-        console.log(data);
-        
-        function plant_element(item, into) {
-          if (!into) {
-            var new_div =  $(create_game_element(item[1], item[0], item[5]));
-            grid_center(item[2],item[3]).append(new_div);
-            if(item[6]) {
-              $("#game_element_"+ item[1]).sprite(item[6]);
-            }
-            if (item[7]) {
-              item[7].forEach(function(item) {
-                plant_element(item, new_div);
-              });
-            }
-          }
-          else {
-            var new_div = $(create_game_element(item[1], item[0], item[2]));
-            into.append(new_div);
-            if (item[3]) {
-              $("#game_element_"+item[1]).sprite(item[3]);
-            }
-            if (item[4]) {
-              item[4].forEach(function(item) {
-                plant_element(item, new_div);
-              });
-            }
-          }
-        }
-        
+        init_sprites();      
         // Now we should have an array of rooms.
         data[0].forEach(function(item) {          
           plant_element(item, false);
