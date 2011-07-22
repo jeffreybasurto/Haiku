@@ -96,9 +96,11 @@ class Player
     else
       exit.to.players << self
       exit.to.save
-    end
-    Player.connected.each { |p| p.do_look() }
+    end    
+    # just update this player for everyone.
+    graph = [self.id, self.room.id]
     
+    Player.connected.each { |p| p.packet("mv", graph) }
   end
 
   def do_look

@@ -106,17 +106,46 @@ $(function(){
       if(received["sound"]) {
         soundManager.play(received['sound']);
       }
+      else if(received["mv"]) {
+        var item = received["mv"];
+        $("#game_element_" + item[0]).appendTo($("#game_element_" + item[1]));
+      }
       else if(received["map"]) {
         var data = received["map"];
         init_sprites();
         
         console.log(data);
+        
+        function plant_element(item, into) {
+          if (!into) {
+            var new_div =  $(create_game_element(item[1], item[0], item[5]));
+            grid_center(item[2],item[3]).append(new_div);
+            if(item[6]) {
+              $("#game_element_"+ item[1]).sprite(item[6]);
+            }
+            if (item[7]) {
+              item[7].forEach(function(item) {
+                plant_element(item, new_div);
+              });
+            }
+          }
+          else {
+            var new_div = $(create_game_element(item[1], item[0], item[2]));
+            into.append(new_div);
+            if (item[3]) {
+              $("#game_element_"+item[1]).sprite(item[3]);
+            }
+            if (item[4]) {
+              item[4].forEach(function(item) {
+                plant_element(item, new_div);
+              });
+            }
+          }
+        }
+        
         // Now we should have an array of rooms.
         data[0].forEach(function(item) {          
-          grid_center(item[2],item[3]).append(create_game_element(item[1], item[0], item[5]));
-          if(item[6]) {
-            $("#game_element_"+ item[1]).sprite(item[6]);
-          }
+          plant_element(item, false);
         });
         data[1].forEach(function(item) {
           if (item[0] == "count") {

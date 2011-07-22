@@ -100,22 +100,17 @@ class Room
 
   def generate_map 
     map = [[],[]]
-    self.bfs do |r| 
-      map[0] << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false]
-      map[1] << ["count", r.id, r.players.length] if r.players.length > 1
-
-      walls = ["north", "east", "south", "west", "up", "down"]
-      r.exits.each do |ex|
-        walls.delete(ex.dir)
-      end
-      map[1] << ["walls", r.id, walls] unless walls.empty?
-
-      r.players.each do |ch|
-        map[0] << ["pc", ch.id, ch.room.x, ch.room.y, ch.room.z, 
-          [["walking", ["/sprites/moogle_s_w0.png",
-                        "/sprites/moogle_s_w1.png"]]], "walking"]
-      end
+    self.bfs do |r|       
       
+      map[0] << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false, 
+                  r.players.collect do |ch| 
+                      ["pc", ch.id, 
+                        [["walking", ["/sprites/moogle_s_w0.png", "/sprites/moogle_s_w1.png"]]], "walking"]
+                  end]
+                  
+      walls = ["north", "east", "south", "west", "up", "down"] - r.exits.collect(&:dir)
+
+      map[1] << ["walls", r.id, walls] unless walls.empty?
     end
     return map
   end
