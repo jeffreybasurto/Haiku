@@ -41,9 +41,7 @@ class Player
   end
   def do_test
     found = []
-    pp self
     Chat.all.each do |c|
-      pp c
       found << "[" + c.created_at.to_s + "] " + c.player.name + ": " + c.message
     end
     self.packet("dialog", found.join("<br>"))
@@ -99,7 +97,8 @@ class Player
       exit.to.players << self
       exit.to.save
     end
-    do_look()
+    Player.connected.each { |p| p.do_look() }
+    
   end
 
   def do_look
