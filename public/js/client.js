@@ -85,7 +85,7 @@ $(function(){
   });
 
   function create_game_element(id, oftype, img_states) {
-    var rval = "<div id='game_element_" +id+ "' style='position:absolute;'><div class='"+ oftype + "'>";           
+    var rval = "<div class='" + oftype + "' id='game_element_" +id+ "' style='position:absolute;'>";           
     img_states.forEach(function(each_state_arr) {
       rval += "<div class='frames' data-state='" + each_state_arr[0] + "'>";
       each_state_arr[1].forEach(function(item) {
@@ -93,7 +93,7 @@ $(function(){
       });           
       rval += "</div>";
     });
-    rval +="</div></div>";
+    rval +="</div>";
     return rval;
   }
   
@@ -132,70 +132,75 @@ $(function(){
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
   ws.onmessage = function(e) { 
-      var received = JSON.parse(e.data);
-      console.log(received);
-      if(received["sound"]) {
-        soundManager.play(received['sound']);
+      console.log(e.data);
+      var pair = JSON.parse(e.data);
+      var key = pair[0];
+      var value = pair[1];
+      if(key == "sound") {
+        soundManager.play(value);
       }
-      else if (received["sprite_state"]) {
-        var item = received["sprite_state"];
+      else if (key == "sprite_state") {
+        var item = value;
         var sp = lookup_element(item[0]);
         sp.sprite(item[1]);
         setTimeout(function() {
           sp.sprite("walking");
         }, item[2]);
       }
-      else if(received["mv"]) {
-        var item = received["mv"];
+      else if(key == "mv") {
+        var item = value;
         var towards = lookup_element(item[1]);
         var element = lookup_element(item[0]);
         var direction = item[2];
+        console.log("mv packet received.");
         if (!direction) {
           element.appendTo(towards);
           return;
         }
-        element.stop(false, true);
+        //element.stop(false, true);
         element.css("z-index", 100);
         if (direction == "north") {
-          element.animate({
-              top: '-=60',
-            }, 400, function() {
-              element.appendTo(towards);
-              element.css("top", "0");
+          element.animate({ top: '-=60'}, 250);
+          element.queue(function() {  
+            element.appendTo(towards);
+            element.css("top", "0");
+            $(this).dequeue();
           });
         }
         else if (direction == "east") {
-          element.animate({
-              left: '+=60',
-            }, 400, function() {
-              element.appendTo(towards);
-              element.css("left", "0");
+          element.animate({ left: '+=60'}, 250);
+          element.queue(function() {  
+            element.appendTo(towards);
+            element.css("left", "0");
+            $(this).dequeue();
           });
         }
         else if (direction == "south") {
-          element.animate({
-              top: '+=60',
-            }, 400, function() {
-              element.appendTo(towards);
-              element.css("top", "0");
+          element.animate({ top: '+=60'}, 250);
+          element.queue(function() {  
+            element.appendTo(towards);
+            element.css("top", "0");
+            $(this).dequeue();
           });
         }
         else if (direction == "west") {
-          element.animate({
-              left: '-=60',
-            }, 400, function() {
-              element.appendTo(towards);
-              element.css("left", "0");
-              
+          element.animate({ left: '-=60'}, 250);
+          element.queue(function() {  
+            element.appendTo(towards);
+            element.css("left", "0");
+            $(this).dequeue();
           });
         }
       }
-      else if(received["new"]) {
-        var item = received["new"];
+      else if(key == "new") {
+        var item = value;
         plant_element(item[1], lookup_element(item[0]));
       }
-      else if(received["map"]) {
-        var data = received["map"];
+      else if (key == "route") {
+        console.log("Route: " + value)
+      }
+      else if(key == "map") {
+        var data = value;
         init_sprites();      
         // Now we should have an array of rooms.
         data[0].forEach(function(item) {          
@@ -212,8 +217,8 @@ $(function(){
           }
         });
       }
-      else if(received["form"]) {
-        var data = received["form"];
+      else if(key == "form") {
+        var data = value;
         eval("var passed_buttons =" + data[1]["buttons"]); 
         scroll(data[0]).dialog({
           show: data[1]["show"],
@@ -225,9 +230,9 @@ $(function(){
     		buttons: passed_buttons
     	  });
       }
-      else if(received["who"]) {
+      else if(key == "who") {
 	    var who = $("<div></div>");
-	    who.append(received["who"]);
+	    who.append(value);
 	    who.append('<div class="contextMenu" id="myMenu1" style="display:none;"><ul>'+
 	        '<li id="pm"> Private Message</li>' +
 	        '<li id="info"> Info </li>' +
@@ -250,8 +255,8 @@ $(function(){
 	            buttons: { "Ok": function() { $(this).dialog("close"); }  }
 	    });
       }
-      else if(received["guider"]) {
-	    var found = received["guider"];
+      else if(key == "guider") {
+	    var found = value;
         if(found == "new_player") {
 	      guider.createGuider({
 		    buttons: [{name: "Next"	}],
@@ -305,9 +310,9 @@ $(function(){
         }
 
       }
-      else if(received["chat"]) {
+      else if(key == "chat") {
 	      var chat_box = $("#chat");
-	      var new_node = $(received["chat"] + "<br>")
+	      var new_node = $(value + "<br>")
 	      chat_box.append(new_node);
 	      new_node.effect("highlight", {}, 3000);
 	
@@ -315,17 +320,17 @@ $(function(){
 	
 	      $("#chat-resize").scrollTop(chat_box.attr('scrollHeight'));
       }
-      else if(received["cmd"]) {
-        if(received["cmd"] == "clear_screen") {
+      else if(key == "cmd") {
+        if(value == "clear_screen") {
             $("#scrolling-region").empty();
             console.log("Screen cleared.");
         }
       } 
-      else if(received["scrollback"]) {
-        $("button", scroll(received["scrollback"])).button();
+      else if(key == "scrollback") {
+        $("button", scroll(value)).button();
       } 
-      else if(received["state"]) {
-	      state = received["state"];
+      else if(key == "state") {
+	      state = value;
 	      if(state == "playing") {
 		      $("#command-line-form img").css("display", "inline");
 		      //$("#cell").css("vertical-align", "bottom");
@@ -342,9 +347,9 @@ $(function(){
 	        $("#command-line-form img").css("display", "none");
         }
       }
-      else if (received["miniwindow"]) {
-	    var data = received["miniwindow"][0];
-	    var options = received["miniwindow"][1];
+      else if (key == "miniwindow") {
+	    var data = value[0];
+	    var options = value[1];
 	    var found = $(data);
 	    $("body").append(found);
 	    $("#tabs", found).tabs();
@@ -369,8 +374,8 @@ $(function(){
         }
         $("button", found).button();
       }
-      else if(received["dialog"]) {
-        scroll(received["dialog"]).dialog({
+      else if(key == "dialog") {
+        scroll(value).dialog({
           resizable: false,
             width: "auto",
 			modal: true,
@@ -386,7 +391,7 @@ $(function(){
 			
 		  });
       }
-      else if (received["reload"]) {
+      else if (key == "reload") {
         window.location.href=window.location.href;
       }
   };
@@ -471,6 +476,13 @@ $(document).keypress(function(e) {
 	      cl.blur();
       }
     }
+  }
+});
+
+$('.tile').live('click', function() {
+  var target = $(".room", $(this)).first().attr("id");
+  if(target) {
+    ws.send(JSON.stringify({"path":""+target}));
   }
 });
 

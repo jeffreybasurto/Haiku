@@ -35,7 +35,7 @@ Thread.new do
   class EventMachine::WebSocket::Connection
     attr_accessor :player, :state
     def packet type, data
-      send JSON.generate({type=>data})
+      send JSON.generate([type,data])
     end
     def clear_screen
       packet "cmd", "clear_screen"
@@ -90,6 +90,19 @@ Thread.new do
       ws.onmessage do |msg| 
         JSON.parse(msg).each do |key, value|
           case key
+          when "path"
+            if ws.state == :playing
+              route = ws.player.room.pathfind(value)
+              if route
+                # send the route to the client so it can display in the UI the destination.
+                ws.packet("route", route)
+                
+                route.each do |dir|
+                  ws.player.interpret(dir)
+                end
+              end
+            end
+            
           when "set"
             session[value[0].intern] = value[1];
           when "click" # one of our registered buttons was clicked.

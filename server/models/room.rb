@@ -97,7 +97,51 @@ class Room
       end
     end
   end
-
+ 
+  # A* algorithm
+  def pathfind(towards)
+    towards.slice!("game_element_")
+    found = Room.get(Integer(towards))
+    
+    def calculate_h(node, found) 
+      (node.x - found.x).abs + (node.y - found.y).abs + (node.z - found.z).abs
+    end
+    
+    h = {:node=>self, :parent=>nil, :h=>calculate_h(self, found)}
+    open_list_members = {self.id=>h}
+    open_list = [h]
+    closed_list = {}
+    loop do
+      break if open_list.empty?
+      open_list.sort!{|x, y| x[:h] <=> y[:h]}
+      current_room = open_list.pop
+      closed_list[current_room[:node].id] = true
+      
+      current_room[:node].exits.each do |ex|
+        r = ex.to
+        next if closed_list[r.id] || open_list_members[r.id]
+        h = {:node=>r, :parent=>current_room, :dir_to_get_here=>ex.dir, :h=>calculate_h(r, found)}
+        open_list << h
+        open_list_members[r.id] = h
+        break if r.id == found.id
+      end
+    end
+    # The path is clear.  Now we must backtrade the parents ot the source node.
+    answer = open_list_members[found.id]
+    if answer != nil
+      dirs = []
+      loop do
+        break if !answer[:parent]
+        dirs.unshift(answer[:dir_to_get_here])
+        answer = answer[:parent]
+      end
+      return dirs
+    else
+      return false
+    end
+  end
+  
+  
   def generate_map 
     map = [[],[]]
     self.bfs do |r|       
