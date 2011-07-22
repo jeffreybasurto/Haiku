@@ -85,7 +85,7 @@ $(function(){
   });
 
   function create_game_element(id, oftype, img_states) {
-    var rval = "<div id='game_element_" +id+ "'><div class='"+ oftype + "'>";           
+    var rval = "<div id='game_element_" +id+ "' style='position:absolute;'><div class='"+ oftype + "'>";           
     img_states.forEach(function(each_state_arr) {
       rval += "<div class='frames' data-state='" + each_state_arr[0] + "'>";
       each_state_arr[1].forEach(function(item) {
@@ -139,7 +139,48 @@ $(function(){
       }
       else if(received["mv"]) {
         var item = received["mv"];
-        lookup_element(item[0]).appendTo(lookup_element(item[1]));
+        var towards = lookup_element(item[1]);
+        var element = lookup_element(item[0]);
+        var direction = item[2];
+        if (!direction) {
+          element.appendTo(towards);
+          return;
+        }
+        element.stop(false, true);
+        element.css("z-index", 100);
+        if (direction == "north") {
+          element.animate({
+              top: '-=60',
+            }, 400, function() {
+              element.appendTo(towards);
+              element.css("top", "0");
+          });
+        }
+        else if (direction == "east") {
+          element.animate({
+              left: '+=60',
+            }, 400, function() {
+              element.appendTo(towards);
+              element.css("left", "0");
+          });
+        }
+        else if (direction == "south") {
+          element.animate({
+              top: '+=60',
+            }, 400, function() {
+              element.appendTo(towards);
+              element.css("top", "0");
+          });
+        }
+        else if (direction == "west") {
+          element.animate({
+              left: '-=60',
+            }, 400, function() {
+              element.appendTo(towards);
+              element.css("left", "0");
+              
+          });
+        }
       }
       else if(received["new"]) {
         var item = received["new"];

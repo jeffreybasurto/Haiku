@@ -36,15 +36,13 @@ body {
 }
 
 .east-wall {
-  margin-right: -4px;
-  right: 0;
+  left: 58px;
   width: 8px;
   height: 60px;
 }
 
 .south-wall {
-  margin-bottom: -4px;
-  bottom: 0;
+  top: 58px;
   width: 60px;
   height: 8px;
 }
@@ -214,6 +212,10 @@ fieldset {margin-top: 0px;}
     color: white;
 }
 
+#tabs {
+  z-index: 1000;
+}
+
 #client-region {
 	position:relative;
 	-moz-border-radius: 15px;
@@ -227,6 +229,7 @@ fieldset {margin-top: 0px;}
 	background-color: white;
 	overflow: auto;
 	box-shadow: 10px 10px 5px black;
+	z-index: 1000;
 }
 
 fieldset { padding:0; border:0; margin-top:25px; }
