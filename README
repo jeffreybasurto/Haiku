@@ -16,4 +16,7 @@ EventMachine is used for the web-socket server.
 
 On the client side jquery is heavily leveraged.
 
+The client has a representation of the viewing area using a clever heirarchy of game objects.  They can be nested and share a common format.  Jquery can be used to find any element, append, or move them around.  The server sends either a full structure of the viewing area, or individual mv(move) or new(create) instructions for nodes. This makes updating the viewing port very efficient.
+
+
 Work in progress.  More info updated as it becomes available.
