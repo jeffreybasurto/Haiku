@@ -104,8 +104,7 @@ class Room
       
       map[0] << ["room",r.id, r.x,r.y,r.z, [["rest", ["/sprites/grass1.png"]]], false, 
                   r.players.collect do |ch| 
-                      ["pc", ch.id, 
-                        [["walking", ["/sprites/moogle_s_w0.png", "/sprites/moogle_s_w1.png"]]], "walking"]
+                      ["pc", ch.id, ch.get_sprite_states(), "walking"]
                   end]
                   
       walls = ["north", "east", "south", "west", "up", "down"] - r.exits.collect(&:dir)

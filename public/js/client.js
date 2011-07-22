@@ -137,6 +137,14 @@ $(function(){
       if(received["sound"]) {
         soundManager.play(received['sound']);
       }
+      else if (received["sprite_state"]) {
+        var item = received["sprite_state"];
+        var sp = lookup_element(item[0]);
+        sp.sprite(item[1]);
+        setTimeout(function() {
+          sp.sprite("walking");
+        }, item[2]);
+      }
       else if(received["mv"]) {
         var item = received["mv"];
         var towards = lookup_element(item[1]);

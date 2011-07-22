@@ -89,10 +89,19 @@ class Player
     "<span class=\"who_element\" id=\"player#{self.id}\">#{self.name}</span>"
   end
 
+  # this should be dynamic in the future, but for now it's the same for all.
+  def get_sprite_states()
+    [
+      ["walking", ["/sprites/moogle_s_w0.png", "/sprites/moogle_s_w1.png"]],
+      ["alert", ["/sprites/moogle_s_alert0.png"]]
+    ]
+  end
+
   def move dir
     exit =  self.room.find_exit(dir)
     if !exit
       self.packet("sound", "bounce")
+      self.packet("sprite_state", [self.id, "alert", 1000])
     else
       exit.to.players << self
       exit.to.save
