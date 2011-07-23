@@ -116,7 +116,7 @@ class Room
     closed_list = {}
     loop do
       break if open_list.empty?
-      open_list.sort!{|x, y| x[:h] <=> y[:h]}
+      open_list.sort!{|x, y| y[:h] <=> x[:h]}
       current_room = open_list.pop
       closed_list[current_room[:node].id] = true
       
