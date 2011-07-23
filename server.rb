@@ -95,11 +95,13 @@ Thread.new do
               route = ws.player.room.pathfind(value)
               if route
                 # send the route to the client so it can display in the UI the destination.
-                ws.packet("route", route)
-                
+                route_by_id = [ws.player.room.id]
                 route.each do |dir|
                   ws.player.interpret(dir)
+                  route_by_id << ws.player.room.id
                 end
+                ws.packet("route", route_by_id.zip(route))
+                
               end
             end
             

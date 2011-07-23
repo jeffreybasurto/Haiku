@@ -132,7 +132,6 @@ $(function(){
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
   ws.onmessage = function(e) { 
-      console.log(e.data);
       var pair = JSON.parse(e.data);
       var key = pair[0];
       var value = pair[1];
@@ -152,7 +151,6 @@ $(function(){
         var towards = lookup_element(item[1]);
         var element = lookup_element(item[0]);
         var direction = item[2];
-        console.log("mv packet received.");
         if (!direction) {
           element.appendTo(towards);
           return;
@@ -197,7 +195,14 @@ $(function(){
         plant_element(item[1], lookup_element(item[0]));
       }
       else if (key == "route") {
-        console.log("Route: " + value)
+        var path = value;
+        console.log(value);
+        node = path[path.length-1];
+        var found = lookup_element(node);
+        found.append('<canvas id="movement_marker" class="tile_canvas" width="60" height="60"></canvas>')
+        var context = $("#movement_marker", found)[0].getContext('2d');
+        context.fillRect(0, 0, 60, 60);
+        $("#movement_marker", found).fadeOut(300, function() { $("#movement_marker").remove(); });
       }
       else if(key == "map") {
         var data = value;
