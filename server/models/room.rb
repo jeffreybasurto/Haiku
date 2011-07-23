@@ -53,8 +53,11 @@ class Room
     Chat.all.destroy!
     r = Room.first_or_create({:vtag=>"first.room", :x=>0, :y=>0, :z=>0})
     r.create_in_direction(:east)
+    r_t_l = r.create_in_direction(:north).create_in_direction(:east).create_in_direction(:north).create_in_direction(:north).create_in_direction(:west).create_in_direction(:west).create_in_direction(:west).create_in_direction(:west).create_in_direction(:south).create_in_direction(:south).create_in_direction(:south)
+    
     r2 = r.create_in_direction(:south)
-    r2.create_in_direction(:west).create_in_direction(:south).create_in_direction(:west).create_in_direction(:west).create_in_direction(:north)
+    r_t_l2 = r2.create_in_direction(:west).create_in_direction(:south).create_in_direction(:west).create_in_direction(:west).create_in_direction(:north)
+    r_t_l.create_exit(:south, r_t_l2, true)
     r2.create_in_direction(:east)
     puts "Initialized rooms."
   end
