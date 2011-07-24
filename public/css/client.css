@@ -1,6 +1,6 @@
 body {
   background-size: 100%;
-  background-image: url('/fantasy.jpg');
+  background: url('/fantasy.jpg') no-repeat;
   overflow:hidden;
   margin: 0px;
 /*    text-shadow: 2px 2px 2px #aaa; */
