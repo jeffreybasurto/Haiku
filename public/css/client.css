@@ -29,6 +29,10 @@ img#bg {
   position: relative;
 }
 
+.tile:not(:empty) {
+  cursor: pointer;
+}
+
 .wall {
   position:absolute;
   background-color: black;
