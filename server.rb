@@ -44,7 +44,7 @@ Thread.new do
       self.state = :playing
       clear_screen
       packet "state", "playing"
-      packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
+      #packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
       
       if !self.player.room
         Room.first({:vtag=>"first.room"}).players << self.player

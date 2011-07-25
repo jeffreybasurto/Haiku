@@ -48,6 +48,10 @@ $.fn.equals = function(compareTo) {
 }
 
 $(function(){
+  //grid(50,5);
+  //grid(5, 50);
+  
+  
   var availableTags = [
     "say",
     "who",
@@ -316,7 +320,7 @@ $(function(){
 
       }
       else if(key == "chat") {
-	      var chat_box = $("#chat");
+	/*      var chat_box = $("#chat");
 	      var new_node = $(value + "<br>")
 	      chat_box.append(new_node);
 	      new_node.effect("highlight", {}, 3000);
@@ -324,6 +328,7 @@ $(function(){
 	      $("#chat-tab").effect("highlight", {}, 3000);
 	
 	      $("#chat-resize").scrollTop(chat_box.attr('scrollHeight'));
+	      */
       }
       else if(key == "cmd") {
         if(value == "clear_screen") {
@@ -353,28 +358,27 @@ $(function(){
         }
       }
       else if (key == "miniwindow") {
-	    var data = value[0];
-	    var options = value[1];
-	    var found = $(data);
-	    $("body").append(found);
-	    $("#tabs", found).tabs();
-		$(".tag-for-resizable", found).resizable();
-		$("#chat-resize", found).css("width", options["width"]);
-		$("#chat-resize", found).resizable();
-		$('#chat-resize').removeClass('ui-resizable');
+        var data = value[0];
+	      var options = value[1];
+	      var found = $(data);
+	      $("body").append(found);
+	      $("#tabs", found).tabs();
+		    $(".tag-for-resizable", found).resizable();
+		    $("#chat-resize", found).css("width", options["width"]);
+		    $("#chat-resize", found).resizable();
+		    $('#chat-resize').removeClass('ui-resizable');
 
 		
 		
-		$(found).draggable({ handle: '.ui-tabs-nav', snap:true});
+	     	$(found).draggable({ handle: '.ui-tabs-nav', snap:true});
         found.css("position", "absolute");
-		if (options["right"]) {
-		  found.animate({top:"0", right:"0"});
-		}
-		else if (options["left"]) {
-		  found.animate({left:"0", bottom:"0"});
-		}
-		else
-		{
+		    if (options["right"]) {
+		      found.animate({top:"0", right:"0"});
+		    }
+		    else if (options["left"]) {
+		      found.animate({left:"0", bottom:"0"});
+		    }
+    		else {
           found.animate({top:"0", left:"0"});
         }
         $("button", found).button();

@@ -27,6 +27,10 @@ img#bg {
   display:inline-block;
   border:1px dotted grey;
   position: relative;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .tile:not(:empty) {
@@ -39,6 +43,10 @@ img#bg {
   -moz-border-radius: 2px;
   border-radius: 2px;
   z-index: 1;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .north-wall {
@@ -74,6 +82,10 @@ img#bg {
   position: absolute;
   top: 0;
   left: 0;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .tile_canvas {
@@ -81,6 +93,10 @@ img#bg {
   top: 0;
   left: 0;
   z-index:2;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #mapper {

@@ -1,5 +1,9 @@
 var grid_width = 0;
 var grid_height = 0;
+var total_grid_width = 0;
+var total_grid_height = 0;
+var rng_y = [0,0];
+var rng_x = [0,0];
 
 function init_sprites() {
   // Build the structure for the entire screen.
@@ -19,8 +23,12 @@ function init_sprites() {
     x_reduced = true;
   }
   
+  rng_y[1] = y_to;
+  rng_x[1] = x_to;
   grid_width = x_to;
   grid_height = y_to;
+  total_grid_width = grid_width;
+  total_grid_height = grid_height;
   
   sprites_area.css('padding-left', (x_reduced ? 31 : 0) + ($(window).width() % 62 / 2));
 //  sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
@@ -30,11 +38,11 @@ function init_sprites() {
   sprites_area.empty();
 
   while (y_total < y_to) {
-    var ydiv = $("<div class='y-div'></div>")
+    var ydiv = $("<div id='y-" + y_total + "' class='y-div'></div>")
     sprites_area.append(ydiv);
     
     while(x_total < x_to) {
-      ydiv.append("<div class='tile'></div>");
+      ydiv.append("<div id='x-" + x_total + "' class='tile'></div>");
       x_total = x_total + 1;
     }
     y_total = y_total + 1;
@@ -114,7 +122,65 @@ function shift_grid_west() {
 
 
 function grid(x, y) {
-  return $($("#sprite-area .tile")[y * grid_width + x]);
+  while(x >= rng_x[1] || x <= rng_x[0] || y >= rng_y[1] || y <= rng_y[0] ) {
+    while(x >= rng_x[1]) {
+      rng_x[1] += 1;  
+      
+      var ydiv = $("#sprite-area .y-div");
+  
+      ydiv.each(function() {
+        $(this).append("<div id='x-' " + rng_x[1] + "' class='tile'></div>");
+      });
+      total_grid_width += 1;
+      var sprite_area = $("#sprite-area");
+      $(".y-div", sprite_area).each(function() { 
+        $(".tile", $(this)).filter( function(){
+          return ($(this).css('display') != 'none');
+        }).last().hide(); 
+      });
+    }
+
+    while(rng_x[0] >= x) {
+      rng_x[0] -= 1;
+      var ydiv = $("#sprite-area .y-div");
+    
+      ydiv.each(function() {
+        $(this).prepend("<div id='x-' "+ rng_x[0] +  "' class='tile'></div>");
+      });
+      total_grid_width += 1;
+      var sprite_area = $("#sprite-area");
+      $(".y-div", sprite_area).each(function() { 
+        $(".tile", $(this)).filter( function(){
+          return ($(this).css('display') != 'none');
+        }).first().hide();
+      });
+    }
+      
+    while(y >= rng_y[1]) {
+      rng_y[1] += 1;
+      
+      var ydiv = $("<div id='y-"+ rng_y[1]+"' class='y-div'></div>");
+      for(var x_total = rng_x[0];x_total < rng_x[1];x_total += 1) 
+        ydiv.append("<div id='x-" + x_total + "' class='tile'></div>");
+      
+          
+      $("#sprite-area").append(ydiv);
+      $("#sprite-area .y-div").filter(":visible").last().hide();
+    }
+
+    while(y <= rng_y[0]) {
+      rng_y[0] -= 1
+      
+      var ydiv = $("<div id='y-"+ rng_y[0]+"' class='y-div'></div>");
+      
+      for(var x_total = rng_x[0];x_total < rng_x[1];x_total += 1) 
+        ydiv.append("<div id='x-" + x_total + "' class='tile'></div>");
+      $("#sprite-area").prepend(ydiv);
+      $("#sprite-area .y-div").filter(":visible").first().hide();
+    }
+  }
+  return $("#y-" + y + " #x-" + x);
+  //return $($("#sprite-area .tile")[y * grid_width + x]);
 }
 
 function grid_center(addx, addy) {
