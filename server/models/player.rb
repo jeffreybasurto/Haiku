@@ -34,7 +34,7 @@ class Player
     c.message = value
     self.chats << c
     Player.connected.each { |p| 
-      p.packet("chat", "<span class=\"say\">#{name}: #{value.make_safe_for_web_client()}</span>") 
+      p.packet("say", [self.id, "#{value.make_safe_for_web_client()}"]) 
     }
     c.save
     self.save

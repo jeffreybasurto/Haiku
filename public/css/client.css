@@ -88,6 +88,16 @@ img#bg {
   user-select: none;
 }
 
+.tile .chat-bubble {
+  background-color: skyblue;
+  color: black;
+  z-index: 6;
+  position:relative;
+  overflow: visible;
+  white-space: nowrap;
+  font-family: "play";
+}
+
 .tile_canvas {
   position: absolute;
   top: 0;

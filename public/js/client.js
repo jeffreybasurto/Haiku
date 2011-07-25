@@ -26,6 +26,11 @@ soundManager.onready(function() {
   });
 });
 
+function getUniqueTime() {
+  var time = new Date().getTime();
+  while (time == new Date().getTime());
+  return new Date().getTime();
+}
 
 function number_range(minVal,maxVal,floatVal) {
   var randVal = minVal+(Math.random()*(maxVal-minVal));
@@ -328,7 +333,21 @@ $(function(){
       else if(key == "pan") {
         pan_grid(value[0], value[1]);
       }
+      else if(key == "say") {
+        var player = lookup_element(value[0]);
+        // We've got the node, so place a chat bubble above it for a moment.
+        var stamp = getUniqueTime();
+        player.append("<div id='" + stamp + "' class='chat-bubble'>" + value[1] + "</div> ")
+        var found = $("#" + stamp, player); 
+        found.css('left', 30 - found.width()/2);
+        found.css('top', 0 - found.height()/2);
+        found.fadeOut(5000, 'easeInCubic', function() {
+          $(this).remove();
+        });
+
+      }
       else if(key == "chat") {
+        
 	/*      var chat_box = $("#chat");
 	      var new_node = $(value + "<br>")
 	      chat_box.append(new_node);

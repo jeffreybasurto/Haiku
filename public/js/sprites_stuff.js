@@ -263,23 +263,6 @@ $(window).resize(_.debounce(function() {
 $(function() {
   init_sprites();
 });
-/*
-  grid(0,0).append(
-  "<div id='game_element_232'>" +
-    "<div class='sprite'>" +
-      "<div class='frames' data-state='walking'>" +
 
-      "</div> " +
-    "</div>" +
-  "</div> ");
-  
-
-  $("#game_element_232 .sprite").sprite('walking');
-  setTimeout(function() {
-    $("#game_element_232 .sprite").sprite('stop');
-  }, 5000);
-})
-
-*/
 
 
