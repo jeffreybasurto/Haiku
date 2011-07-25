@@ -123,9 +123,9 @@ function pan_grid_to(x, y) {
   y = Math.floor(grid_height/2) - y - Math.floor(grid_height/2);
   
   if (x > 0)
-    pan_grid("west", x);
+    pan_grid("east", x);
   else if (x < 0)
-    pan_grid("east", -x);
+    pan_grid("west", -x);
 
   if (y > 0)
     pan_grid("south", y);

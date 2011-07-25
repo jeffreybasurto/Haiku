@@ -151,6 +151,8 @@ $(function(){
         }, item[2]);
       }
       else if(key == "mv") {
+        console.log("move ");
+        console.log(value);
         var item = value;
         var towards = lookup_element(item[1]);
         var element = lookup_element(item[0]);
