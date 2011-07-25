@@ -319,6 +319,13 @@ $(function(){
         }
 
       }
+      else if(key == "center") {
+        //Center upon something.
+        pan_grid_to(value[0], value[1]);
+      }
+      else if(key == "pan") {
+        pan_grid(value[0], value[1]);
+      }
       else if(key == "chat") {
 	/*      var chat_box = $("#chat");
 	      var new_node = $(value + "<br>")

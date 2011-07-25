@@ -1,7 +1,5 @@
 var grid_width = 0;
 var grid_height = 0;
-var total_grid_width = 0;
-var total_grid_height = 0;
 var rng_y = [0,0];
 var rng_x = [0,0];
 
@@ -23,12 +21,12 @@ function init_sprites() {
     x_reduced = true;
   }
   
+  rng_y[0] = 0;
+  rng_x[0] = 0;
   rng_y[1] = y_to;
   rng_x[1] = x_to;
   grid_width = x_to;
   grid_height = y_to;
-  total_grid_width = grid_width;
-  total_grid_height = grid_height;
   
   sprites_area.css('padding-left', (x_reduced ? 31 : 0) + ($(window).width() % 62 / 2));
 //  sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
@@ -120,6 +118,33 @@ function shift_grid_west() {
   });
 }
 
+function pan_grid_to(x, y) {
+  x = x - Math.floor(grid_width/2) + Math.floor(grid_width/2);
+  y = Math.floor(grid_height/2) - y - Math.floor(grid_height/2);
+  
+  if (x > 0)
+    pan_grid("west", x);
+  else if (x < 0)
+    pan_grid("east", -x);
+
+  if (y > 0)
+    pan_grid("south", y);
+  else if (y < 0)
+    pan_grid("north", -y);
+}
+
+function pan_grid(dir, times) {
+  if (dir == "north") 
+    shift_grid_south();
+  else if (dir == "east") 
+    shift_grid_west();
+  else if (dir == "south")
+    shift_grid_north();
+  else if (dir == "west") 
+    shift_grid_east();
+  if(times > 1)
+    pan_grid(dir, times-1);
+}
 
 function grid(x, y) {
   while(x >= rng_x[1] || x <= rng_x[0] || y >= rng_y[1] || y <= rng_y[0] ) {
@@ -129,9 +154,8 @@ function grid(x, y) {
       var ydiv = $("#sprite-area .y-div");
   
       ydiv.each(function() {
-        $(this).append("<div id='x-' " + rng_x[1] + "' class='tile'></div>");
+        $(this).append("<div id='x-" + rng_x[1] + "' class='tile'></div>");
       });
-      total_grid_width += 1;
       var sprite_area = $("#sprite-area");
       $(".y-div", sprite_area).each(function() { 
         $(".tile", $(this)).filter( function(){
@@ -145,9 +169,8 @@ function grid(x, y) {
       var ydiv = $("#sprite-area .y-div");
     
       ydiv.each(function() {
-        $(this).prepend("<div id='x-' "+ rng_x[0] +  "' class='tile'></div>");
+        $(this).prepend("<div id='x-"+ rng_x[0] +  "' class='tile'></div>");
       });
-      total_grid_width += 1;
       var sprite_area = $("#sprite-area");
       $(".y-div", sprite_area).each(function() { 
         $(".tile", $(this)).filter( function(){

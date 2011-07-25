@@ -108,6 +108,7 @@ class Player
       # just update this player for everyone.
       graph = [self.id, self.room.id, dir]
       Player.connected.each { |p| p.packet("mv", graph) }
+      self.packet("pan", [dir, 1])
     end    
   end
 
@@ -115,6 +116,7 @@ class Player
     graph = self.room.generate_map();
 
     self.packet("map",graph)
+    self.packet("center", [self.room.x, self.room.y]);
   end
 
   def do_quit

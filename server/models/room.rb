@@ -52,7 +52,11 @@ class Room
     Room.all.destroy!
     Chat.all.destroy!
     r = Room.first_or_create({:vtag=>"first.room", :x=>0, :y=>0, :z=>0})
-    r.create_in_direction(:east)
+    r_e = r.create_in_direction(:east)
+    15.times do 
+      r_e = r_e.create_in_direction(:east)
+    end
+    
     r_t_l = r.create_in_direction(:north).create_in_direction(:east).create_in_direction(:north).create_in_direction(:north).create_in_direction(:west).create_in_direction(:west).create_in_direction(:west).create_in_direction(:west).create_in_direction(:south).create_in_direction(:south).create_in_direction(:south)
     
     r2 = r.create_in_direction(:south)
