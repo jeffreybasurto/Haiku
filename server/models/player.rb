@@ -101,7 +101,7 @@ class Player
     exit =  self.room.find_exit(dir)
     if !exit
       self.packet("sound", "bounce")
-      self.packet("sprite_state", [self.id, "alert", 1000])
+      Player.connected.each { |p| p.packet("sprite_state", [self.id, "alert", 1000])}
     else
       exit.to.players << self
       exit.to.save
