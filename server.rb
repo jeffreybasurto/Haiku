@@ -55,7 +55,7 @@ Thread.new do
       Player.connected.each { |p|
         p.info("#{self.player.name} has entered the game.");
         p.packet("new", [self.player.room.id ,["pc", self.player.id, 
-          [["walking", ["/sprites/moogle_s_w0.png", "/sprites/moogle_s_w1.png"]]], "walking"]]);
+          p.get_sprite_states(), "walking"]]);
         p.socket.logout() if (p.id == self.player.id) 
       }
       Player.connected << self.player 
