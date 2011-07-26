@@ -1,13 +1,13 @@
 .random-interface {
   background-color: white;
   margin: 0px auto;
-  text-align:left;
+  text-align:center;
 	width: 50px;
 }
 
 .outter-random-interface {
-  width: 400px;
-  height: 350px;
+  width: 120px;
+  height: 90px;
   border:1px dotted blue;
   display: table-cell;
   vertical-align: middle;

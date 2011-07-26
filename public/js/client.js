@@ -366,7 +366,7 @@ $(function(){
       } 
       else if (key == "roll") {
         console.log("Rolling number");
-        animate("#"+value[0], 2000, "easeOutExpo");
+        animate("#"+value[0], 3000, "random");
         
       }
       else if(key == "scrollback") {
