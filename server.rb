@@ -46,10 +46,10 @@ Thread.new do
       packet "state", "playing"
       #packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
             
-            if !self.player.room
-              Room.first({:vtag=>"first.room"}).players << self.player
-              self.player.room.save
-            end
+      if !self.player.room
+        Room.first({:vtag=>"first.room"}).players << self.player
+        self.player.room.save
+      end
       Player.connected.select {|p| p.id == self.player.id}.each {|pl| pl.socket.logout();}
       Player.connected.each { |p| p.packet("new", [self.player.room.id ,["pc", self.player.id, p.get_sprite_states(), "walking"]]) }
       

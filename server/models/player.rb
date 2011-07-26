@@ -47,6 +47,10 @@ class Player
     self.packet("dialog", found.join("<br>"))
   end
   
+  def do_random
+    packet("dialog", "<div class='outter-random-interface'><div class=\"random-interface\">#{rand(100)}</div></div>");
+  end
+  
   def guider str
     packet "guider", str
   end
@@ -55,6 +59,8 @@ class Player
     str.lstrip!
     args = str.split(" ")
     case args[0]
+    when "random"
+      do_random();
     when "test"
       do_test();
     when "look"
