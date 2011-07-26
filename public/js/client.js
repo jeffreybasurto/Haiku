@@ -366,7 +366,7 @@ $(function(){
       } 
       else if (key == "roll") {
         console.log("Rolling number");
-        animate("#"+value[0], 3000, "random");
+        animate("#"+value[0], 3500, "random");
         
       }
       else if(key == "scrollback") {
