@@ -364,6 +364,11 @@ $(function(){
             console.log("Screen cleared.");
         }
       } 
+      else if (key == "roll") {
+        console.log("Rolling number");
+        animate("#"+value[0], 2000, "easeOutExpo");
+        
+      }
       else if(key == "scrollback") {
         $("button", scroll(value)).button();
       } 

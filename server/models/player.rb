@@ -48,7 +48,9 @@ class Player
   end
   
   def do_random
-    packet("dialog", "<div class='outter-random-interface'><div class=\"random-interface\">#{rand(100)}</div></div>");
+    packet_idn = "counter_#{Time.now.to_i}"
+    packet("dialog", "<div class='outter-random-interface'><div class=\"random-interface\"><span id='#{packet_idn}'>#{rand(100)}</span></div></div>");
+    packet("roll", [packet_idn])
   end
   
   def guider str
