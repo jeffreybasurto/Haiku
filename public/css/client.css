@@ -222,7 +222,7 @@ fieldset {margin-top: 0px;}
 }
 
 #login-screen {
-	font-family: Cabin Sketch, 'PT Serif', Arial;
+	font-family: Cabin, 'PT Serif', Arial;
 }
 
 #login-screen h1 {
@@ -240,7 +240,7 @@ fieldset {margin-top: 0px;}
 .logo {
 	text-shadow: 4px 4px 4px #bbb;
 	color: black;
-	font-family: 'Cabin Sketch', arial, serif;
+	font-family: Cabin, arial, serif;
 }
 
 #scrolling-region {
