@@ -1,0 +1,49 @@
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<html>
+  <head>
+    
+       <link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
+       <link type="text/css" href="css/webgl.css?<%=Time.now()%>" rel="Stylesheet">
+       
+       <script type="text/javascript" src="js/PhiloGL.js"></script>
+       <script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+       <script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
+       <script type="text/javascript" src="js/webgl.js?<%=Time.now()%>"> </script>
+       
+       <script id="shader-fs" type="x-shader/x-fragment"> 
+         #ifdef GL_ES
+         precision highp float;
+         #endif
+
+         varying vec2 vTextureCoord;
+
+         uniform sampler2D uSampler;
+
+         void main(void) {
+           gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+         }
+       </script> 
+
+       <script id="shader-vs" type="x-shader/x-vertex"> 
+         attribute vec3 aVertexPosition;
+         attribute vec2 aTextureCoord;
+
+         uniform mat4 uMVMatrix;
+         uniform mat4 uPMatrix;
+
+         varying vec2 vTextureCoord;
+
+
+         void main(void) {
+           gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+           vTextureCoord = aTextureCoord;
+         }
+       </script>
+  </head>
+  <body>
+    <div>Grumpy wizards make toxic brew for the evil Queen and Jack. One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked.</div>
+    
+    <canvas id="lesson01-canvas" width="500" height="500"></canvas>     
+  </body>
+</html>

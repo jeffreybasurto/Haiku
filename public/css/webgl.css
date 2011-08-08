@@ -1,0 +1,13 @@
+body { background-color: white;}
+div { 
+  width:500px; 
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  border: 2px dashed blue;
+  color:blue;
+  background-color:white;
+  margin-top: 110px;
+  margin-left: 10px;
+  padding: 25px;
+}
+canvas {position:absolute; top:0; left:25px;pointer-events:none }
