@@ -52,11 +52,7 @@ $.fn.equals = function(compareTo) {
   return true; 
 }
 
-$(function(){
-  //grid(50,5);
-  //grid(5, 50);
-  
-  
+$(function(){  
   var availableTags = [
     "say",
     "who",

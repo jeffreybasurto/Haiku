@@ -28,10 +28,10 @@ function init_sprites() {
   grid_width = x_to;
   grid_height = y_to;
   
-  sprites_area.css('padding-left', (x_reduced ? 31 : 0) + ($(window).width() % 62 / 2));
-//  sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
-  sprites_area.css('padding-top', (y_reduced ? 31 : 0) +($(window).height() % 62 / 2));
-//  sprites_area.css('margin-bottom', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
+  sprites_area.css('margin-left', (x_reduced ? 31 : 0) + ($(window).width() % 62 / 2));
+ // sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
+  sprites_area.css('margin-top', (y_reduced ? 31 : 0) +($(window).height() % 62 / 2));
+ // sprites_area.css('margin-bottom', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
 
   sprites_area.empty();
 

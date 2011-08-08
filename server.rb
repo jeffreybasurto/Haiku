@@ -223,6 +223,10 @@ get '/' do
   erb :client, :locals=>{:host=>request.env["SERVER_NAME"]}
 end
 
+get '/webgl' do
+  erb :webgl_client, :locals=>{:host=>request.env["SERVER_NAME"]}
+end
+
 post '/option' do
   session[:muted] = params["mute"]
 end
