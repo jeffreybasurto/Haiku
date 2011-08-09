@@ -80,7 +80,7 @@ $(function () {
               20, 21, 22, 20, 22, 23]
   });
 
-  PhiloGL('lesson01-canvas', {
+  PhiloGL('cube', {
     program: {
       from: 'ids',
       vs: 'shader-vs',

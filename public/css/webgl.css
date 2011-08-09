@@ -10,4 +10,4 @@ div {
   margin-left: 10px;
   padding: 25px;
 }
-canvas {position:absolute; top:0; left:25px;pointer-events:none }
+canvas {position:absolute; top:0; left:25px;pointer-events:none; }
