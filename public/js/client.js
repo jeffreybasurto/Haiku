@@ -52,7 +52,10 @@ $.fn.equals = function(compareTo) {
   return true; 
 }
 
-$(function(){  
+
+
+
+$(function(){
   var availableTags = [
     "say",
     "who",

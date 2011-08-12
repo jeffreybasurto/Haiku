@@ -1,0 +1,20 @@
+.ui-selectable-helper {
+  border: 2px dotted silver; 
+}
+
+.tile.ui-selected .wall {
+  border: 1px dashed blue;
+}
+
+.tile.ui-selected:not(:empty) {
+  border: 1px solid blue;
+  background-color: blue;
+}
+
+.tile.ui-selected img {
+  opacity:0.5;
+}
+
+.tile.ui-selecting {
+  border: 1px dashed orange;
+}
