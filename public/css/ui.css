@@ -2,16 +2,20 @@
   border: 2px dotted silver; 
 }
 
-.tile.ui-selected .wall {
-  border: 1px dashed blue;
+.tile.ui-selected .wall, .tile.ui-selected:not(:empty)   {
+  background-color: blue;
 }
 
 .tile.ui-selected:not(:empty) {
   border: 1px solid blue;
-  background-color: blue;
 }
 
-.tile.ui-selected img {
+.tile.ui-selecting .wall, .tile.ui-selecting:not(:empty) {
+  background-color: orange;
+}
+
+
+.tile.ui-selecting > .room > .frames > img, .tile.ui-selected > .room > .frames > img  {
   opacity:0.5;
 }
 

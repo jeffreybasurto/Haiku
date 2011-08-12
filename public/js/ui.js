@@ -1,13 +1,7 @@
 $(function(){  
   $("#sprite-area").selectable({ 
     distance: 4, 
-    filter: '.tile',
-    selected: function(event, ui) {
-      //$(ui.selected).addClass("dirty_test");
-    },
-    unselected: function(event, ui) {
-      //$(ui.selected).removeClass("dirty_test");
-    }
+    filter: '.tile'
   }); 
 });
 
