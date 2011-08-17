@@ -155,8 +155,6 @@ $(function(){
         }, item[2]);
       }
       else if(key == "mv") {
-        console.log("move ");
-        console.log(value);
         var item = value;
         var towards = lookup_element(item[1]);
         var element = lookup_element(item[0]);
@@ -168,7 +166,7 @@ $(function(){
         //element.stop(false, true);
         element.css("z-index", 100);
         if (direction == "north") {
-          element.animate({ top: '-=60'}, 250);
+          element.animate({ top: '-=60'}, 250, "linear");
           element.queue(function() {  
             element.appendTo(towards);
             element.css("top", "0");
@@ -176,7 +174,7 @@ $(function(){
           });
         }
         else if (direction == "east") {
-          element.animate({ left: '+=60'}, 250);
+          element.animate({ left: '+=60'}, 250, "linear");
           element.queue(function() {  
             element.appendTo(towards);
             element.css("left", "0");
@@ -184,7 +182,7 @@ $(function(){
           });
         }
         else if (direction == "south") {
-          element.animate({ top: '+=60'}, 250);
+          element.animate({ top: '+=60'}, 250, "linear");
           element.queue(function() {  
             element.appendTo(towards);
             element.css("top", "0");
@@ -192,7 +190,7 @@ $(function(){
           });
         }
         else if (direction == "west") {
-          element.animate({ left: '-=60'}, 250);
+          element.animate({ left: '-=60'}, 250, "linear");
           element.queue(function() {  
             element.appendTo(towards);
             element.css("left", "0");
