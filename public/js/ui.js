@@ -1,7 +1,9 @@
 $(function(){  
   $("#sprite-area").selectable({ 
     distance: 4, 
-    filter: '.tile'
+  //  filter: '.tile'
+    filter: '* > .tile',
+    autoRefresh: false
   }); 
 });
 

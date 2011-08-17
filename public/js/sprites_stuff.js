@@ -46,6 +46,8 @@ function init_sprites() {
     y_total = y_total + 1;
     x_total = 0;
   }
+  
+  $("#sprite-area").selectable("refresh");
 }
 
 function shift_grid_north() {  
