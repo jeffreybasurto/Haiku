@@ -204,7 +204,6 @@ $(function(){
       }
       else if (key == "route") {
         var path = value;
-        console.log(value);
         node = path[path.length-1];
         var found = lookup_element(node);
         found.append('<canvas id="movement_marker" class="tile_canvas" width="60" height="60"></canvas>')

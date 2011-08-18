@@ -2,10 +2,18 @@ var grid_width = 0;
 var grid_height = 0;
 var rng_y = [0,0];
 var rng_x = [0,0];
+var $sprite_area;
+
+var refresh_selections = _.debounce(function() {
+  $sprite_area.selectable("refresh");
+}, 15);  
+
+$(function() {
+  $sprite_area = $("#sprite-area");
+});
 
 function init_sprites() {
   // Build the structure for the entire screen.
-  var sprites_area = $("#sprite-area");
   var y_total = 0,
       x_total = 0,
       y_reduced = false,
@@ -28,16 +36,14 @@ function init_sprites() {
   grid_width = x_to;
   grid_height = y_to;
   
-  sprites_area.css('margin-left', (x_reduced ? 31 : 0) + ($(window).width() % 62 / 2));
- // sprites_area.css('margin-right',(x_reduced ? 31 : 0) + (sprites_area.width() % 62 / 2));
-  sprites_area.css('margin-top', (y_reduced ? 31 : 0) +($(window).height() % 62 / 2));
- // sprites_area.css('margin-bottom', (y_reduced ? 31 : 0) + (sprites_area.height() % 62 / 2));
+  $sprite_area.css('margin-left', (x_reduced ? 31 : 0) + ($(window).width() % 62 / 2));
+  $sprite_area.css('margin-top', (y_reduced ? 31 : 0) +($(window).height() % 62 / 2));
 
-  sprites_area.empty();
+  $sprite_area.empty();
 
   while (y_total < y_to) {
     var ydiv = $("<div id='y-" + y_total + "' class='y-div'></div>")
-    sprites_area.append(ydiv);
+    $sprite_area.append(ydiv);
     
     while(x_total < x_to) {
       ydiv.append("<div id='x-" + x_total + "' class='tile'></div>");
@@ -46,77 +52,51 @@ function init_sprites() {
     y_total = y_total + 1;
     x_total = 0;
   }
-  
-  $("#sprite-area").selectable("refresh");
+  refresh_selections();  
 }
 
 function shift_grid_north() {  
-  var sprite_area = $("#sprite-area");
-
-  $(".y-div", sprite_area).filter(":visible").first().hide();
+  $(".y-div", $sprite_area).filter(":visible").first().hide();
   
-  var found = $(".y-div", sprite_area).filter(":visible").last().next(".y-div");
-  found.show();
-  if (found.length == 0) {  
-    var ydiv = $("<div class='y-div'></div>");
+  if ($(".y-div", $sprite_area).filter(":visible").last().next(".y-div").show().length == 0) {
+    var ydiv = "<div class='y-div'>";    
     for(var x_total = 0;x_total < grid_width;x_total += 1) 
-      ydiv.append("<div class='tile'></div>");
-    sprite_area.append(ydiv);
-  }
-}
+      ydiv += "<div class='tile'></div>";
+    ydiv += "</div>";
+    $sprite_area.append(ydiv);
+  }}
 
 function shift_grid_south() {  
-  var sprite_area = $("#sprite-area");
-
-  $(".y-div", sprite_area).filter(":visible").last().hide();
+  $(".y-div", $sprite_area).filter(":visible").last().hide();
   
-  var found = $(".y-div", sprite_area).filter(":visible").first().prev(".y-div");
-  found.show();
-  if (found.length == 0) {  
-    var ydiv = $("<div class='y-div'></div>");
+  if ($(".y-div", $sprite_area).filter(":visible").first().prev(".y-div").show().length == 0) {
+    var ydiv = "<div class='y-div'>";
     for(var x_total = 0;x_total < grid_width;x_total += 1) 
-      ydiv.append("<div class='tile'></div>");
-    sprite_area.prepend(ydiv);
-  }
+      ydiv += "<div class='tile'></div>";
+    ydiv += "</div>";
+    $sprite_area.prepend(ydiv);
+  }  
 }
 
 function shift_grid_east() {  
-  var sprite_area = $("#sprite-area");
-  $(".y-div", sprite_area).each(function() { 
-    $(".tile", $(this)).filter( function(){
+  $(".y-div", $sprite_area).each(function() {
+    var cache = $(this).children(".tile").filter(function() {
       return ($(this).css('display') != 'none');
-    }).last().hide(); 
-  });
-
-  var found = $(".y-div", sprite_area);
-  found.each(function() {
-    var found2 = $(this).children(".tile").filter(function(){
-      return ($(this).css('display') != 'none');
-    }).first().prev(".tile");
-    found2.show();
-    if (found2.length == 0) {
+    });
+    cache.last().hide();
+    if (cache.first().prev(".tile").show().length == 0)
       $(this).prepend("<div class='tile'></div>");
-    }
   });
 }
 
 function shift_grid_west() {  
-  var sprite_area = $("#sprite-area");
-  $(".y-div", sprite_area).each(function() { 
-    $(".tile", $(this)).filter( function(){
+  $(".y-div", $sprite_area).each(function() { 
+    var cache = $(this).children(".tile").filter( function(){
       return ($(this).css('display') != 'none');
-    }).first().hide();
-  });
-  
-  var found = $(".y-div", sprite_area);
-  found.each(function() {
-    var found2 = $(this).children(".tile").filter(function(){
-      return ($(this).css('display') != 'none');
-    }).last().next(".tile");
-    found2.show();
-    if (found2.length == 0) {
+    });
+    cache.first().hide();
+    if (cache.last().next(".tile").show().length == 0)
       $(this).append("<div class='tile'></div>");
-    }
   });
 }
 
@@ -133,7 +113,10 @@ function pan_grid_to(x, y) {
     pan_grid("south", y);
   else if (y < 0)
     pan_grid("north", -y);
+
 }
+
+
 
 function pan_grid(dir, times) {
   if (dir == "north") 
@@ -146,6 +129,8 @@ function pan_grid(dir, times) {
     shift_grid_east();
   if(times > 1)
     pan_grid(dir, times-1);
+  else
+    refresh_selections();
 }
 
 function grid(x, y) {
