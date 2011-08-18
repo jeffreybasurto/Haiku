@@ -1,0 +1,29 @@
+.button {
+  display:inline-block;
+  height:35px; 
+  border : 1px solid #666;
+  color: white;
+  text-align:center;
+  text-decoration:  none;
+  font-weight: bold;
+  -webkit-transition: background-color 0.1s linear;  
+  -moz-transition: background-color 0.1s linear;  
+  -o-transition: background-color 0.1s linear;  
+  -webkit-transition: height 0.1s linear;  
+  -moz-transition: height 0.1s linear;  
+  -o-transition: height 0.1s linear; 
+   
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.button span { position:relative;top:7px; padding:6px;}
+
+.selected { height:45px; }
+
+.button {  background-color: #1996d0; }
+.button:hover {  background-color: #1dacef; }
+.button:active {  background-color: #69cfff;   }
