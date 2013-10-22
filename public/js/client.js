@@ -40,16 +40,16 @@ function number_range(minVal,maxVal,floatVal) {
 jQuery.fn.reverse = [].reverse;
 
 
-$.fn.equals = function(compareTo) { 
-  if (!compareTo || !compareTo.length || this.length!=compareTo.length) { 
-    return false; 
-  } 
-  for (var i=0; i<this.length; i++) { 
-    if (this[i]!==compareTo[i]) { 
-      return false; 
-    } 
-  } 
-  return true; 
+$.fn.equals = function(compareTo) {
+  if (!compareTo || !compareTo.length || this.length!=compareTo.length) {
+    return false;
+  }
+  for (var i=0; i<this.length; i++) {
+    if (this[i]!==compareTo[i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 
@@ -77,7 +77,7 @@ $(function(){
 	  div.load('feedback_form.html');
 	  $('body').prepend(div);
 	  $("button", div).button();
-				
+
       div.dialog({"modal":true});
 	  //After ataching the popup to the dom - load the form by ajax
 	  $('#feedback-form').live('submit', function () {
@@ -93,18 +93,18 @@ $(function(){
   });
 
   function create_game_element(id, oftype, img_states) {
-    var rval = "<div class='" + oftype + "' id='game_element_" +id+ "' style='position:absolute;'>";           
+    var rval = "<div class='" + oftype + "' id='game_element_" +id+ "' style='position:absolute;'>";
     img_states.forEach(function(each_state_arr) {
       rval += "<div class='frames' data-state='" + each_state_arr[0] + "'>";
       each_state_arr[1].forEach(function(item) {
         rval += "<img src='" + item  +"'>";
-      });           
+      });
       rval += "</div>";
     });
     rval +="</div>";
     return rval;
   }
-  
+
   function plant_element(item, into) {
     if (!into) {
       var new_div =  $(create_game_element(item[1], item[0], item[5]));
@@ -131,15 +131,16 @@ $(function(){
       }
     }
   }
-  
+
   function lookup_element(idn) {
     return $("#game_element_" + idn);
   }
-  
+
   // Let the library know where WebSocketMain.swf is:
   WEB_SOCKET_SWF_LOCATION = "WebSocketMain.swf";
+  console.log(window.location.hostname);
   ws = new WebSocket('ws://'+window.location.hostname+':8080');
-  ws.onmessage = function(e) { 
+  ws.onmessage = function(e) {
       var pair = JSON.parse(e.data);
       var key = pair[0];
       var value = pair[1];
@@ -167,7 +168,7 @@ $(function(){
         element.css("z-index", 100);
         if (direction == "north") {
           element.animate({ top: '-=60'}, 250, "linear");
-          element.queue(function() {  
+          element.queue(function() {
             element.appendTo(towards);
             element.css("top", "0");
             $(this).dequeue();
@@ -175,7 +176,7 @@ $(function(){
         }
         else if (direction == "east") {
           element.animate({ left: '+=60'}, 250, "linear");
-          element.queue(function() {  
+          element.queue(function() {
             element.appendTo(towards);
             element.css("left", "0");
             $(this).dequeue();
@@ -183,7 +184,7 @@ $(function(){
         }
         else if (direction == "south") {
           element.animate({ top: '+=60'}, 250, "linear");
-          element.queue(function() {  
+          element.queue(function() {
             element.appendTo(towards);
             element.css("top", "0");
             $(this).dequeue();
@@ -191,7 +192,7 @@ $(function(){
         }
         else if (direction == "west") {
           element.animate({ left: '-=60'}, 250, "linear");
-          element.queue(function() {  
+          element.queue(function() {
             element.appendTo(towards);
             element.css("left", "0");
             $(this).dequeue();
@@ -213,9 +214,9 @@ $(function(){
       }
       else if(key == "map") {
         var data = value;
-        init_sprites();      
+        init_sprites();
         // Now we should have an array of rooms.
-        data[0].forEach(function(item) {          
+        data[0].forEach(function(item) {
           plant_element(item, false);
         });
         data[1].forEach(function(item) {
@@ -231,7 +232,7 @@ $(function(){
       }
       else if(key == "form") {
         var data = value;
-        eval("var passed_buttons =" + data[1]["buttons"]); 
+        eval("var passed_buttons =" + data[1]["buttons"]);
         scroll(data[0]).dialog({
           show: data[1]["show"],
           hide: data[1]["hide"],
@@ -250,7 +251,7 @@ $(function(){
 	        '<li id="info"> Info </li>' +
 	      '</ul>' +
 	    '</div>');
-	    $("#scrolling-region").append(who); 
+	    $("#scrolling-region").append(who);
 		$(".who_element").contextMenu('myMenu1', {
 	      bindings: {
 	        'pm': function(t) {
@@ -261,7 +262,7 @@ $(function(){
 	        }
 	      }
 	    });
-	
+
         who.dialog({
 	            modal: true,
 	            buttons: { "Ok": function() { $(this).dialog("close"); }  }
@@ -288,7 +289,7 @@ $(function(){
 		    position: 11,
 		    title: "Return key for Command Line!",
 		    width: 450
-		  });		
+		  });
 		  guider.createGuider({
 			attachTo: "#feedback-badge",
 			buttons:[{name: "Next"}],
@@ -308,8 +309,8 @@ $(function(){
 		    overlay: true,
 		    title: "Game Menu",
 		    position:10
-		
-			
+
+
 		  })
 		  guider.createGuider({
 		    buttons: [{name: "Close", onclick: guider.hideAll }],
@@ -334,7 +335,7 @@ $(function(){
         // We've got the node, so place a chat bubble above it for a moment.
         var stamp = getUniqueTime();
         player.append("<div id='" + stamp + "' class='chat-bubble'>" + value[1] + "</div> ")
-        var found = $("#" + stamp, player); 
+        var found = $("#" + stamp, player);
         found.css('left', 30 - found.width()/2);
         found.css('top', 0 - found.height()/2);
         found.fadeOut(5000, 'easeInCubic', function() {
@@ -343,14 +344,14 @@ $(function(){
 
       }
       else if(key == "chat") {
-        
+
 	/*      var chat_box = $("#chat");
 	      var new_node = $(value + "<br>")
 	      chat_box.append(new_node);
 	      new_node.effect("highlight", {}, 3000);
-	
+
 	      $("#chat-tab").effect("highlight", {}, 3000);
-	
+
 	      $("#chat-resize").scrollTop(chat_box.attr('scrollHeight'));
 	      */
       }
@@ -359,15 +360,15 @@ $(function(){
             $("#scrolling-region").empty();
             console.log("Screen cleared.");
         }
-      } 
+      }
       else if (key == "roll") {
         console.log("Rolling number");
         animate("#"+value[0], 3500, "random");
-        
+
       }
       else if(key == "scrollback") {
         $("button", scroll(value)).button();
-      } 
+      }
       else if(key == "state") {
 	      state = value;
 	      if(state == "playing") {
@@ -379,7 +380,7 @@ $(function(){
           $("#client-region").css("bottom", $(window).height());
           $("#client-region").animate({bottom: 15, left: $(window).width()/2 - $("#client-region").width()/2 }, "slow");
           $("#test_container").append($("#client-region"));
-          
+
   	    }
         else if (state == "login") {
 	        $("#wrapper").css("vertical-align", "middle");
@@ -397,8 +398,8 @@ $(function(){
 		    $("#chat-resize", found).resizable();
 		    $('#chat-resize').removeClass('ui-resizable');
 
-		
-		
+
+
 	     	$(found).draggable({ handle: '.ui-tabs-nav', snap:true});
         found.css("position", "absolute");
 		    if (options["right"]) {
@@ -426,34 +427,34 @@ $(function(){
 			hide: "explode",
 			open: function(event, ui) { game_focus = false;},
 			beforeClose: function(event, ui) { game_focus = true;}
-			
+
 		  });
       }
       else if (key == "reload") {
         window.location.href=window.location.href;
       }
   };
-  ws.onclose = function() { 
+  ws.onclose = function() {
 	$("#debug").removeClass( 'ui-state-highlight' );
 	debug("Socket closed.");
-	$("#debug").addClass('ui-state-error'); 
-	
+	$("#debug").addClass('ui-state-error');
+
   };
   ws.onopen = function() {
 	$("#debug").removeClass( 'ui-state-error' );
-	debug("Connected."); 
+	debug("Connected.");
 	$("#debug").addClass( "ui-state-highlight" );
   };
 });
 
-function debug(str){ 
+function debug(str){
   $("#debug").empty();
-  $("#debug").append(str); 
+  $("#debug").append(str);
 };
 
 function scroll(str) {
   var div = $('<div>'+str+'</div>');
-  $("#scrolling-region").append(div); 
+  $("#scrolling-region").append(div);
   //$(window).trigger("resize");
   return div;
 };
@@ -487,21 +488,21 @@ $(document).keypress(function(e) {
       }
       else if (e.which == '119') {
         ws.send(JSON.stringify({"post":"command_line="+"north"}));
-      } 
+      }
       else if (e.which== '97') {
         ws.send(JSON.stringify({"post":"command_line="+"west"}));
       }
       else if (e.which == '115') {
-        ws.send(JSON.stringify({"post":"command_line="+"south"}));        
+        ws.send(JSON.stringify({"post":"command_line="+"south"}));
       }
     }
-    
+
     if (e.which == 13) {
       var cl = $("#command-line");
 	    if (!cl.val() || bar_hidden) {
 		    bar_hidden = !bar_hidden;
 		    cl.toggle();
-	    }    
+	    }
       if (!bar_hidden) {
 	      if (cl.val()) {
 	        ws.send(JSON.stringify({"post":"command_line="+cl.val()}));
@@ -525,7 +526,7 @@ $('.tile').live('click', function() {
 });
 
 $(".who_element").live({
-  mouseenter: function() { 
+  mouseenter: function() {
 	$(this).toggleClass( "selection", 400 );
   },
   mouseleave: function () {
@@ -541,7 +542,7 @@ $(window).resize(function() {
 
 $("form", $("#wrapper")).live("submit", function() {
   if ($("#command-line-form").equals($(this))) {
-	  return false;	
+	  return false;
 	}
   ws.send(JSON.stringify({"post":$(this).serialize()}));
   return false;
@@ -601,12 +602,12 @@ function unmute_sounds(send_msg) {
   soundManager.unmute();
   $('#unmute_button').hide();
   $('#mute_button').show();
-  
+
   if (send_msg) {
-    $.ajax({  
-      type: "POST",  
-      url: "/option",  
-      data: "mute="+0,  
+    $.ajax({
+      type: "POST",
+      url: "/option",
+      data: "mute="+0,
     });
   }
 }
@@ -616,12 +617,12 @@ function mute_sounds(send_msg) {
   soundManager.mute();
   $('#mute_button').hide();
   $('#unmute_button').show();
-  
+
   if (send_msg) {
-    $.ajax({  
-      type: "POST",  
-      url: "/option",  
-      data: "mute="+1,  
+    $.ajax({
+      type: "POST",
+      url: "/option",
+      data: "mute="+1,
     });
   }
 }

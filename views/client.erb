@@ -7,27 +7,27 @@
     <link href='http://fonts.googleapis.com/css?family=Play&v1' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=PT+Serif&v1' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Coming+Soon&v1' rel='stylesheet' type='text/css'>
-    
-    <link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">	
+
+    <link type="text/css" href="css/redmond/jquery-ui-1.8.13.custom.css" rel="Stylesheet">
     <link rel="stylesheet" href="css/guider.css" type="text/css">
     <link rel="stylesheet" href="css/feedbackBadge.css" type="text/css">
     <link type="text/css" href="css/client.css?<%=Time.now()%>" rel="Stylesheet">
     <link type="text/css" href="css/dice_roll.css?<%=Time.now()%>" rel="Stylesheet">
     <link type="text/css" href="css/ui.css?<%=Time.now()%>" rel="Stylesheet">
-    
+
 
     <script>
-      WEB_SOCKET_DEBUG = true; 
+      WEB_SOCKET_DEBUG = true;
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript"></script>  
-    
-    <script type="text/javascript" src="js/web_socket.js"></script>    
-    
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>  
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js" type="text/javascript"></script>  
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="js/web_socket.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js" type="text/javascript"></script>
+
     <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js" type="text/javascript"></script>
-    
+
     <script type="text/javascript" src="js/guider.js"></script>
     <script type="text/javascript" src="js/feedback.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
@@ -36,22 +36,22 @@
     <script type="text/javascript" src="js/client.js?<%=Time.now()%>"></script>
     <script type="text/javascript" src="js/dice_roll.js?<%=Time.now()%>"> </script>
     <script type="text/javascript" src="js/ui.js?<%=Time.now()%>"></script>
-    
+
     <script type="text/coffeescript" src="js/client-coffee.coffee"></script>
     <script type="text/coffeescript" src="js/ui-coffee.coffee"></script>
     <script type="text/javascript" src="js/coffee-script.js"></script>
-    
-    
-    <script>  
-      $(function() {          
+
+
+    <script>
+      $(function() {
           <% if session[:muted] == "1" %>
             mute_sounds();
-          <% end %>          
+          <% end %>
       })
     </script>
   </head>
   <body>
-    <img src="fantasy.jpg" id="bg"></img>    
+    <img src="fantasy.jpg" id="bg"></img>
     <div id="wrapper2">
       <div id="sprite-area">
       </div>
@@ -68,14 +68,14 @@
             <img src="spinner_loading.gif" alt="loading"></img>
           </div>
           <form id="command-line-form">
-      	    <input type="text" name="command_line" id="command-line" class="text"> 
+      	    <input type="text" name="command_line" id="command-line" class="text">
       	    <img src="return_key.png" alt="return" width="37" height="37" style="float:right;display:none;"></img>
           </form>
 	    </div>
 	  </div>
-	</div>	
+	</div>
 	<!--[if IE]>
-      <script type="text/javascript" 
+      <script type="text/javascript"
        src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
 
       <style>

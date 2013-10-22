@@ -17,7 +17,7 @@ Dir[File.dirname(__FILE__) + '/server/models/*.rb'].each {|file| load file }
 DataMapper.finalize # all models are defined in the files loaded above.
 DataMapper.auto_upgrade!
 
-Room.startup 
+Room.startup
 
 $welcome = File.open("server/data/welcome.htm", 'rb') { |f| f.read }
 $creation = File.open("server/data/creation.htm", 'rb') {|f| f.read }
@@ -32,7 +32,7 @@ Thread.abort_on_exception = true
 Thread.new do
   Thread.abort_on_exception = true
 
-  class EventMachine::WebSocket::Connection
+  class WebSocket::EventMachine::Connection
     attr_accessor :player, :state
     def packet type, data
       send JSON.generate([type,data])
@@ -45,32 +45,32 @@ Thread.new do
       clear_screen
       packet "state", "playing"
       #packet "miniwindow", [load_data("chat_window.htm"), {:width=>"500px", :resizable=>true}]
-            
+
       if !self.player.room
         Room.first({:vtag=>"first.room"}).players << self.player
         self.player.room.save
       end
       Player.connected.select {|p| p.id == self.player.id}.each {|pl| pl.socket.logout();}
       Player.connected.each { |p| p.packet("new", [self.player.room.id ,["pc", self.player.id, p.get_sprite_states(), "walking"]]) }
-      
+
       self.player.socket = self
-      Player.connected << self.player 
-      
+      Player.connected << self.player
+
 
       self.player.do_look()
     end
-    
+
     def logout
       self.player = nil
       self.state = :login
       self.packet "reload", "now"
     end
   end
-  
+
   puts "Starting websocket server."
   EM::run do
-    EventMachine::WebSocket.start(:host => "0.0.0.0", :port => 8080) do |ws|
-      ws.onopen do  
+    WebSocket::EventMachine::Server.start(:host => "0.0.0.0", :port => 8080) do |ws|
+      ws.onopen do
         ws.state = :login
         ws.player = Player.new
         ws.player.socket = ws
@@ -78,11 +78,11 @@ Thread.new do
         ws.packet "scrollback", $welcome
         ws.packet "state", "login"
         ws.packet "miniwindow", [load_data("menu.htm"), {:right=>"0", :top=>"0"}]
-        
+
         #ws.packet "miniwindow", [load_data("soundbar.htm"), {:left=>"0", :bottom=>"0"}]
       end
       # When we receive a message just echo it back for now.
-      ws.onmessage do |msg| 
+      ws.onmessage do |msg, type|
         JSON.parse(msg).each do |key, value|
           case key
           when "path"
@@ -96,10 +96,10 @@ Thread.new do
                   route_by_id << ws.player.room.id
                 end
                 ws.packet("route", route_by_id.zip(route))
-                
+
               end
             end
-            
+
           when "set"
             session[value[0].intern] = value[1];
           when "click" # one of our registered buttons was clicked.
@@ -142,7 +142,7 @@ Thread.new do
                             ws.send(JSON.stringify({"create_account":$("#creation_form").serialize()}));
                             $( this ).dialog( 'close' );
                           }
-                        },	
+                        },
                         Cancel: function() {
               			      $( this ).dialog( 'close' );
               	        }
@@ -172,7 +172,7 @@ Thread.new do
             else
               ws.packet "dialog", "You cannot make a new account now."
             end
-            
+
           when "post"
             # the user is posting data
             found = parse_query(value)
@@ -193,7 +193,7 @@ Thread.new do
                  else
                    ws.player = user
                    ws.login();
-                   if (user.first_login || user.name == "Rtest") 
+                   if (user.first_login || user.name == "Rtest")
                      user.first_login = false
                      user.guider("new_player")
                      user.save
@@ -201,25 +201,27 @@ Thread.new do
                  end
               end
             end
-           
+
             #ws.send JSON.generate({"dialog"=>"<div class=\"dialog\" title=\"test\"><p>" + value.make_safe_for_web_client + "</p></div>"})
           else
             puts "Unrecognized packet (#{key}) received."
-          end  
+          end
         end
       end
-      ws.onclose { 
+      ws.onclose {
         ws.logout() if ws.player
       }
-
+      ws.onerror { |error|
+        puts error
+      }
     end
   end
 end
 
 set :server, %w[thin webrick]
 
-# web server routes defined below.   
-get '/' do 
+# web server routes defined below.
+get '/' do
   erb :client, :locals=>{:host=>request.env["SERVER_NAME"]}
 end
 

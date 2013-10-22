@@ -16,16 +16,21 @@ GEM
       do_sqlite3 (~> 0.10.2)
     do_sqlite3 (0.10.6)
       data_objects (= 0.10.6)
-    em-websocket (0.2.1)
-      addressable (>= 2.1.1)
-      eventmachine (>= 0.12.9)
-    eventmachine (0.12.10)
+    eventmachine (1.0.3)
     json (1.5.1)
     rack (1.2.2)
     sinatra (1.2.3)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
     tilt (1.2.2)
+    websocket (1.1.1)
+    websocket-eventmachine-base (1.0.2)
+      eventmachine (~> 1.0)
+      websocket (~> 1.0)
+      websocket-native (~> 1.0)
+    websocket-eventmachine-server (1.0.1)
+      websocket-eventmachine-base (~> 1.0)
+    websocket-native (1.0.0)
 
 PLATFORMS
   ruby
@@ -34,7 +39,6 @@ DEPENDENCIES
   dm-core
   dm-migrations
   dm-sqlite-adapter
-  em-websocket
-  eventmachine
   json
   sinatra
+  websocket-eventmachine-server

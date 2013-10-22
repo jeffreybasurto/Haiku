@@ -1,8 +1,7 @@
 source :rubygems
 
-gem 'eventmachine'
 gem 'sinatra'
-gem 'em-websocket'
+gem 'websocket-eventmachine-server'
 gem 'json'
 
 gem 'dm-core'
